@@ -6,7 +6,7 @@ then
 fi
 
 # Setup
-R_LIBS=${SETUP_ROOT}/renv
+export R_LIBS=${SETUP_ROOT}/renv
 mkdir -p ${R_LIBS}
 if [ -z ${N_CPUS} ]; then N_CPUS=4; fi
 # Remove non-default path to reduce interference (e.g., Conda)
