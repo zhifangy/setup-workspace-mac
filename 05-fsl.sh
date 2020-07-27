@@ -26,7 +26,7 @@ chmod 755 ${FSLDIR}/bin/msm
 echo "
 Add following line to .zshrc
 # FSL
-export FSLDIR=\${FSLDIR}
+export FSLDIR=${FSLDIR}
 export \\
     FSLOUTPUTTYPE=NIFTI_GZ \\
     FSLMULTIFILEQUIT=TRUE \\
