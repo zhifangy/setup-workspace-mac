@@ -32,11 +32,10 @@ Modify ~/.zshrc:
   In order to use the powerlevel10k theme, you need to use fonts from the Nerd-fonts project
   https://github.com/ryanoasis/nerd-fonts
 4. More alias
-  alias ls="lsd"
-  alias ll="ls -l"
-  alias la="ls -a"
-  alias lla="ls -la"
-  alias lt="ls --tree"
+  alias ll="lsd -l"
+  alias la="lsd -a"
+  alias lla="lsd -la"
+  alias lt="lsd --tree"
 5. More good stuff
   eval $(thefuck --alias)
 EOF
