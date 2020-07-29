@@ -10,6 +10,7 @@ echo "Current conda: $(which conda)"
 
 # Add conda-forge channel
 conda config --add channels conda-forge
+conda config --add channels pytorch
 
 # Environment name
 ENV_PREFIX=${SETUP_ROOT}/pyenv
@@ -38,7 +39,7 @@ conda install -yq \
     matplotlib \
     seaborn \
     plotly \
-    bokeh \
+    plotly-orca \
     graphviz \
     vtk \
     mayavi \
@@ -61,18 +62,18 @@ conda install -yq \
     nbdime \
     python-dotenv \
     cookiecutter \
+    pytorch \
+    torchvision \
     nilearn \
     nipype \
     mne \
+    pydicom \
     gensim \
     pyrsistent \
     pint \
     py4j \
     s3fs \
     ipyvolume
-conda install -yq -c plotly plotly-orca
-conda install -yq -c defaults tensorflow tensorflow-gpu
-conda install -yq -c pytorch pytorch torchvision cudatoolkit
 
 # Install package through pip
 pip install --no-cache-dir \
@@ -88,6 +89,7 @@ pip install --no-cache-dir \
     bigmpi4py \
     pymanopt \
     theano \
+    datalad \
     dcmstack \
     pybids \
     heudiconv \
@@ -98,7 +100,11 @@ pip install --no-cache-dir \
     neuropythy \
     fse \
     ppca && \
-pip install brainiak --no-deps --no-use-pep517  --no-cache-dir && \
+# Brainiak depends on nitime, which can't be complied under python 3.8 (nitime v0.8.1)
+# For now, we just ignore nitime
+# This only affects the brsa algorithm
+pip install git+https://github.com/brainiak/brainiak.git --no-deps --no-use-pep517  --no-cache-dir && \
+# Current version hypertools requires scikit-learn<0.22, just ignore it
 pip install hypertools --no-deps --no-cache-dir
 
 # Install jupyterlab extensions
@@ -106,6 +112,7 @@ jupyter labextension install @jupyter-widgets/jupyterlab-manager
 jupyter labextension install @krassowski/jupyterlab-lsp
 jupyter labextension install @jupyterlab/debugger
 jupyter labextension install @ryantam626/jupyterlab_code_formatter
+jupyter serverextension enable --py jupyterlab_code_formatter
 jupyter labextension install jupyterlab-plotly
 jupyter labextension install plotlywidget
 jupyter labextension install jupyterlab-jupytext
