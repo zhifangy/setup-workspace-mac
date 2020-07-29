@@ -67,6 +67,7 @@ conda install -yq \
     nilearn \
     nipype \
     mne \
+    fsleyes \
     pydicom \
     gensim \
     pyrsistent \
