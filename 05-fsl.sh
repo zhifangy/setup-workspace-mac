@@ -37,4 +37,6 @@ export \\
     FSLMACHINELIST= \\
     FSLREMOTECALL=
 export PATH=\${FSLDIR}/bin:\${PATH}
+
+Put this part before conda related configuration in order to use fsleyes installed by conda!
 "
