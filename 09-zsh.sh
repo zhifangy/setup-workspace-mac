@@ -8,6 +8,7 @@ Oh my zsh project is not installed.
 Run following command first.
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 EOF
+exit 0
 fi
 
 # Install useful plugins
