@@ -40,6 +40,7 @@ conda install -yq \
     seaborn \
     plotly \
     plotly-orca \
+    bokeh \
     graphviz \
     vtk \
     mayavi \
@@ -67,6 +68,7 @@ conda install -yq \
     nilearn \
     nipype \
     mne \
+    fsleyes \
     pydicom \
     gensim \
     pyrsistent \
