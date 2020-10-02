@@ -11,6 +11,7 @@ echo "Current conda: $(which conda)"
 # Add conda-forge channel
 conda config --add channels conda-forge
 conda config --add channels pytorch
+conda config --set channel_priority strict
 
 # Environment name
 ENV_PREFIX=${SETUP_ROOT}/pyenv
@@ -34,6 +35,7 @@ conda install -yq \
     xgboost \
     ipython \
     jupyterlab \
+    jupyter-lsp \
     python-language-server \
     xeus-python \
     matplotlib \
@@ -61,7 +63,11 @@ conda install -yq \
     jupyterlab_code_formatter \
     jupytext \
     nbdime \
+    qgrid \
     python-dotenv \
+    pyprojroot \
+    memory_profiler \
+    threadpoolctl \
     cookiecutter \
     pytorch \
     torchvision \
@@ -70,28 +76,25 @@ conda install -yq \
     mne \
     fsleyes \
     pydicom \
+    umap-learn \
     gensim \
     pyrsistent \
     pint \
     py4j \
     s3fs \
-    ipyvolume
+    ipyvolume \
+    datalad
 
 # Install package through pip
 pip install --no-cache-dir \
-    jupyter-lsp \
     pyls-black \
-    memory_profiler \
     rpy2 \
     radian \
     pymer4 \
     sklearn-lmer \
-    umap-learn \
-    rootpath \
     bigmpi4py \
     pymanopt \
     theano \
-    datalad \
     dcmstack \
     pybids \
     heudiconv \
@@ -100,14 +103,13 @@ pip install --no-cache-dir \
     pymvpa2 \
     visualqc \
     neuropythy \
+    hypertools \
     fse \
     ppca && \
 # Brainiak depends on nitime, which can't be complied under python 3.8 (nitime v0.8.1)
 # For now, we just ignore nitime
 # This only affects the brsa algorithm
 pip install git+https://github.com/brainiak/brainiak.git --no-deps --no-use-pep517  --no-cache-dir && \
-# Current version hypertools requires scikit-learn<0.22, just ignore it
-pip install hypertools --no-deps --no-cache-dir
 
 # Install jupyterlab extensions
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
@@ -115,6 +117,7 @@ jupyter labextension install @krassowski/jupyterlab-lsp
 jupyter labextension install @jupyterlab/debugger
 jupyter labextension install @ryantam626/jupyterlab_code_formatter
 jupyter serverextension enable --py jupyterlab_code_formatter
+jupyter labextension install qgrid2
 jupyter labextension install jupyterlab-plotly
 jupyter labextension install plotlywidget
 jupyter labextension install jupyterlab-jupytext
