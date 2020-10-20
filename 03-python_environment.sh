@@ -107,9 +107,10 @@ pip install --no-cache-dir \
     fse \
     ppca && \
 # Brainiak depends on nitime, which can't be complied under python 3.8 (nitime v0.8.1)
-# For now, we just ignore nitime
-# This only affects the brsa algorithm
-pip install git+https://github.com/brainiak/brainiak.git --no-deps --no-use-pep517  --no-cache-dir && \
+# For now, we just ignore nitime. This only affects the brsa algorithm
+# Also, brainiak depends on tensorflow for matnormal package
+# Again, we just ignore it here
+pip install brainiak --no-deps --no-cache-dir && \
 
 # Install jupyterlab extensions
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
