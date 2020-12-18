@@ -64,6 +64,7 @@ conda install -yq \
     jupytext \
     nbdime \
     qgrid \
+    pyjanitor \
     python-dotenv \
     pyprojroot \
     memory_profiler \
