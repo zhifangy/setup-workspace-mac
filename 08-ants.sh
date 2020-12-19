@@ -12,7 +12,7 @@ if [ -z ${N_CPUS} ]; then N_CPUS=4; fi
 
 # ANTs
 mkdir -p ${BUILD_DIR}/build
-wget -O- https://github.com/ANTsX/ANTs/archive/v2.3.4.tar.gz \
+wget -O- https://github.com/ANTsX/ANTs/archive/v2.3.5.tar.gz \
     | tar -xzC ${BUILD_DIR} --strip-components 1
 cd ${BUILD_DIR}/build
 cmake -DCMAKE_INSTALL_PREFIX=${ANTS_DIR} ${BUILD_DIR}
