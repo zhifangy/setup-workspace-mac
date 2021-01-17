@@ -8,10 +8,10 @@ fi
 # Create default conda enviornment on Mac
 echo "Current conda: $(which conda)"
 
-# Add conda-forge channel
+# Add channels
 conda config --add channels conda-forge
 conda config --add channels pytorch
-conda config --set channel_priority strict
+conda config --set channel_priority flexible
 
 # Environment name
 ENV_PREFIX=${SETUP_ROOT}/pyenv
@@ -35,9 +35,10 @@ conda install -yq \
     xgboost \
     ipython \
     jupyterlab \
-    jupyter-lsp \
-    python-language-server \
+    jupyterlab-lsp \
+    jupyter-lsp-python \
     xeus-python \
+    jupyterlab_code_formatter \
     matplotlib \
     seaborn \
     plotly \
@@ -48,7 +49,7 @@ conda install -yq \
     mayavi \
     ffmpeg \
     ipywidgets \
-    'nodejs>=10' \
+    nodejs \
     spyder \
     mpi4py \
     h5py \
@@ -60,10 +61,8 @@ conda install -yq \
     black \
     yapf \
     pytest \
-    jupyterlab_code_formatter \
     jupytext \
     nbdime \
-    qgrid \
     pyjanitor \
     python-dotenv \
     pyprojroot \
@@ -72,11 +71,16 @@ conda install -yq \
     cookiecutter \
     pytorch \
     torchvision \
+    cudatoolkit \
+    theano \
+    rpy2 \
     nilearn \
     nipype \
     mne \
-    fsleyes \
+    nitime \
     pydicom \
+    dcmstack \
+    heudiconv \
     umap-learn \
     gensim \
     pyrsistent \
@@ -87,42 +91,24 @@ conda install -yq \
     datalad
 
 # Install package through pip
-pip install --no-cache-dir \
-    pyls-black \
-    rpy2 \
+pip install -q --no-cache-dir \
     radian \
     pymer4 \
     sklearn-lmer \
     bigmpi4py \
     pymanopt \
-    theano \
-    dcmstack \
     pybids \
-    heudiconv \
     bidscoin \
     antspyx \
-    pymvpa2 \
-    visualqc \
-    neuropythy \
+    brainiak \
     hypertools \
-    fse \
-    ppca && \
-# Brainiak depends on nitime, which can't be complied under python 3.8 (nitime v0.8.1)
-# For now, we just ignore nitime. This only affects the brsa algorithm
-# Also, brainiak depends on tensorflow for matnormal package
-# Again, we just ignore it here
-pip install brainiak --no-deps --no-cache-dir && \
+    neuropythy \
+    pymvpa2 \
+    visualqc
 
 # Install jupyterlab extensions
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension install @krassowski/jupyterlab-lsp
-jupyter labextension install @jupyterlab/debugger
-jupyter labextension install @ryantam626/jupyterlab_code_formatter
-jupyter serverextension enable --py jupyterlab_code_formatter
-jupyter labextension install qgrid2
 jupyter labextension install jupyterlab-plotly
 jupyter labextension install plotlywidget
-jupyter labextension install jupyterlab-jupytext
 jupyter labextension install ipyvolume
 jupyter labextension install jupyter-threejs
 
