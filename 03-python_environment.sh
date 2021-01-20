@@ -24,8 +24,8 @@ conda create -p ${ENV_PREFIX} -y python=3.8
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate ${ENV_PREFIX}
 
-# Install packages using conda
 conda install -yq \
+    "python>=3.8" \
     numpy \
     pandas \
     scipy \
@@ -72,8 +72,6 @@ conda install -yq \
     pytorch \
     torchvision \
     cudatoolkit \
-    theano \
-    rpy2 \
     nilearn \
     nipype \
     mne \
@@ -90,8 +88,9 @@ conda install -yq \
     ipyvolume \
     datalad
 
-# Install package through pip
+# Install packages using pip
 pip install -q --no-cache-dir \
+    rpy2 \
     radian \
     pymer4 \
     sklearn-lmer \
