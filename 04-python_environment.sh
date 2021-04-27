@@ -24,9 +24,13 @@ conda create -p ${ENV_PREFIX} -y python=3.8
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate ${ENV_PREFIX}
 
+# Note:
+# - Pin numpy< 1.20, since several packages have hard requirement.
+# - Checklist: tensorflow, brainiak, yellowbrick
+# - Add 'numpy <1.20' into pyenv/conda-meta/pinned file
 conda install -yq \
     "python>=3.8" \
-    numpy \
+    "numpy<1.20" \
     pandas \
     scipy \
     statsmodels \
@@ -89,8 +93,17 @@ conda install -yq \
     datalad
 
 # Install packages using pip
+# Note:
+# - Install tensorflow nightly version since current (v2.4.1) requires h5py<3.0.
+# - Check this after the releasing of tensorflow v2.5.0
 pip install -q --no-cache-dir \
+<<<<<<< HEAD
     lets-plot \
+=======
+    tf-nightly \
+    tensorflow-probability \
+    yellowbrick \
+>>>>>>> 4e7874aa56eb3f10c2a3cd29a0068d5079cf31c2
     rpy2 \
     radian \
     pymer4 \
@@ -117,3 +130,4 @@ conda clean -apy
 jupyter lab clean
 
 echo "Installation completed!"
+echo "Add 'numpy <1.20' into pyenv/conda-meta/pinned file."
