@@ -90,6 +90,7 @@ conda install -yq \
 
 # Install packages using pip
 pip install -q --no-cache-dir \
+    lets-plot \
     rpy2 \
     radian \
     pymer4 \
