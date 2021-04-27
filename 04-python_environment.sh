@@ -97,13 +97,10 @@ conda install -yq \
 # - Install tensorflow nightly version since current (v2.4.1) requires h5py<3.0.
 # - Check this after the releasing of tensorflow v2.5.0
 pip install -q --no-cache-dir \
-<<<<<<< HEAD
     lets-plot \
-=======
     tf-nightly \
     tensorflow-probability \
     yellowbrick \
->>>>>>> 4e7874aa56eb3f10c2a3cd29a0068d5079cf31c2
     rpy2 \
     radian \
     pymer4 \
