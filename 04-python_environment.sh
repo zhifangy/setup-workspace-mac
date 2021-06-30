@@ -24,13 +24,12 @@ conda create -p ${ENV_PREFIX} -y python=3.8
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate ${ENV_PREFIX}
 
+# Install packages using conda
 # Note:
-# - Pin numpy< 1.20, since several packages have hard requirement.
+# - Pin numpy=1.19, since several packages are incompatible with numpy 1.20.
 # - Checklist: tensorflow, brainiak, yellowbrick
-# - Add 'numpy <1.20' into pyenv/conda-meta/pinned file
 conda install -yq \
-    "python>=3.8" \
-    "numpy<1.20" \
+    "numpy=1.19" \
     pandas \
     scipy \
     statsmodels \
@@ -46,19 +45,11 @@ conda install -yq \
     matplotlib \
     seaborn \
     plotly \
-    plotly-orca \
+    python-kaleido \
     bokeh \
-    graphviz \
-    vtk \
-    mayavi \
-    ffmpeg \
     ipywidgets \
-    nodejs \
-    spyder \
     mpi4py \
     h5py \
-    feather-format \
-    cython \
     pybind11 \
     flake8 \
     autopep8 \
@@ -78,13 +69,13 @@ conda install -yq \
     cudatoolkit \
     nilearn \
     nipype \
-    mne \
     nitime \
     pydicom \
     dcmstack \
     heudiconv \
     umap-learn \
     gensim \
+    numexpr \
     pyrsistent \
     pint \
     py4j \
@@ -94,37 +85,52 @@ conda install -yq \
 
 # Install packages using pip
 # Note:
-# - Install tensorflow nightly version since current (v2.4.1) requires h5py<3.0.
-# - Check this after the releasing of tensorflow v2.5.0
 pip install -q --no-cache-dir \
     lets-plot \
-    tf-nightly \
-    tensorflow-probability \
+    timm \
     yellowbrick \
     rpy2 \
     radian \
-    pymer4 \
-    sklearn-lmer \
     bigmpi4py \
     pymanopt \
     pybids \
     bidscoin \
     antspyx \
     brainiak \
-    hypertools \
+    brainspace \
     neuropythy \
     pymvpa2 \
     visualqc
-
-# Install jupyterlab extensions
-jupyter labextension install jupyterlab-plotly
-jupyter labextension install plotlywidget
-jupyter labextension install ipyvolume
-jupyter labextension install jupyter-threejs
+# Install vtk, mayavi
+# Note:
+# - conda-forge version conflicts with lots of packages
+pip install -q --no-cache-dir vtk
+pip install -q --no-cache-dir mayavi
+# Install mne
+# conda-forge version requests mayavi
+pip install -q --no-cache-dir -r \
+    <(curl -s https://raw.githubusercontent.com/mne-tools/mne-python/main/requirements.txt)
+pip install -q --no-cache-dir mne
+# Install hypertools
+# version 0.7.0 requires scikit-learn<0.24
+pip install -q --no-cache-dir ppca
+pip install -q --no-cache-dir --no-deps hypertools
+# pymer4
+# Note:
+# - Require old version of pandas due to deepdish
+# - Manually install missing dependency
+pip install -q --no-cache-dir deepdish
+pip install -q --no-cache-dir --no-deps pymer4
+# Thingsvision
+# Note:
+# - Hard pin lots of packages
+# - Manually install missing dependency
+pip install -q --no-cache-dir ftfy
+pip install -q --no-cache-dir --no-deps thingsvision
 
 # Cleanup
 conda clean -apy
 jupyter lab clean
 
 echo "Installation completed!"
-echo "Add 'numpy <1.20' into pyenv/conda-meta/pinned file."
+echo "Add 'numpy<1.20' into pyenv/conda-meta/pinned file."
