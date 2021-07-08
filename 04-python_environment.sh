@@ -83,6 +83,11 @@ conda install -yq \
     ipyvolume \
     datalad
 
+# Install vtk, mayavi
+# Note:
+# - conda-forge version conflicts with lots of packages
+pip install -q --no-cache-dir vtk==9.0.1
+pip install -q --no-cache-dir mayavi
 # Install packages using pip
 # Note:
 pip install -q --no-cache-dir \
@@ -100,17 +105,8 @@ pip install -q --no-cache-dir \
     brainspace \
     neuropythy \
     pymvpa2 \
+    mne \
     visualqc
-# Install vtk, mayavi
-# Note:
-# - conda-forge version conflicts with lots of packages
-pip install -q --no-cache-dir vtk
-pip install -q --no-cache-dir mayavi
-# Install mne
-# conda-forge version requests mayavi
-pip install -q --no-cache-dir -r \
-    <(curl -s https://raw.githubusercontent.com/mne-tools/mne-python/main/requirements.txt)
-pip install -q --no-cache-dir mne
 # Install hypertools
 # version 0.7.0 requires scikit-learn<0.24
 pip install -q --no-cache-dir ppca
