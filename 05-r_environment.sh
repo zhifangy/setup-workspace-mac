@@ -21,7 +21,7 @@ N_CPUS <- Sys.getenv("N_CPUS")
 install.packages(
   c(
     "devtools", "pacman", "fs", "here", "rprojroot", "styler", "feather", "processx", "languageserver",
-    "tidyverse", "vroom", "broom", "janitor", "reticulate", "jsonlite",
+    "tidyverse", "vroom", "broom", "broom.mixed", "janitor", "reticulate", "jsonlite",
     "data.table", "knitr", "kableExtra", "rmarkdown", "formatR", "printr",
     "dbplyr", "DBI", "RSQLite", "lintr", "Rmpi"
   ),
