@@ -9,9 +9,9 @@ fi
 FREESURFER_DIR=${SETUP_ROOT}/freesurfer
 
 # FreeSurfer
-wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.1.1/freesurfer-darwin-macOS-7.1.1.tar.gz
-mkdir ${FREESURFER_DIR} && tar -xzf freesurfer-darwin-macOS-7.1.1.tar.gz -C ${FREESURFER_DIR} --strip-components 1
-rm freesurfer-darwin-macOS-7.1.1.tar.gz
+wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.2.0/freesurfer-darwin-macOS-7.2.0.tar.gz
+mkdir ${FREESURFER_DIR} && tar -xzf freesurfer-darwin-macOS-7.2.0.tar.gz -C ${FREESURFER_DIR} --strip-components 1
+rm freesurfer-darwin-macOS-7.2.0.tar.gz
 
 # Add following lines into .zshrc
 echo "
