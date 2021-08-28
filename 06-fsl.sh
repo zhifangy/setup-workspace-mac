@@ -7,11 +7,12 @@ fi
 
 # Setup
 export FSLDIR=${SETUP_ROOT}/fsl
+FSL_VERSION=6.0.5
 
 # FSL
-wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-6.0.4-macOS_64.tar.gz
-mkdir ${FSLDIR} && tar -xzf fsl-6.0.4-macOS_64.tar.gz -C ${FSLDIR} --strip-components 1
-rm fsl-6.0.4-macOS_64.tar.gz
+wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-${FSL_VERSION}-macOS_64.tar.gz
+mkdir ${FSLDIR} && tar -xzf fsl-${FSL_VERSION}-macOS_64.tar.gz -C ${FSLDIR} --strip-components 1
+rm fsl-${FSL_VERSION}-macOS_64.tar.gz
 bash ${FSLDIR}/etc/fslconf/post_install.sh
 ${FSLDIR}/fslpython/bin/conda clean -apy
 # Use newer version of MSM
