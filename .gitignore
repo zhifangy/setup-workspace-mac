@@ -1,0 +1,5 @@
+# Poetry lock file
+poetry.lock
+
+# Mac OS-specific storage files
+.DS_Store
