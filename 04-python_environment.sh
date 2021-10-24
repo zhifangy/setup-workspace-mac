@@ -17,15 +17,23 @@ ENV_PREFIX=${SETUP_ROOT}/pyenv
 echo "Enviromenmet location: ${ENV_PREFIX}"
 
 # Create environment
-conda create -p ${ENV_PREFIX} -y python=3.8
+conda create -p ${ENV_PREFIX} -y python=3.9
 
 # Activate environment
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate ${ENV_PREFIX}
 
+# Install packages using conda
+conda install -yq vtk=9.0.3
+
 # Install packages using poetry
 POETRY_CACHE_DIR=${SETUP_ROOT}/poetry
 cd "$(dirname "$0")"
+# remove old poetry.lock file
+if [ -f poetry.lock ]; then
+    rm poetry.lock
+fi
+# install
 poetry install -v
 # Thingsvision
 # Note:
