@@ -14,6 +14,8 @@ wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-${FSL_VERSION}-macOS_64.tar.gz
 mkdir ${FSLDIR} && tar -xzf fsl-${FSL_VERSION}-macOS_64.tar.gz -C ${FSLDIR} --strip-components 1
 rm fsl-${FSL_VERSION}-macOS_64.tar.gz
 bash ${FSLDIR}/etc/fslconf/post_install.sh
+# Update FSLeyes
+$FSLDIR/fslpython/bin/conda update -yq -n fslpython -c conda-forge fsleyes
 ${FSLDIR}/fslpython/bin/conda clean -apy
 # Use newer version of MSM
 wget https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 && \
