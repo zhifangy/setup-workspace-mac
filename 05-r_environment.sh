@@ -7,55 +7,98 @@ fi
 
 # Setup
 export R_LIBS=${SETUP_ROOT}/renv
+CRAN=${CRAN:-https://packagemanager.rstudio.com/all/__linux__/focal/latest}
+N_CPUS=${N_CPUS:-4}
+echo "R library location: ${R_LIBS}"
 mkdir -p ${R_LIBS}
-if [ -z ${N_CPUS} ]; then N_CPUS=4; fi
+Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"
+
 # Remove non-default path to reduce interference (e.g., Conda)
 PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+PATH=${R_LIBS}/littler/examples:${R_LIBS}/littler/bin:${PATH}
 
 # Install R packages
-Rscript --vanilla -e \
-'
-R_LIBS <- Sys.getenv("R_LIBS")
-N_CPUS <- Sys.getenv("N_CPUS")
-
-install.packages(
-  c(
-    "devtools", "pacman", "fs", "here", "rprojroot", "styler", "feather", "processx", "languageserver",
-    "tidyverse", "vroom", "broom", "broom.mixed", "janitor", "reticulate", "jsonlite",
-    "data.table", "knitr", "kableExtra", "rmarkdown", "formatR", "printr",
-    "dbplyr", "DBI", "RSQLite", "lintr", "Rmpi"
-  ),
-  lib = R_LIBS, repos = "https://cloud.r-project.org",
-  clean = TRUE, quiet = TRUE, Ncpus = N_CPUS
-)
-
-install.packages(
-  c(
-    "ggforce", "ggpmisc", "ggExtra", "ggfortify", "ggthemes", "ggsci", "paletteer",
-    "GGally", "ggridges", "ggraph", "lemon", "cowplot", "ggpubr", "corrplot", "ggbeeswarm",
-    "ggThemeAssist", "shades", "visreg", "magick", "tidygraph", "wesanderson"
-  ),
-  lib = R_LIBS, repos = "https://cloud.r-project.org",
-  clean = TRUE, quiet = TRUE, Ncpus = N_CPUS
-)
-
-install.packages(
-  c(
-    "psych", "afex", "emmeans", "coin", "robustbase", "Rmisc", "lme4", "lmerTest",
-    "mediation", "NPC", "jmv", "sjPlot", "finalfit", "cocor", "skimr",
-    "neurobase", "RNifti", "R.matlab",
-    "vitae", "rorcid"
-  ),
-  lib = R_LIBS, repos = "https://cloud.r-project.org",
-  clean = TRUE, quiet = TRUE, Ncpus = N_CPUS
-)
-
-install.packages(
-  c("phia", "snow", "nlme", "paran", "brms", "metafor"),
-  lib = R_LIBS, repos = "https://cloud.r-project.org",
-  clean = TRUE, quiet = TRUE, Ncpus = N_CPUS
-)
-'
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+    `# Basics` \
+    devtools \
+    pacman \
+    fs \
+    here \
+    rprojroot \
+    styler \
+    feather \
+    processx \
+    languageserver \
+    tidyverse \
+    vroom \
+    broom \
+    janitor \
+    reticulate \
+    jsonlite \
+    data.table \
+    knitr \
+    kableExtra \
+    rmarkdown \
+    formatR \
+    printr \
+    dbplyr \
+    DBI \
+    RSQLite \
+    lintr \
+    Rmpi \
+    `# Graphics` \
+    ggforce \
+    ggpmisc \
+    ggExtra \
+    ggfortify \
+    ggthemes \
+    ggsci \
+    paletteer \
+    GGally \
+    ggridges \
+    ggraph \
+    lemon \
+    cowplot \
+    ggpubr \
+    corrplot \
+    ggbeeswarm \
+    ggThemeAssist \
+    shades \
+    visreg \
+    magick \
+    tidygraph \
+    wesanderson \
+    showtext \
+    `# Statistics` \
+    psych \
+    afex \
+    emmeans \
+    coin \
+    robustbase \
+    Rmisc \
+    lme4 \
+    lmerTest \
+    mediation \
+    NPC \
+    jmv \
+    sjPlot \
+    finalfit \
+    cocor \
+    `# Others` \
+    skimr \
+    neurobase \
+    RNifti \
+    R.matlab \
+    vitae \
+    rorcid \
+    `# Additional packages for AFNI` \
+    phia \
+    snow \
+    nlme \
+    paran \
+    brms \
+    metafor
+echo ${R_LIBS} > ${R_LIBS}/path
 
 echo "Installation completed!"
 
