@@ -32,6 +32,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     tidyverse \
     vroom \
     broom \
+    broom.mixed \
     janitor \
     reticulate \
     jsonlite \
