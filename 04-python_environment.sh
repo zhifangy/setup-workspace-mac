@@ -24,7 +24,7 @@ source $(conda info --base)/etc/profile.d/conda.sh
 conda activate ${ENV_PREFIX}
 
 # Install packages using conda
-conda install -yq vtk=9.0.3
+conda install -yq vtk=9.1.0
 
 # Install packages using poetry
 POETRY_CACHE_DIR=${SETUP_ROOT}/poetry
