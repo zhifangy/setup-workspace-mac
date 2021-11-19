@@ -21,6 +21,7 @@ python-lsp-server = {version = "*", extras = ["all"]}
 xeus-python = "*"
 jupyterlab_code_formatter = "*"
 jupytext = "*"
+jupyterlab-execute-time = "*"
 nbdime = "*"
 matplotlib = "*"
 seaborn = "*"
