@@ -69,6 +69,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     magick \
     tidygraph \
     wesanderson \
+    MetBrewer \
     showtext \
     `# Statistics` \
     psych \
