@@ -105,7 +105,8 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     sjPlot \
     finalfit \
     cocor \
-    skimr
+    skimr \
+    broom.mixed
 # other
 install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     Rmpi \
