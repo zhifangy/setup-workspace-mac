@@ -6,7 +6,7 @@
 # Install packages
 brew tap AdoptOpenJDK/openjdk
 brew install wget vim curl cmake gcc llvm tcl-tk htop tree git libssh2 libgit2 node pandoc hdf5 \
-    open-mpi openblas swig autossh imagemagick netpbm v8 openjdk macfuse
+    open-mpi openblas swig autossh imagemagick netpbm v8 openjdk macfuse harfbuzz fribidi
 brew install gromgit/fuse/sshfs-mac
 
 # Install R
