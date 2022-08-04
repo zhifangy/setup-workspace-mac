@@ -6,7 +6,7 @@ then
 fi
 
 # Setup
-export R_LIBS=${SETUP_ROOT}/renv1
+export R_LIBS=${SETUP_ROOT}/renv
 CRAN=${CRAN:-https://packagemanager.rstudio.com/all/__linux__/focal/latest}
 N_CPUS=${N_CPUS:-4}
 echo "R library location: ${R_LIBS}"
