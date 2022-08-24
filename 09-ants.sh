@@ -7,22 +7,12 @@ fi
 
 # Setup
 ANTS_DIR=${SETUP_ROOT}/ants
-BUILD_DIR=${SETUP_ROOT}/ANTs_build
-if [ -z ${N_CPUS} ]; then N_CPUS=4; fi
 
 # ANTs
-mkdir -p ${BUILD_DIR}/build
-wget -O- https://github.com/ANTsX/ANTs/archive/v2.3.5.tar.gz \
-    | tar -xzC ${BUILD_DIR} --strip-components 1
-cd ${BUILD_DIR}/build
-cmake -DCMAKE_INSTALL_PREFIX=${ANTS_DIR} ${BUILD_DIR}
-make -j ${N_CPUS}
-cd ANTs-build
-make install
-
-# Cleanups
-cd ${SETUP_DIR}
-rm -rf ${BUILD_DIR}
+mkdir -p ${ANTS_DIR}
+wget -O- https://github.com/ANTsX/ANTs/releases/download/v2.4.1/ants-2.4.1-macos-12-X64-clang.zip \
+    | bsdtar -xf - -C ${ANTS_DIR} --strip-components 1
+chmod +x ${ANTS_DIR}/bin/*
 
 # Add following lines into .zshrc
 echo "
