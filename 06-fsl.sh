@@ -7,7 +7,7 @@ fi
 
 # Setup
 export FSLDIR=${SETUP_ROOT}/fsl
-FSL_VERSION=6.0.5
+FSL_VERSION=6.0.5.1
 
 # FSL
 wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-${FSL_VERSION}-macOS_64.tar.gz
