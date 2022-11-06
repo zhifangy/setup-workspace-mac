@@ -19,7 +19,7 @@ conda update -yq --all
 
 # Poetry
 export POETRY_HOME=${SETUP_ROOT}/poetry
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+curl -sSL https://install.python-poetry.org | python -
 unset POETRY_HOME
 
 # Add following lines into .zshrc
