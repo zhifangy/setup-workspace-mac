@@ -17,14 +17,14 @@ ENV_PREFIX=${SETUP_ROOT}/pyenv
 echo "Enviromenmet location: ${ENV_PREFIX}"
 
 # Create environment
-conda create -p ${ENV_PREFIX} -y python=3.9
+conda create -p ${ENV_PREFIX} -y python=3.10
 
 # Activate environment
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate ${ENV_PREFIX}
 
 # Install packages using conda
-conda install -yq vtk=9.1.0
+conda install -yq vtk==9.2.2
 
 # Install packages using poetry
 POETRY_CACHE_DIR=${SETUP_ROOT}/poetry
@@ -35,6 +35,8 @@ if [ -f poetry.lock ]; then
 fi
 # install
 poetry install -v
+# PyMVPA2
+pip install -q --no-cache-dir pymvpa2
 # Thingsvision
 # Note:
 # - Hard pin lots of packages
