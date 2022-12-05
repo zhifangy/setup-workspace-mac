@@ -19,14 +19,20 @@ conda update -yq --all
 
 # Poetry
 export POETRY_HOME=${SETUP_ROOT}/poetry
+export POETRY_CACHE_DIR=${SETUP_ROOT}/poetry
+export POETRY_CONFIG_DIR=${SETUP_ROOT}/poetry
 curl -sSL https://install.python-poetry.org | python -
 unset POETRY_HOME
+unset POETRY_CACHE_DIR
+unset POETRY_CONFIG_DIR
 
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 export PATH=${SETUP_ROOT}/poetry/bin:\${PATH}
+export POETRY_HOME=${SETUP_ROOT}/poetry
 export POETRY_CACHE_DIR=${SETUP_ROOT}/poetry
+export POETRY_CONFIG_DIR=${SETUP_ROOT}/poetry
 plugins(poetry)
 
 Execute following lines:
