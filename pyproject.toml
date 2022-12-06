@@ -75,6 +75,7 @@ neuropythy = "*"
 pycortex = "*"
 pysurfer = {version = "*", extras = ["save_movie"]}
 heudiconv = "*"
+dcm2bids = "*"
 pybids = "*"
 bidscoin = "*"
 
