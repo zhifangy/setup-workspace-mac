@@ -19,8 +19,8 @@ $FSLDIR/condabin/conda update -yq -p ${FSLDIR} -c conda-forge fsleyes
 $FSLDIR/condabin/conda clean -apy
 # Use newer version of MSM
 wget https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 && \
-mv -fv msm_mac_v3 ${FSLDIR}/bin/msm
-chmod 755 ${FSLDIR}/bin/msm
+mv -fv msm_mac_v3 ${FSLDIR}/share/fsl/bin/msm
+chmod 755 ${FSLDIR}/share/fsl/bin/msm
 
 # Add following lines into .zshrc
 echo "
@@ -35,8 +35,10 @@ export \\
     FSLGECUDAQ=cuda.q \\
     FSLLOCKDIR= \\
     FSLMACHINELIST= \\
-    FSLREMOTECALL=
-export PATH=\${FSLDIR}/bin:\${PATH}
+    FSLREMOTECALL= \\
+    FSL_LOAD_NIFTI_EXTENSIONS=0 \\
+    FSL_SKIP_GLOBAL=0
+export PATH=\${FSLDIR}/share/fsl/bin:\${PATH}
 
 Put this part before conda related configuration in order to use fsleyes installed by conda!
 "
