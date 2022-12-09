@@ -41,8 +41,25 @@ echo "
 Add following line to .zshrc
 # FreeSurfer
 export FREESURFER_HOME=${FREESURFER_DIR}
-export SUBJECTS_DIR=\${FREESURFER_HOME}/subjects
-export FUNCTIONALS_DIR=\${FREESURFER_HOME}/sessions
-export FS_FREESURFERENV_NO_OUTPUT=1
-source \${FREESURFER_HOME}/FreeSurferEnv.sh
+export \\
+    OS=Linux \\
+    FS_OVERRIDE=0 \\
+    FSFAST_HOME=\${FREESURFER_HOME}/fsfast \\
+    SUBJECTS_DIR=\${FREESURFER_HOME}/subjects \\
+    FUNCTIONALS_DIR=\${FREESURFER_HOME}/sessions \\
+    MINC_BIN_DIR=\${FREESURFER_HOME}/mni/bin \\
+    MNI_DIR=\${FREESURFER_HOME}/mni \\
+    MINC_LIB_DIR=\${FREESURFER_HOME}/mni/lib \\
+    MNI_DATAPATH=\${FREESURFER_HOME}/mni/data \\
+    FSL_DIR=\${FSLDIR} \\
+    LOCAL_DIR=\${FREESURFER_HOME}/local \\
+    FSF_OUTPUT_FORMAT=nii.gz \\
+    FMRI_ANALYSIS_DIR=\${FREESURFER_HOME}/fsfast \\
+    MNI_PERL5LIB=\${FREESURFER_HOME}/mni/Library/Perl/Updates/5.12.3 \\
+    PERL5LIB=\${FREESURFER_HOME}/mni/Library/Perl/Updates/5.12.3 \\
+    FSL_BIN=\${FSLDIR}/share/fsl/bin \\
+    FREESURFER=\${FREESURFER_HOME} \\
+    FIX_VERTEX_AREA= \\
+    FS_LICENSE=\${FREESURFER_HOME}/license.txt
+export PATH=\${FREESURFER_HOME}/bin:\${FSFAST_HOME}/bin:\${FREESURFER_HOME}/tktools:\${MINC_BIN_DIR}:\${PATH}
 "
