@@ -42,13 +42,6 @@ pip install -q --no-cache-dir pymvpa2
 # - Hard pin lots of packages
 # - Manually install missing dependency
 pip install -q --no-cache-dir --no-deps thingsvision
-# Pingouin
-# Note:
-# The package pinned scikit-learn<1.1.0 due to a bug in scikit-learn
-# The bug has been fixed in scikit-learn v1.1.2
-# Until pingouin releases a new version, installing it manually
-pip install -q --no-cache-dir --no-deps pingouin
-pip install -q --no-cache-dir outdated tabulate pandas_flavor
 
 # Cleanup
 conda clean -apy
