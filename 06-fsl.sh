@@ -7,7 +7,14 @@ fi
 
 # Setup
 export FSLDIR=${SETUP_ROOT}/fsl
-FSL_VERSION=6.0.6.1
+FSL_VERSION=6.0.6.2
+
+# Check and cleanup old installation
+if [ -d ${FSLDIR} ]
+then
+    echo "Cleanup old FSL installation ..."
+    rm -rf ${FSLDIR}
+fi
 
 # FSL
 wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py
