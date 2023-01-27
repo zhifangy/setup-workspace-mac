@@ -36,6 +36,18 @@ else
     base64 --decode <<<  emhpZmFuZy55ZS5mZ2htQGdtYWlsLmNvbQozMDgyNwogKkNBanR5YkNZNDByTQogRlM5dmVNeDhnbnVxUQo= > ${FREESURFER_DIR}/license.txt
 fi
 
+# Update Freeview to latest dev version
+wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/freeview/freesurfer-darwin-macOS-dev-freeview.tar.gz
+rm -r ${FREESURFER_DIR}/Freeview.app && tar -xzf freesurfer-darwin-macOS-dev-freeview.tar.gz -C ${FREESURFER_DIR}
+rm freesurfer-darwin-macOS-dev-freeview.tar.gz
+
+# Apply post-release patch (v7.3.2)
+wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/core.py
+mv core.py ${FREESURFER_DIR}/python/packages/freesurfer/subregions/
+wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/mri_sclimbic_seg
+mv mri_sclimbic_seg ${FREESURFER_DIR}/python/scripts/mri_sclimbic_seg
+chmod +x ${FREESURFER_DIR}/python/scripts/mri_sclimbic_seg
+
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
