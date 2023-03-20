@@ -42,11 +42,16 @@ rm -r ${FREESURFER_DIR}/Freeview.app && tar -xzf freesurfer-darwin-macOS-dev-fre
 rm freesurfer-darwin-macOS-dev-freeview.tar.gz
 
 # Apply post-release patch (v7.3.2)
-wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/core.py
-mv core.py ${FREESURFER_DIR}/python/packages/freesurfer/subregions/
-wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/mri_sclimbic_seg
-mv mri_sclimbic_seg ${FREESURFER_DIR}/python/scripts/mri_sclimbic_seg
-chmod +x ${FREESURFER_DIR}/python/scripts/mri_sclimbic_seg
+# segment_subregions
+wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/segment_subregions/core.py
+mv core.py ${FREESURFER_HOME}/python/packages/freesurfer/subregions/
+# mri_sclimbic_seg
+wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/mri_sclimbic/mri_sclimbic_seg
+mv mri_sclimbic_seg ${FREESURFER_HOME}/python/scripts/mri_sclimbic_seg
+chmod +x ${FREESURFER_HOME}/python/scripts/mri_sclimbic_seg
+# mri_synthsr
+wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/synthsr/mri_synthsr
+mv mri_synthsr ${FREESURFER_HOME}/python/scripts/mri_synthsr
 
 # Add following lines into .zshrc
 echo "
