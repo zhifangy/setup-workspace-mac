@@ -113,7 +113,8 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     vitae \
     rorcid \
     RNifti \
-    R.matlab
+    R.matlab \
+    fMRIscrub
 # packages for afni
 install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     phia \
