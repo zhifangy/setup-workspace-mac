@@ -7,7 +7,7 @@ fi
 
 # Setup
 ANTS_DIR=${SETUP_ROOT}/ants
-ANTS_VERSION=2.4.3
+ANTS_VERSION=2.4.4
 
 # Check and cleanup old installation
 if [ -d ${ANTS_DIR} ]
