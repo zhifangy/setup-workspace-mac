@@ -7,6 +7,7 @@ fi
 
 # Setup
 FREESURFER_DIR=${SETUP_ROOT}/freesurfer
+FREESURFER_VERSION=7.4.0
 
 # Backup license.txt from existed FreeSurfer folder
 if [ -d ${FREESURFER_DIR} ]
@@ -21,9 +22,9 @@ then
 fi
 
 # FreeSurfer
-wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2/freesurfer-darwin-macOS-7.3.2.tar.gz
-mkdir ${FREESURFER_DIR} && tar -xzf freesurfer-darwin-macOS-7.3.2.tar.gz -C ${FREESURFER_DIR} --strip-components 1
-rm freesurfer-darwin-macOS-7.3.2.tar.gz
+wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/${FREESURFER_VERSION}/freesurfer-darwin-macOS-${FREESURFER_VERSION}.tar.gz
+mkdir ${FREESURFER_DIR} && tar -xzf freesurfer-darwin-macOS-${FREESURFER_VERSION}.tar.gz -C ${FREESURFER_DIR} --strip-components 1
+rm freesurfer-darwin-macOS-${FREESURFER_VERSION}.tar.gz
 
 # Move previous license.txt to new FreeSurfer folder
 mkdir ${FREESURFER_DIR}
@@ -40,18 +41,6 @@ fi
 wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/freeview/freesurfer-darwin-macOS-dev-freeview.tar.gz
 rm -r ${FREESURFER_DIR}/Freeview.app && tar -xzf freesurfer-darwin-macOS-dev-freeview.tar.gz -C ${FREESURFER_DIR}
 rm freesurfer-darwin-macOS-dev-freeview.tar.gz
-
-# Apply post-release patch (v7.3.2)
-# segment_subregions
-wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/segment_subregions/core.py
-mv core.py ${FREESURFER_HOME}/python/packages/freesurfer/subregions/
-# mri_sclimbic_seg
-wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/mri_sclimbic/mri_sclimbic_seg
-mv mri_sclimbic_seg ${FREESURFER_HOME}/python/scripts/mri_sclimbic_seg
-chmod +x ${FREESURFER_HOME}/python/scripts/mri_sclimbic_seg
-# mri_synthsr
-wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/7.3.2-patch/synthsr/mri_synthsr
-mv mri_synthsr ${FREESURFER_HOME}/python/scripts/mri_synthsr
 
 # Add following lines into .zshrc
 echo "
