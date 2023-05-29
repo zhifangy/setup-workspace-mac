@@ -7,7 +7,7 @@ fi
 
 # Setup
 export FSLDIR=${SETUP_ROOT}/fsl
-FSL_VERSION=6.0.6.2
+FSL_VERSION=6.0.6.5
 
 # Check and cleanup old installation
 if [ -d ${FSLDIR} ]
