@@ -24,7 +24,7 @@ source $(conda info --base)/etc/profile.d/conda.sh
 conda activate ${ENV_PREFIX}
 
 # Install packages using conda
-conda install -yq vtk==9.2.2
+conda install -yq vtk==9.2.6
 
 # Install packages using poetry
 POETRY_CACHE_DIR=${SETUP_ROOT}/poetry
@@ -37,11 +37,6 @@ fi
 poetry install -v
 # PyMVPA2
 pip install -q --no-cache-dir pymvpa2
-# Thingsvision
-# Note:
-# - Hard pin lots of packages
-# - Manually install missing dependency
-pip install -q --no-cache-dir --no-deps thingsvision
 
 # Cleanup
 conda clean -apy
