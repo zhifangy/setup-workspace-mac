@@ -60,6 +60,7 @@ pytorch-lightning = "*"
 torchlens = { git = "https://github.com/johnmarktaylor91/torchlens.git"}
 timm = "*"
 tensorflow = "~2.13"
+protobuf = "~3.20"
 open_clip_torch = "*"
 clip = { git = "https://github.com/openai/CLIP.git" }
 umap-learn = "*"
