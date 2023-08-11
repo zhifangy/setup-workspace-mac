@@ -7,7 +7,7 @@ fi
 
 # Setup
 FREESURFER_DIR=${SETUP_ROOT}/freesurfer
-FREESURFER_VERSION=7.4.0
+FREESURFER_VERSION=7.4.1
 
 # Backup license.txt from existed FreeSurfer folder
 if [ -d ${FREESURFER_DIR} ]
@@ -22,9 +22,9 @@ then
 fi
 
 # FreeSurfer
-wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/${FREESURFER_VERSION}/freesurfer-darwin-macOS-${FREESURFER_VERSION}.tar.gz
-mkdir ${FREESURFER_DIR} && tar -xzf freesurfer-darwin-macOS-${FREESURFER_VERSION}.tar.gz -C ${FREESURFER_DIR} --strip-components 1
-rm freesurfer-darwin-macOS-${FREESURFER_VERSION}.tar.gz
+wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/${FREESURFER_VERSION}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
+mkdir ${FREESURFER_DIR} && tar -xzf freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz -C ${FREESURFER_DIR} --strip-components 2
+rm freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
 
 # Move previous license.txt to new FreeSurfer folder
 mkdir ${FREESURFER_DIR}
@@ -36,11 +36,6 @@ else
     echo "Use default personal FreeSurfer license ..."
     base64 --decode <<<  emhpZmFuZy55ZS5mZ2htQGdtYWlsLmNvbQozMDgyNwogKkNBanR5YkNZNDByTQogRlM5dmVNeDhnbnVxUQo= > ${FREESURFER_DIR}/license.txt
 fi
-
-# Update Freeview to latest dev version
-wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/freeview/freesurfer-darwin-macOS-dev-freeview.tar.gz
-rm -r ${FREESURFER_DIR}/Freeview.app && tar -xzf freesurfer-darwin-macOS-dev-freeview.tar.gz -C ${FREESURFER_DIR}
-rm freesurfer-darwin-macOS-dev-freeview.tar.gz
 
 # Add following lines into .zshrc
 echo "
