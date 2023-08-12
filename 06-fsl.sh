@@ -7,12 +7,11 @@ fi
 
 # Setup
 export FSLDIR=${SETUP_ROOT}/fsl
-FSL_VERSION=6.0.6.5
+FSL_VERSION=6.0.7.1
 
 # Check and cleanup old installation
-if [ -d ${FSLDIR} ]
-then
-    echo "Cleanup old FSL installation ..."
+if [ -d ${FSLDIR} ]; then
+    echo "Cleanup old FSL installation..."
     rm -rf ${FSLDIR}
 fi
 
@@ -21,9 +20,6 @@ wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py
 chmod +x fslinstaller.py
 ./fslinstaller.py -V ${FSL_VERSION} -d ${FSLDIR} --no_env
 mv fslinstaller.py ${FSLDIR}/fslinstaller.py
-# Update FSLeyes
-$FSLDIR/condabin/conda update -yq -p ${FSLDIR} -c conda-forge fsleyes
-$FSLDIR/condabin/conda clean -apy
 # Use newer version of MSM
 wget https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 && \
 mv -fv msm_mac_v3 ${FSLDIR}/share/fsl/bin/msm
@@ -46,6 +42,4 @@ export \\
     FSL_LOAD_NIFTI_EXTENSIONS=0 \\
     FSL_SKIP_GLOBAL=0
 export PATH=\${FSLDIR}/share/fsl/bin:\${PATH}
-
-Put this part before conda related configuration in order to use fsleyes installed by conda!
 "
