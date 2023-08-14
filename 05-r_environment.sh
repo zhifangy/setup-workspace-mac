@@ -15,7 +15,7 @@ N_CPUS=${N_CPUS:-4}
 brew install r
 # Install packages used by R packages
 brew install libgit2 libpng tbb harfbuzz fribidi mariadb-connector-c
-# set tbb related environment variable (for RcppParallel)
+# set tbb related environment variable (for brms dependency RcppParallel)
 export TBB_INC=$(ls -d /usr/local/Cellar/tbb/*)/include
 export TBB_LIB=$(ls -d /usr/local/Cellar/tbb/*)/lib
 
@@ -111,6 +111,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     lme4 \
     lmerTest \
     mediation \
+    brms \
     jmv \
     sjPlot \
     finalfit \
@@ -125,14 +126,6 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     RNifti \
     R.matlab \
     fMRIscrub
-# packages for afni
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
-    phia \
-    snow \
-    nlme \
-    paran \
-    brms \
-    metafor
 
 # Setup IRkernel for jupyter
 Rscript -e "IRkernel::installspec()"
@@ -148,8 +141,8 @@ Add following lines to .zshrc:
 
 export R_LIBS=${R_LIBS}
 # littler
-PATH=\${R_LIBS}/littler/examples:\${PATH}
-# for RcppParallel
+PATH=\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin:\${PATH}
+# for RcppParallel (dependency of brms)
 export TBB_INC=\$(ls -d /usr/local/Cellar/tbb/*)/include
 export TBB_LIB=\$(ls -d /usr/local/Cellar/tbb/*)/lib
 "
