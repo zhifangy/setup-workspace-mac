@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [ -z ${SETUP_ROOT} ]
 then
@@ -7,20 +8,29 @@ fi
 
 # Setup
 export R_LIBS=${SETUP_ROOT}/renv
-CRAN=${CRAN:-https://packagemanager.rstudio.com/all/__linux__/focal/latest}
+CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
 N_CPUS=${N_CPUS:-4}
+
+# # Install R from homebrew
+brew install r
+# Install packages used by R packages
+brew install libgit2 libpng tbb harfbuzz fribidi mariadb-connector-c
+# set tbb related environment variable (for RcppParallel)
+export TBB_INC=$(ls -d /usr/local/Cellar/tbb/*)/include
+export TBB_LIB=$(ls -d /usr/local/Cellar/tbb/*)/lib
+
+# Instal R packages
 echo "R library location: ${R_LIBS}"
+if [ -d ${R_LIBS} ]; then
+    echo "Cleanup old r environment..."
+    rm -rf ${R_LIBS}
+fi
 mkdir -p ${R_LIBS}
+# prerequisite package
 Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"
-
-# Remove non-default path to reduce interference (e.g., Conda)
-PATH_OLD=${PATH}
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 PATH=${R_LIBS}/littler/examples:${R_LIBS}/littler/bin:${PATH}
-
-# Install R packages
 # basic
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     devtools \
     pacman \
     renv \
@@ -32,7 +42,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     feather \
     reticulate
 # tidyverse
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     tidyverse \
     devtools \
     rmarkdown \
@@ -40,7 +50,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     vroom \
     gert
 # dplyr database backends
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     arrow \
     dbplyr \
     DBI \
@@ -53,7 +63,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     RSQLite \
     fst
 # report & publish
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     blogdown \
     bookdown \
     distill \
@@ -63,7 +73,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     printr \
     kableExtra
 # graphics
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     ggforce \
     ggpmisc \
     ggExtra \
@@ -91,7 +101,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     showtext
 Rscript -e "remotes::install_github('jorvlan/raincloudplots', lib='${R_LIBS}', clean=TRUE, quiet=TRUE)"
 # statistic
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     afex \
     emmeans \
     psych \
@@ -108,7 +118,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     skimr \
     broom.mixed
 # other
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     Rmpi \
     vitae \
     rorcid \
@@ -116,7 +126,7 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     R.matlab \
     fMRIscrub
 # packages for afni
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
+install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
     phia \
     snow \
     nlme \
@@ -124,14 +134,22 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} \
     brms \
     metafor
 
-echo ${R_LIBS} > ${R_LIBS}/path
-
 # Setup IRkernel for jupyter
-PATH=${PATH_OLD}
 Rscript -e "IRkernel::installspec()"
+# Write ~/.Renviron
+cat >~/.Renviron <<EOL
+R_LIBS=${R_LIBS}
+EOL
 
 echo "Installation completed!"
-
+# Add following lines into .zshrc
 echo "
-Add 'R_LIBS=${R_LIBS}' into ~/.Renviron
+Add following lines to .zshrc:
+
+export R_LIBS=${R_LIBS}
+# littler
+PATH=\${R_LIBS}/littler/examples:\${PATH}
+# for RcppParallel
+export TBB_INC=\$(ls -d /usr/local/Cellar/tbb/*)/include
+export TBB_LIB=\$(ls -d /usr/local/Cellar/tbb/*)/lib
 "
