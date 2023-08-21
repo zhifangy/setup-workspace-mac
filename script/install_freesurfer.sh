@@ -36,6 +36,10 @@ else
     base64 --decode <<<  emhpZmFuZy55ZS5mZ2htQGdtYWlsLmNvbQozMDgyNwogKkNBanR5YkNZNDByTQogRlM5dmVNeDhnbnVxUQo= > ${FREESURFER_DIR}/license.txt
 fi
 
+# Put app to /Applications folder
+if [[ -d /Applications/Freeview.app || -L /Applications/Freeview.app ]]; then rm /Applications/Freeview.app; fi
+ln -s ${FREESURFER_DIR}/Freeview.app /Applications/Freeview.app
+
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
