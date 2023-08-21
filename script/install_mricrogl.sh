@@ -20,7 +20,7 @@ wget -q https://github.com/rordenlab/MRIcroGL/releases/download/${MRICROGL_VERSI
 mv ${MRICROGL_DIR}/MRICroGL/MRICroGL.app ${MRICROGL_DIR}/MRICroGL.app
 
 # Put app to /Applications folder
-if [ -d /Applications/MRICroGL.app ]; then rm /Applications/MRICroGL.app; fi
+if [[ -d /Applications/MRICroGL.app || -L /Applications/MRICroGL.app ]]; then rm /Applications/MRICroGL.app; fi
 ln -s ${MRICROGL_DIR}/MRICroGL.app /Applications/MRICroGL.app
 
 # Cleanup

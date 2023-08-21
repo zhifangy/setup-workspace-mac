@@ -21,7 +21,7 @@ chmod 755 ${WORKBENCH_DIR}/bin_macosx64/* ${WORKBENCH_DIR}/macosx64_apps/*
 chmod 644 ${WORKBENCH_DIR}/README.txt
 
 # Put app to /Applications folder
-if [ -d /Applications/Workbench.app ]; then rm /Applications/Workbench.app; fi
+if [[ -d /Applications/Workbench.app || -L /Applications/Workbench.app ]]; then rm /Applications/Workbench.app; fi
 ln -s ${WORKBENCH_DIR}/macosx64_apps/wb_view.app /Applications/Workbench.app
 
 # Cleanup

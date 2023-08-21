@@ -24,7 +24,7 @@ micromamba create -p ${ENV_PREFIX} -c conda-forge -yq fsleyes
 mkdir -p ${FSLEYES_DIR}/bin
 ln -s ${ENV_PREFIX}/bin/fsleyes ${FSLEYES_DIR}/bin/fsleyes
 # Put app to /Applications folder
-rm /Applications/FSLeyes.app
+if [[ -d /Applications/FSLeyes.app || -L /Applications/FSLeyes.app ]]; then rm /Applications/FSLeyes.app; fi
 ln -s ${ENV_PREFIX}/share/fsleyes/FSLeyes.app /Applications/FSLeyes.app
 
 # Cleanup

@@ -20,7 +20,7 @@ wget -q https://github.com/neurolabusc/surf-ice/releases/download/${SURFICE_VERS
 mv ${SURFICE_DIR}/Surfice/Surfice/* ${SURFICE_DIR}
 
 # Put app to /Applications folder
-if [ -d /Applications/Surfice.app ]; then rm /Applications/Surfice.app; fi
+if [[ -d /Applications/Surfice.app || -L /Applications/Surfice.app ]]; then rm /Applications/Surfice.app; fi
 ln -s ${SURFICE_DIR}/surfice.app /Applications/Surfice.app
 
 # Cleanup

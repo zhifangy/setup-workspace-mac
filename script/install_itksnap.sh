@@ -21,7 +21,7 @@ wget -q https://downloads.sourceforge.net/project/itk-snap/itk-snap/${ITKSNAP_VE
 mv ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-x86_64/ITK-SNAP.app ${ITKSNAP_DIR}/ITK-SNAP.app
 
 # Put app to /Applications folder
-if [ -d /Applications/ITK-SNAP.app ]; then rm /Applications/ITK-SNAP.app; fi
+if [[ -d /Applications/ITK-SNAP.app || -L /Applications/ITK-SNAP.app ]]; then rm /Applications/ITK-SNAP.app; fi
 ln -s ${ITKSNAP_DIR}/ITK-SNAP.app /Applications/ITK-SNAP.app
 
 # Cleanup
