@@ -31,7 +31,6 @@ install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
 echo "Installing AFNI from offical website..."
 mkdir -p ${AFNI_DIR}
 wget -q https://afni.nimh.nih.gov/pub/dist/bin/misc/@update.afni.binaries -P ${AFNI_DIR}
-# curl -O https://afni.nimh.nih.gov/pub/dist/bin/misc/@update.afni.binaries
 tcsh ${AFNI_DIR}/@update.afni.binaries -package macos_10.12_local -bindir ${AFNI_DIR} -apsearch yes
 rm ${AFNI_DIR}/@update.afni.binaries
 cp ${AFNI_DIR}/AFNI.afnirc ${HOME}/.afnirc
@@ -52,6 +51,14 @@ echo "
 Add following line to .zshrc
 # AFNI
 export PATH=${AFNI_DIR}:\${PATH}
+# auto-inserted by @update.afni.binaries :
+#    set up tab completion for AFNI programs
+if [ -f \$HOME/.afni/help/all_progs.COMP.zsh ]
+then
+    autoload -U +X bashcompinit && bashcompinit
+    autoload -U +X compinit && compinit \\
+    && source \$HOME/.afni/help/all_progs.COMP.zsh
+fi
 
 # for RcppParallel (dependency of brms)
 export TBB_INC=\$(ls -d /usr/local/Cellar/tbb/*)/include
