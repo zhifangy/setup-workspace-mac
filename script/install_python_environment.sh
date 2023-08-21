@@ -53,6 +53,7 @@ unset POETRY_CONFIG_DIR
 echo "
 Add following lines to .zshrc:
 
+# Micromamba
 export MAMBA_DIR=${MAMBA_DIR}
 export PATH=\${MAMBA_DIR}/bin:\${PATH}
 alias mamba=micromamba
@@ -69,12 +70,16 @@ fi
 unset __mamba_setup
 # <<< mamba initialize <<<
 
-
+# Poetry
 export POETRY_HOME=${SETUP_ROOT}/poetry
 export POETRY_CACHE_DIR=\${POETRY_HOME}
 export POETRY_CONFIG_DIR=\${POETRY_HOME}
 export PATH=\${POETRY_HOME}/bin:\${PATH}
 plugins(poetry)
+
+# Activate python environment
+PY_LIBS=${ENV_PREFIX}
+micromamba activate \${PY_LIBS}
 
 Execute following lines:
 source ~/.zshrc
