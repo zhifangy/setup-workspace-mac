@@ -1,17 +1,13 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]
-then
-    source envs
-fi
-
+if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
 export R_LIBS=${SETUP_ROOT}/renv
 CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
 N_CPUS=${N_CPUS:-4}
 
-# # Install R from homebrew
+# Install R from homebrew
 brew install r
 # Install packages used by R packages
 brew install libgit2 libpng tbb harfbuzz fribidi mariadb-connector-c
@@ -21,10 +17,7 @@ export TBB_LIB=$(ls -d /usr/local/Cellar/tbb/*)/lib
 
 # Instal R packages
 echo "R library location: ${R_LIBS}"
-if [ -d ${R_LIBS} ]; then
-    echo "Cleanup old r environment..."
-    rm -rf ${R_LIBS}
-fi
+if [ -d ${R_LIBS} ]; then echo "Cleanup old r environment..." && rm -rf ${R_LIBS}; fi
 mkdir -p ${R_LIBS}
 # prerequisite package
 Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"

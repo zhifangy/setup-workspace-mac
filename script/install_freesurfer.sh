@@ -1,13 +1,10 @@
 #!/bin/bash
+set -e
 
-if [ -z ${SETUP_ROOT} ]
-then
-    source envs
-fi
-
+if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
-FREESURFER_DIR=${SETUP_ROOT}/freesurfer
-FREESURFER_VERSION=7.4.1
+FREESURFER_DIR=${SETUP_ROOT}/neurotools/freesurfer
+FREESURFER_VERSION=${FREESURFER_VERSION:-7.4.1}
 
 # Backup license.txt from existed FreeSurfer folder
 if [ -d ${FREESURFER_DIR} ]
@@ -21,13 +18,15 @@ then
     rm -rf ${FREESURFER_DIR}
 fi
 
-# FreeSurfer
-wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/${FREESURFER_VERSION}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
-mkdir ${FREESURFER_DIR} && tar -xzf freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz -C ${FREESURFER_DIR} --strip-components 2
-rm freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
+# Install
+echo "Installing FreeSurfer from offical website..."
+mkdir -p ${FREESURFER_DIR}
+wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/${FREESURFER_VERSION}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz \
+    -P ${FREESURFER_DIR}
+tar -xzf ${FREESURFER_DIR}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz -C ${FREESURFER_DIR} --strip-components 2
+rm ${FREESURFER_DIR}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
 
 # Move previous license.txt to new FreeSurfer folder
-mkdir ${FREESURFER_DIR}
 if [ -f ${SETUP_ROOT}/license.txt ]
 then
     echo "Move previous FreeSurfer license to new installation ..."

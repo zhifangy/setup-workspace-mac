@@ -1,28 +1,21 @@
 #!/bin/bash
+set -e
 
-if [ -z ${SETUP_ROOT} ]
-then
-    source envs
-fi
-
+if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
 MAMBA_DIR=${SETUP_ROOT}/micromamba
 PATH=${MAMBA_DIR}/bin:${PATH}
 POETRY_HOME=${SETUP_ROOT}/poetry
 ENV_PREFIX=${SETUP_ROOT}/pyenv
 # Cleanup old installation
-if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
-    echo "Cleanup old environment ${ENV_PREFIX}..."
-    micromamba env remove -p ${ENV_PREFIX} -yq
+if [ ! -z $(command -v micromamba) ]; then
+    if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
+        echo "Cleanup old environment ${ENV_PREFIX}..."
+        micromamba env remove -p ${ENV_PREFIX} -yq
+    fi
 fi
-if [ -d ${MAMBA_DIR} ]; then
-    echo "Cleanup old micromamba installation..."
-    rm -rf ${MAMBA_DIR}
-fi
-if [ -d ${POETRY_HOME} ]; then
-    echo "Cleanup old poetry installation..."
-    rm -rf ${POETRY_HOME}
-fi
+if [ -d ${MAMBA_DIR} ]; then echo "Cleanup old micromamba installation..." && rm -rf ${MAMBA_DIR}; fi
+if [ -d ${POETRY_HOME} ]; then echo "Cleanup old poetry installation..." && rm -rf ${POETRY_HOME}; fi
 
 # Install Micromamba
 mkdir -p ${MAMBA_DIR} && curl -Ls https://micro.mamba.pm/api/micromamba/osx-64/latest | \
@@ -36,17 +29,15 @@ curl -sSL https://install.python-poetry.org | python3 -
 
 # Create python environment
 echo "Python enviromenmet location: ${ENV_PREFIX}"
-micromamba create -p ${ENV_PREFIX} -f environment.yml -y
+cd "$(dirname "$0")"
+micromamba create -p ${ENV_PREFIX} -f python_environment.yml -y
 # Use environment for following steps
 eval "$(micromamba shell hook --shell bash)"
 micromamba activate ${ENV_PREFIX}
 # Install packages using poetry
 POETRY_CACHE_DIR=${POETRY_HOME}
-cd "$(dirname "$0")"
 # remove old poetry.lock file
-if [ -f poetry.lock ]; then
-    rm poetry.lock
-fi
+if [ -f poetry.lock ]; then rm poetry.lock; fi
 # install
 poetry install -v
 
