@@ -15,6 +15,7 @@ brew install gromgit/fuse/sshfs-mac macfuse
 # Install on-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # Install zsh plugin
+git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/autoupdate
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
@@ -24,7 +25,7 @@ Add following line to .zshrc
 
 Modify .zshrc:
 1.Plugins
-    plugins=(git brew z zsh-autosuggestions zsh-syntax-highlighting)
+    plugins=(git brew z autoupdate zsh-autosuggestions zsh-syntax-highlighting)
 2.Themes
     ZSH_THEME="powerlevel10k/powerlevel10k"
 3.Fonts
