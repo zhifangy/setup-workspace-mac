@@ -1,3 +1,5 @@
+# Project env file
+envs
 # Poetry lock file
 poetry.lock
 
