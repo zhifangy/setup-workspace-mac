@@ -61,9 +61,6 @@ case "$1" in
     "convert3d"|"Convert3D")
         bash ${SCRIPT_DIR}/script/install_convert3d.sh
         ;;
-    "psychopy"|"PsychoPy")
-        bash ${SCRIPT_DIR}/script/install_psychopy.sh
-        ;;
     *)
         echo "Invalid installation option."
         exit 1
