@@ -12,34 +12,18 @@ brew install wget curl vim cmake gcc llvm tcl-tk libssh2 open-mpi openblas node 
 brew install git htop tree pandoc autossh bat lsd thefuck orbstack
 brew install gromgit/fuse/sshfs-mac macfuse
 
-# Install on-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-# Install zsh plugin
-git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/autoupdate
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
-
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
 
-Modify .zshrc:
-1.Plugins
-    plugins=(git brew z autoupdate zsh-autosuggestions zsh-syntax-highlighting)
-2.Themes
-    ZSH_THEME=\"powerlevel10k/powerlevel10k\"
-3.Fonts
-    In order to use the powerlevel10k theme, you need to use fonts from the Nerd-fonts project
-    https://github.com/ryanoasis/nerd-fonts
-4. More alias
-    # lsd
-    alias ll=\"lsd -l\"
-    alias la=\"lsd -a\"
-    alias lla=\"lsd -la\"
-    alias lt=\"lsd --tree\"
-    # bat
-    alias cat=\"bat\"
-5. More good stuff
-    eval $(thefuck --alias)
+# Alias
+# lsd
+alias ll=\"lsd -l\"
+alias la=\"lsd -a\"
+alias lla=\"lsd -la\"
+alias lt=\"lsd --tree\"
+# bat
+alias cat=\"bat\"
+
+eval $(thefuck --alias)
 "

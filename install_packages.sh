@@ -9,6 +9,9 @@ case "$1" in
     "basic"|"Basic")
         bash ${SCRIPT_DIR}/script/install_basic_packages.sh
         ;;
+    "omz"|"oh_my_zsh")
+        bash ${SCRIPT_DIR}/script/install_oh_my_zsh.sh
+        ;;
     "pyenv")
         bash ${SCRIPT_DIR}/script/install_python_environment.sh
         ;;
