@@ -3,6 +3,7 @@ set -e
 
 # Setup
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+SCRIPT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
 # python related
 MAMBA_DIR=${SETUP_ROOT}/micromamba
 POETRY_HOME=${SETUP_ROOT}/poetry
@@ -37,12 +38,13 @@ export PATH=${POETRY_HOME}/bin:${PATH}
 # Create python environment
 echo "Python enviromenmet location: ${PY_LIBS}"
 cd "$(dirname "$0")"
-micromamba create -yq -p ${PY_LIBS} -f python_environment.yml
+micromamba create -yq -p ${PY_LIBS} -f ${SCRIPT_DIR}/../environment_spec/python_environment.yml
 # Use environment for following steps
 eval "$(micromamba shell hook --shell bash)"
 micromamba activate ${PY_LIBS}
 
 # Install packages using poetry
+cd "${SCRIPT_DIR}/../environment_spec"
 # remove old poetry.lock file
 if [ -f poetry.lock ]; then rm poetry.lock; fi
 # install
