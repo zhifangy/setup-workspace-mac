@@ -1,18 +1,21 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+# python related
 MAMBA_DIR=${SETUP_ROOT}/micromamba
-PATH=${MAMBA_DIR}/bin:${PATH}
 POETRY_HOME=${SETUP_ROOT}/poetry
-ENV_PREFIX=${SETUP_ROOT}/pyenv
+PY_LIBS=${SETUP_ROOT}/pyenv
+
 # Cleanup old installation
-if [ ! -z $(command -v micromamba) ]; then
-    if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
-        echo "Cleanup old environment ${ENV_PREFIX}..."
-        micromamba env remove -p ${ENV_PREFIX} -yq
+if [ ! -z "$(command -v micromamba)" ]; then
+    if [ $(micromamba env list | grep -c ${PY_LIBS}) -ne 0 ]; then
+        echo "Cleanup old environment ${PY_LIBS}..."
+        micromamba env remove -p ${PY_LIBS} -yq
     fi
+else
+    rm -rf ${PY_LIBS}
 fi
 if [ -d ${MAMBA_DIR} ]; then echo "Cleanup old micromamba installation..." && rm -rf ${MAMBA_DIR}; fi
 if [ -d ${POETRY_HOME} ]; then echo "Cleanup old poetry installation..." && rm -rf ${POETRY_HOME}; fi
@@ -21,33 +24,34 @@ if [ -d ${POETRY_HOME} ]; then echo "Cleanup old poetry installation..." && rm -
 mkdir -p ${MAMBA_DIR} && curl -Ls https://micro.mamba.pm/api/micromamba/osx-64/latest | \
     tar -C ${MAMBA_DIR} -xvj bin/micromamba
 echo "Current mamba: $(which mamba)"
+export PATH=${MAMBA_DIR}/bin:${PATH}
+echo "Current mamba: $(which micromamba)"
+
 # Install Poetry
 export POETRY_HOME
 export POETRY_CACHE_DIR=${POETRY_HOME}
 export POETRY_CONFIG_DIR=${POETRY_HOME}
 curl -sSL https://install.python-poetry.org | python3 -
+export PATH=${POETRY_HOME}/bin:${PATH}
 
 # Create python environment
-echo "Python enviromenmet location: ${ENV_PREFIX}"
+echo "Python enviromenmet location: ${PY_LIBS}"
 cd "$(dirname "$0")"
-micromamba create -p ${ENV_PREFIX} -f python_environment.yml -y
+micromamba create -yq -p ${PY_LIBS} -f python_environment.yml
 # Use environment for following steps
 eval "$(micromamba shell hook --shell bash)"
-micromamba activate ${ENV_PREFIX}
+micromamba activate ${PY_LIBS}
+
 # Install packages using poetry
-POETRY_CACHE_DIR=${POETRY_HOME}
 # remove old poetry.lock file
 if [ -f poetry.lock ]; then rm poetry.lock; fi
 # install
 poetry install -v
 
 # Cleanup
-micromamba clean -apy
+micromamba clean -apyq
 poetry cache clear PyPI --all -n
 poetry cache clear _default_cache --all -n
-unset POETRY_HOME
-unset POETRY_CACHE_DIR
-unset POETRY_CONFIG_DIR
 
 # Add following lines into .zshrc
 echo "
@@ -77,7 +81,7 @@ export POETRY_CONFIG_DIR=\${POETRY_HOME}
 export PATH=\${POETRY_HOME}/bin:\${PATH}
 
 # Activate python environment
-export PY_LIBS=${ENV_PREFIX}
+export PY_LIBS=${PY_LIBS}
 micromamba activate \${PY_LIBS}
 
 Execute following lines:
