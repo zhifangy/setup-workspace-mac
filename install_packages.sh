@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/envs; fi
+# Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/envs
 export SETUP_ROOT
 SCRIPT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
 

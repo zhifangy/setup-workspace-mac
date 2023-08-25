@@ -1,9 +1,11 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/envs; fi
+# Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/envs
 export SETUP_ROOT
 SCRIPT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
+N_CPUS=${N_CPUS:-6}
 
 case "$1" in
     "basic"|"brew")
@@ -19,19 +21,25 @@ case "$1" in
         poetry self update
         ;;
     "pyenv")
-        cd ${SCRIPT_DIR}/script
+        cd ${SCRIPT_DIR}/environment_spec
         poetry update
         ;;
     "pyenv_dryrun")
-        cd ${SCRIPT_DIR}/script
+        cd ${SCRIPT_DIR}/environment_spec
         poetry update --dry-run
         ;;
     "renv")
-        export R_LIBS=${R_LIBS:-${SETUP_ROOT}/renv}
-        export CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
+        update.r -l ${R_LIBS} -r ${CRAN} -n ${N_CPUS}
+        ;;
+    "renv_dryrun")
         Rscript -e "R_LIBS<-Sys.getenv('R_LIBS')" \
             -e "CRAN<-Sys.getenv('CRAN')" \
-            -e "pacman::p_update(lib.loc=R_LIBS, repos=CRAN)"
+            -e "old.packages(repos=CRAN)"
+        ;;
+    "pyenv_cache_cleanup")
+        micromamba clean -apyq
+        poetry cache clear PyPI --all -n
+        poetry cache clear _default_cache --all -n
         ;;
     *)
         echo "Invalid installation option."
