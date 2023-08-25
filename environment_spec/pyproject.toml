@@ -80,6 +80,8 @@ rsatoolbox = "*"
 hypertools = "*"
 neuropythy = "*"
 neuromaps = {git = "https://github.com/netneurolab/neuromaps.git"}
+glmsingle = { git = "https://github.com/cvnlab/GLMsingle.git"}
+resmem = "*"
 deepmreye = "*"
 # Neuroimaging plotting
 brainstat = "*"
