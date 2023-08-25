@@ -1,16 +1,14 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 FREESURFER_DIR=${SETUP_ROOT}/neurotools/freesurfer
 FREESURFER_VERSION=${FREESURFER_VERSION:-7.4.1}
 
 # Backup license.txt from existed FreeSurfer folder
-if [ -d ${FREESURFER_DIR} ]
-then
-    if [ -f ${FREESURFER_DIR}/license.txt ]
-    then
+if [ -d ${FREESURFER_DIR} ]; then
+    if [ -f ${FREESURFER_DIR}/license.txt ]; then
         echo "Backup FreeSurfer license from existed installation ..."
         cp ${FREESURFER_DIR}/license.txt ${SETUP_ROOT}/license.txt
     fi
@@ -27,8 +25,7 @@ tar -xzf ${FREESURFER_DIR}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.
 rm ${FREESURFER_DIR}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
 
 # Move previous license.txt to new FreeSurfer folder
-if [ -f ${SETUP_ROOT}/license.txt ]
-then
+if [ -f ${SETUP_ROOT}/license.txt ]; then
     echo "Move previous FreeSurfer license to new installation ..."
     mv ${SETUP_ROOT}/license.txt ${FREESURFER_DIR}/license.txt
 else

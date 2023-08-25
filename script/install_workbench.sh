@@ -1,11 +1,10 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
-BASE_DIR=${SETUP_ROOT}/neurotools
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+WORKBENCH_DIR=${SETUP_ROOT}/neurotools/workbench
 WORKBENCH_VERSION=${WORKBENCH_VERSION:-v1.5.0}
-WORKBENCH_DIR=${BASE_DIR}/workbench
 
 # Cleanup old installation
 if [ -d ${WORKBENCH_DIR} ]; then rm -rf ${WORKBENCH_DIR}; fi

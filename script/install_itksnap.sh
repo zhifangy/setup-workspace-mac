@@ -1,12 +1,11 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
-BASE_DIR=${SETUP_ROOT}/neurotools
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+ITKSNAP_DIR=${SETUP_ROOT}/neurotools/itksnap
 ITKSNAP_VERSION=${ITKSNAP_VERSION:-4.0.1}
 ITKSNAP_DATE=${ITKSNAP_DATE:-20230320}
-ITKSNAP_DIR=${BASE_DIR}/itksnap
 
 # Cleanup old installation
 if [ -d ${ITKSNAP_DIR} ]; then rm -rf ${ITKSNAP_DIR}; fi

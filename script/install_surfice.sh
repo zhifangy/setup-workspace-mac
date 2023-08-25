@@ -1,11 +1,10 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
-BASE_DIR=${SETUP_ROOT}/neurotools
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+SURFICE_DIR=${SETUP_ROOT}/neurotools/surfice
 SURFICE_VERSION=${SURFICE_VERSION:-v1.0.20211006}
-SURFICE_DIR=${BASE_DIR}/surfice
 
 # Cleanup old installation
 if [ -d ${SURFICE_DIR} ]; then rm -rf ${SURFICE_DIR}; fi

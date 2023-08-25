@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 # to avoid environment conflict (e.g., zlib, clang), all tools' binary will be
 # symlinked to separate directories
-BASE_DIR=${SETUP_ROOT}/neurotools
-FSLEYES_DIR=${BASE_DIR}/fsleyes
+FSLEYES_DIR=${SETUP_ROOT}/neurotools/fsleyes
 ENV_PREFIX=${FSLEYES_DIR}/env
+# python related
+MAMBA_DIR=${MAMBA_DIR:-${SETUP_ROOT}/micromamba}
+PATH=${MAMBA_DIR}/bin:${PATH}
 
 # Cleanup old installation
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
@@ -23,6 +25,7 @@ micromamba create -p ${ENV_PREFIX} -c conda-forge -yq fsleyes
 # Symlink binary files
 mkdir -p ${FSLEYES_DIR}/bin
 ln -s ${ENV_PREFIX}/bin/fsleyes ${FSLEYES_DIR}/bin/fsleyes
+
 # Put app to /Applications folder
 if [[ -d /Applications/FSLeyes.app || -L /Applications/FSLeyes.app ]]; then rm /Applications/FSLeyes.app; fi
 ln -s ${ENV_PREFIX}/share/fsleyes/FSLeyes.app /Applications/FSLeyes.app

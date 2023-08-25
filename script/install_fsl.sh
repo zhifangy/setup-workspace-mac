@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 FSL_DIR=${SETUP_ROOT}/neurotools/fsl
 FSL_VERSION=${FSL_VERSION:-6.0.7.1}
 

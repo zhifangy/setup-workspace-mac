@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 # to avoid environment conflict (e.g., zlib, clang), all tools' binary will be
 # symlinked to separate directories
-BASE_DIR=${SETUP_ROOT}/neurotools
-ANTS_DIR=${BASE_DIR}/ants
+ANTS_DIR=${SETUP_ROOT}/neurotools/ants
 ENV_PREFIX=${ANTS_DIR}/env
+# python related
+MAMBA_DIR=${MAMBA_DIR:-${SETUP_ROOT}/micromamba}
+PATH=${MAMBA_DIR}/bin:${PATH}
 
 # Cleanup old installation
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then

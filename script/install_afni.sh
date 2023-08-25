@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+N_CPUS=${N_CPUS:-6}
 AFNI_DIR=${SETUP_ROOT}/neurotools/afni
 PATH=${AFNI_DIR}:${PATH}
 # r related
 R_LIBS=${R_LIBS:-${SETUP_ROOT}/renv}
 CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
-N_CPUS=${N_CPUS:-4}
 PATH=${R_LIBS}/littler/examples:${R_LIBS}/littler/bin:${PATH}
 # set tbb related environment variable (for brms dependency RcppParallel)
 export TBB_INC=$(ls -d /usr/local/Cellar/tbb/*)/include

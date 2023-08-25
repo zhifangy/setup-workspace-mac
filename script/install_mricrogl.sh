@@ -1,12 +1,10 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
-
 # Setup
-BASE_DIR=${SETUP_ROOT}/neurotools
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+MRICROGL_DIR=${SETUP_ROOT}/neurotools/mricrogl
 MRICROGL_VERSION=${MRICROGL_VERSION:-v1.2.20220720}
-MRICROGL_DIR=${BASE_DIR}/mricrogl
 
 # Cleanup old installation
 if [ -d ${MRICROGL_DIR} ]; then rm -rf ${MRICROGL_DIR}; fi

@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
-if [ -z ${SETUP_ROOT} ]; then source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs; fi
 # Setup
+source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 # to avoid environment conflict (e.g., zlib, clang), all tools' binary will be
 # symlinked to separate directories
-BASE_DIR=${SETUP_ROOT}/neurotools
-DCM2NIIX_DIR=${BASE_DIR}/dcm2niix
+DCM2NIIX_DIR=${SETUP_ROOT}/neurotools/dcm2niix
 ENV_PREFIX=${DCM2NIIX_DIR}/env
+# python related
+MAMBA_DIR=${MAMBA_DIR:-${SETUP_ROOT}/micromamba}
+PATH=${MAMBA_DIR}/bin:${PATH}
 
 # Cleanup old installation
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
