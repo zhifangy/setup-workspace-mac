@@ -27,7 +27,7 @@ ln -s ${ENV_PREFIX}/bin/dcm2niix ${DCM2NIIX_DIR}/bin/dcm2niix
 # Cleanup
 micromamba clean -apyq
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

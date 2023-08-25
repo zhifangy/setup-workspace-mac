@@ -30,7 +30,7 @@ ln -s ${ENV_PREFIX}/share/fsleyes/FSLeyes.app /Applications/FSLeyes.app
 # Cleanup
 micromamba clean -apyq
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

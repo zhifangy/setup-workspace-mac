@@ -27,7 +27,7 @@ ln -s ${MRICROGL_DIR}/MRICroGL.app /Applications/MRICroGL.app
 rm ${MRICROGL_DIR}/MRIcroGL_macOS.dmg
 rm -r ${MRICROGL_DIR}/MRIcroGL
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

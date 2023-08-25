@@ -127,14 +127,16 @@ cat >~/.Renviron <<EOL
 R_LIBS=${R_LIBS}
 EOL
 
-echo "Installation completed!"
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 
+# R environment
 export R_LIBS=${R_LIBS}
 # littler
-PATH=\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin:\${PATH}
+export PATH=\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin:\${PATH}
+# cran
+export CRAN=${CRAN}
 # for RcppParallel (dependency of brms)
 export TBB_INC=\$(ls -d /usr/local/Cellar/tbb/*)/include
 export TBB_LIB=\$(ls -d /usr/local/Cellar/tbb/*)/lib

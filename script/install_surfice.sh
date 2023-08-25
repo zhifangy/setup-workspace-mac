@@ -27,7 +27,7 @@ ln -s ${SURFICE_DIR}/surfice.app /Applications/Surfice.app
 rm ${SURFICE_DIR}/Surfice_macOS.dmg
 rm -r ${SURFICE_DIR}/Surfice
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

@@ -28,7 +28,7 @@ ln -s ${ITKSNAP_DIR}/ITK-SNAP.app /Applications/ITK-SNAP.app
 rm ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-x86_64.dmg
 rm -r ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-x86_64
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

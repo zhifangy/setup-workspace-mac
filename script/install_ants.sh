@@ -30,7 +30,7 @@ done < <(printf '%s\n' "$FILE_LIST")
 # Cleanup
 micromamba clean -apyq
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

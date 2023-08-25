@@ -24,6 +24,7 @@ chmod 755 ${FSL_DIR}/share/fsl/bin/msm
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
+
 # FSL
 export FSLDIR=${FSL_DIR}
 export \\

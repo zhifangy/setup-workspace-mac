@@ -49,6 +49,7 @@ if [ -f mllabelsonly.txt ]; then rm mllabelsonly.txt; fi
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
+
 # AFNI
 export PATH=${AFNI_DIR}:\${PATH}
 # auto-inserted by @update.afni.binaries :

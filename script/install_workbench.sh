@@ -27,7 +27,7 @@ ln -s ${WORKBENCH_DIR}/macosx64_apps/wb_view.app /Applications/Workbench.app
 # Cleanup
 rm ${BASE_DIR}/workbench-mac64-${WORKBENCH_VERSION}.zip
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

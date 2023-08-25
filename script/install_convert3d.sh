@@ -23,7 +23,7 @@ mv ${C3D_DIR}/c3d-${C3D_VERSION}-MacOS-x86_64/Convert3DGUI.app ${C3D_DIR}/Conver
 rm ${C3D_DIR}/c3d-${C3D_VERSION}-MacOS-x86_64.dmg
 rm -r ${C3D_DIR}/c3d-${C3D_VERSION}-MacOS-x86_64
 
-# Add following lines into .zshrcx
+# Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 

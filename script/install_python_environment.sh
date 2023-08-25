@@ -77,7 +77,7 @@ export POETRY_CONFIG_DIR=\${POETRY_HOME}
 export PATH=\${POETRY_HOME}/bin:\${PATH}
 
 # Activate python environment
-PY_LIBS=${ENV_PREFIX}
+export PY_LIBS=${ENV_PREFIX}
 micromamba activate \${PY_LIBS}
 
 Execute following lines:
@@ -88,5 +88,3 @@ poetry completions zsh > \${ZSH_CUSTOM}/plugins/poetry/_poetry
 Add below to oh-my-zsh plugin
 plugins(poetry)
 "
-
-echo "Installation completed!"

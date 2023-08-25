@@ -43,6 +43,7 @@ ln -s ${FREESURFER_DIR}/Freeview.app /Applications/Freeview.app
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
+
 # FreeSurfer
 export FREESURFER_HOME=${FREESURFER_DIR}
 export \\
