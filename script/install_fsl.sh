@@ -4,7 +4,7 @@ set -e
 # Setup
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 FSL_DIR=${SETUP_ROOT}/neurotools/fsl
-FSL_VERSION=${FSL_VERSION:-6.0.7.1}
+FSL_VERSION=${FSL_VERSION:-6.0.7.2}
 
 # Cleanup old installation
 if [ -d ${FSL_DIR} ]; then echo "Cleanup old FSL installation..." && rm -rf ${FSL_DIR}; fi
