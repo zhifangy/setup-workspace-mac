@@ -38,6 +38,5 @@ Add following lines to .zshrc:
 
 # ANTs
 export ANTS_DIR=${ANTS_DIR}
-export ANTSPATH=\${ANTS_DIR}/bin
-export PATH=\${ANTSPATH}:\${PATH}
+export PATH=\${ANTS_DIR}/bin:\${PATH}
 "
