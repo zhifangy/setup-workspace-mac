@@ -29,7 +29,9 @@ case "$1" in
         poetry update --dry-run
         ;;
     "renv")
-        update.r -l ${R_LIBS} -r ${CRAN} -n ${N_CPUS}
+        Rscript -e "R_LIBS<-Sys.getenv('R_LIBS')" \
+            -e "CRAN<-Sys.getenv('CRAN')" \
+            -e "pacman::p_update(repos=CRAN)"
         ;;
     "renv_dryrun")
         Rscript -e "R_LIBS<-Sys.getenv('R_LIBS')" \
