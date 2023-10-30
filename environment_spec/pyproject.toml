@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "~3.10"
 # Basic
-numpy = "~1.24"
+numpy = "~1.25"
 pandas = "*"
 ipython = "*"
 jupyterlab = "*"
@@ -27,7 +27,6 @@ pytorch-lightning = "*"
 torchlens = { git = "https://github.com/johnmarktaylor91/torchlens.git"}
 timm = "*"
 tensorflow = ">=2.13"
-protobuf = "~3.20" # constrained by open_clip_torch(2.20)
 open_clip_torch = "*"
 umap-learn = "*"
 gensim = "*"
@@ -74,7 +73,7 @@ indexed_gzip = "*"
 nilearn = "*"
 nipype = "*"
 mne = "*"
-antspyx = "*"
+antspyx = "==0.3.8"
 # Neuroimaging utility
 rsatoolbox = "*"
 hypertools = "*"
