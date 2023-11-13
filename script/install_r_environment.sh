@@ -24,6 +24,7 @@ echo "R library location: ${R_LIBS}"
 mkdir -p ${R_LIBS}
 # prerequisite package
 Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"
+bash ${SCRIPT_DIR}/fix_littler_macos.sh
 PATH=${R_LIBS}/littler/examples:${R_LIBS}/littler/bin:${PATH}
 
 # Read R packages list (CRAN)

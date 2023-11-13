@@ -29,9 +29,8 @@ case "$1" in
         poetry update --dry-run
         ;;
     "renv")
-        Rscript -e "R_LIBS<-Sys.getenv('R_LIBS')" \
-            -e "CRAN<-Sys.getenv('CRAN')" \
-            -e "pacman::p_update(repos=CRAN)"
+        update.r -r ${CRAN} -n ${N_CPUS}
+        bash ${SCRIPT_DIR}/script/fix_littler_macos.sh
         ;;
     "renv_dryrun")
         Rscript -e "R_LIBS<-Sys.getenv('R_LIBS')" \
