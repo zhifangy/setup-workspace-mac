@@ -11,7 +11,7 @@ fi
 brew install wget curl vim cmake gcc llvm tcl-tk libssh2 open-mpi openblas node swig v8 hdf5 \
     imagemagick sevenzip
 # useful utilities
-brew install git htop tree pandoc autossh starship bat lsd thefuck orbstack
+brew install git htop tree pandoc autossh starship bat lsd thefuck
 brew install gromgit/fuse/sshfs-mac macfuse
 
 # Add following lines into .zshrc
