@@ -13,6 +13,8 @@ brew install wget curl vim cmake gcc llvm tcl-tk libssh2 open-mpi openblas node 
 # useful utilities
 brew install git htop tree pandoc autossh starship bat lsd thefuck
 brew install gromgit/fuse/sshfs-mac macfuse
+# latest python and r
+brew install python r
 
 # Add following lines into .zshrc
 echo "
