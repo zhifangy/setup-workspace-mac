@@ -4,7 +4,7 @@ set -e
 # Setup
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 SCRIPT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
-N_CPUS=${N_CPUS:-6}
+N_CPUS=${N_CPUS:-8}
 export R_LIBS=${SETUP_ROOT}/renv
 CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
 
@@ -13,14 +13,14 @@ brew install r
 # Install packages used by R packages
 brew install libgit2 libpng tbb harfbuzz fribidi imagemagick@6 libpq mariadb-connector-c
 # set tbb related environment variable (for brms dependency RcppParallel)
-export TBB_INC=$(ls -d /opt/homebrew/Cellar/tbb/*)/include
-export TBB_LIB=$(ls -d /opt/homebrew/Cellar/tbb/*)/lib
+export TBB_INC=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/include
+export TBB_LIB=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/lib
 
 # Cleanup old installation
 if [ -d ${R_LIBS} ]; then echo "Cleanup old r environment..." && rm -rf ${R_LIBS}; fi
 
 # Instal R packages
-echo "R library location: ${R_LIBS}"
+echo "R enviromenmet location: ${R_LIBS}"
 mkdir -p ${R_LIBS}
 # prerequisite package
 Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"
@@ -85,6 +85,6 @@ export PATH=\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin:\${PATH}
 # cran
 export CRAN=${CRAN}
 # for RcppParallel (dependency of brms)
-export TBB_INC=\$(ls -d /usr/local/Cellar/tbb/*)/include
-export TBB_LIB=\$(ls -d /usr/local/Cellar/tbb/*)/lib
+export TBB_INC=\$(ls -d \${HOMEBREW_ROOT}/Cellar/tbb/*)/include
+export TBB_LIB=\$(ls -d \${HOMEBREW_ROOT}/Cellar/tbb/*)/lib
 "
