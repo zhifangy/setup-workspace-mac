@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "pantheon"
+name = "pyenv"
 version = "1.0.0"
 description = ""
 authors = ["Zhifang Ye <zhifang.ye.fghm@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "~3.10"
+python = "~3.11"
 # Basic
-numpy = "~1.25"
+numpy = ">=1.25"
 pandas = "*"
 ipython = "*"
 jupyterlab = "*"
@@ -24,9 +24,10 @@ torchvision = "*"
 torchaudio = "*"
 torchtext = "*"
 pytorch-lightning = "*"
-torchlens = { git = "https://github.com/johnmarktaylor91/torchlens.git"}
+torchlens = "*"
 timm = "*"
-tensorflow = ">=2.13"
+tensorflow = ">=2.15"
+tensorflow-io-gcs-filesystem = "!=0.35"
 open_clip_torch = "*"
 umap-learn = "*"
 gensim = "*"
@@ -40,8 +41,7 @@ bokeh = "*"
 jupyter_bokeh = "*"
 lets-plot = "*"
 vtk = "*"
-mayavi = "*"
-traitsui = "~7" # constrained by mayavi(4.8.1)
+mayavi = { git = "https://github.com/enthought/mayavi.git" }
 panel = "*"
 holoviews = "*"
 pyvista = "*"
@@ -73,7 +73,7 @@ indexed_gzip = "*"
 nilearn = "*"
 nipype = "*"
 mne = "*"
-antspyx = "==0.3.8"
+antspyx = "*"
 # Neuroimaging utility
 rsatoolbox = "*"
 hypertools = "*"
