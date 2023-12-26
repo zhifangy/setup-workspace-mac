@@ -11,10 +11,10 @@ CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
 # Install R from homebrew
 brew install r
 # Install packages used by R packages
-brew install libgit2 libpng tbb harfbuzz fribidi mariadb-connector-c
+brew install libgit2 libpng tbb harfbuzz fribidi imagemagick@6 libpq mariadb-connector-c
 # set tbb related environment variable (for brms dependency RcppParallel)
-export TBB_INC=$(ls -d /usr/local/Cellar/tbb/*)/include
-export TBB_LIB=$(ls -d /usr/local/Cellar/tbb/*)/lib
+export TBB_INC=$(ls -d /opt/homebrew/Cellar/tbb/*)/include
+export TBB_LIB=$(ls -d /opt/homebrew/Cellar/tbb/*)/lib
 
 # Cleanup old installation
 if [ -d ${R_LIBS} ]; then echo "Cleanup old r environment..." && rm -rf ${R_LIBS}; fi
