@@ -21,7 +21,8 @@ echo "
 Add following line to .zshrc
 
 # Homebrew
-export PATH=\"/opt/homebrew/bin:\${PATH}\"
+export PATH=\"${HOMEBREW_ROOT}/bin:\${PATH}\"
+export HOMEBREW_ROOT=\"${HOMEBREW_ROOT}\"
 # Homebrew zsh completions
 if type brew &>/dev/null
 then
