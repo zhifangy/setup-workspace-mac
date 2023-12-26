@@ -4,6 +4,7 @@ set -e
 # Setup
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/envs
 export SETUP_ROOT
+export HOMEBREW_ROOT
 SCRIPT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
 
 case "$1" in
