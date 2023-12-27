@@ -12,18 +12,21 @@ if [ -d ${MRICROGL_DIR} ]; then rm -rf ${MRICROGL_DIR}; fi
 # Install
 echo "Installing MRIcroGL from Github..."
 mkdir -p ${MRICROGL_DIR}
-wget -q https://github.com/rordenlab/MRIcroGL/releases/download/${MRICROGL_VERSION}/MRIcroGL_macOS.dmg \
+wget -q https://github.com/rordenlab/MRIcroGL/releases/download/${MRICROGL_VERSION}/MRIcroMTLforMacOS_Sonoma.zip \
     -P ${MRICROGL_DIR}
-7zz x ${MRICROGL_DIR}/MRIcroGL_macOS.dmg -o"${MRICROGL_DIR}/" MRICroGL/MRICroGL.app > /dev/null
-mv ${MRICROGL_DIR}/MRICroGL/MRICroGL.app ${MRICROGL_DIR}/MRICroGL.app
+unzip -q -d ${MRICROGL_DIR} ${MRICROGL_DIR}/MRIcroMTLforMacOS_Sonoma.zip
+7zz x ${MRICROGL_DIR}/MRIcroMTL.dmg -o"${MRICROGL_DIR}/" MRIcroMTL/MRIcroMTL.app > /dev/null
+mv ${MRICROGL_DIR}/MRIcroMTL/MRIcroMTL.app ${MRICROGL_DIR}/MRIcroMTL.app
 
 # Put app to /Applications folder
-if [[ -d /Applications/MRICroGL.app || -L /Applications/MRICroGL.app ]]; then rm /Applications/MRICroGL.app; fi
-ln -s ${MRICROGL_DIR}/MRICroGL.app /Applications/MRICroGL.app
+if [[ -d /Applications/MRIcroMTL.app || -L /Applications/MRIcroMTL.app ]]; then rm /Applications/MRIcroMTL.app; fi
+ln -s ${MRICROGL_DIR}/MRIcroMTL.app /Applications/MRIcroMTL.app
 
 # Cleanup
-rm ${MRICROGL_DIR}/MRIcroGL_macOS.dmg
-rm -r ${MRICROGL_DIR}/MRIcroGL
+rm ${MRICROGL_DIR}/MRIcroMTLforMacOS_Sonoma.zip
+rm ${MRICROGL_DIR}/MRIcroMTL.dmg
+rm -r ${MRICROGL_DIR}/MRIcroMTL
+if [ -d ${MRICROGL_DIR}/__MACOSX ]; then rm -r ${MRICROGL_DIR}/__MACOSX; fi
 
 # Add following lines into .zshrc
 echo "
