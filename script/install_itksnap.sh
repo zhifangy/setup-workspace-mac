@@ -13,19 +13,19 @@ if [ -d ${ITKSNAP_DIR} ]; then rm -rf ${ITKSNAP_DIR}; fi
 # Install
 echo "Installing ITK-SNAP from SourceForge..."
 mkdir -p ${ITKSNAP_DIR}
-wget -q https://sourceforge.net/projects/itk-snap/files/itk-snap/${ITKSNAP_VERSION}/itksnap-${ITKSNAP_VERSION}-Darwin-x86_64.dmg \
+wget -q https://sourceforge.net/projects/itk-snap/files/itk-snap/${ITKSNAP_VERSION}/itksnap-${ITKSNAP_VERSION}-Darwin-arm64.dmg \
     -P ${ITKSNAP_DIR}
-7zz x ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-Darwin-x86_64.dmg -o"${ITKSNAP_DIR}/" \
-    itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-x86_64/ITK-SNAP.app > /dev/null
-mv ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-x86_64/ITK-SNAP.app ${ITKSNAP_DIR}/ITK-SNAP.app
+7zz x ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-Darwin-arm64.dmg -o"${ITKSNAP_DIR}/" \
+    itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-arm64/ITK-SNAP.app > /dev/null
+mv ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-arm64/ITK-SNAP.app ${ITKSNAP_DIR}/ITK-SNAP.app
 
 # Put app to /Applications folder
 if [[ -d /Applications/ITK-SNAP.app || -L /Applications/ITK-SNAP.app ]]; then rm /Applications/ITK-SNAP.app; fi
 ln -s ${ITKSNAP_DIR}/ITK-SNAP.app /Applications/ITK-SNAP.app
 
 # Cleanup
-rm ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-Darwin-x86_64.dmg
-rm -r ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-x86_64
+rm ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-Darwin-arm64.dmg
+rm -r ${ITKSNAP_DIR}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-arm64
 
 # Add following lines into .zshrc
 echo "
