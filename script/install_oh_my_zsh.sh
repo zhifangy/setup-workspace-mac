@@ -15,6 +15,9 @@ fi
 if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-abbr ]; then
+    git clone https://github.com/olets/zsh-abbr.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-abbr
+fi
 if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
@@ -24,7 +27,7 @@ echo "
 Modify .zshrc:
 
 1.Plugins
-    plugins=(git z autoupdate zsh-autosuggestions zsh-syntax-highlighting)
+    plugins=(git z sudo autoupdate zsh-autosuggestions zsh-syntax-highlighting zsh-abbr)
 2.Themes
     ZSH_THEME=\"powerlevel10k/powerlevel10k\"
     # Run 'p10k configure' after restart the shell
