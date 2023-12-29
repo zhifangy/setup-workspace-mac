@@ -34,4 +34,7 @@ Modify .zshrc:
 3.Fonts
     In order to use the powerlevel10k theme, you need to use fonts from the Nerd-fonts project
     https://github.com/ryanoasis/nerd-fonts
+4. Import alias in zsh-abbr
+# zsh-abbr
+abbr --quieter import-aliases
 "
