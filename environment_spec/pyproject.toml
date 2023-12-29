@@ -55,6 +55,7 @@ python-lsp-server = {version = "*", extras = ["all"]}
 jupyterlab_code_formatter = "*"
 jupytext = "*"
 jupyterlab_execute_time = "*"
+itables = "*"
 nbdime = "*"
 black = "*"
 h5py = "*"
