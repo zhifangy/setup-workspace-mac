@@ -19,6 +19,9 @@ case "$1" in
     "renv")
         bash ${SCRIPT_DIR}/script/install_r_environment.sh
         ;;
+    "quarto")
+        bash ${SCRIPT_DIR}/script/install_quarto.sh
+        ;;
     "freesurfer"|"FreeSurfer")
         bash ${SCRIPT_DIR}/script/install_freesurfer.sh
         ;;
