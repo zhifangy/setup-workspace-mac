@@ -3,6 +3,7 @@ set -e
 
 # Setup
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+BASE_DIR=${SETUP_ROOT}/neurotools
 WORKBENCH_DIR=${SETUP_ROOT}/neurotools/workbench
 WORKBENCH_VERSION=${WORKBENCH_VERSION:-v1.5.0}
 
