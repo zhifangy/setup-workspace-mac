@@ -48,7 +48,7 @@ cd "${SCRIPT_DIR}/../environment_spec"
 # remove old poetry.lock file
 if [ -f poetry.lock ]; then rm poetry.lock; fi
 # install
-poetry install -v
+poetry install --no-root -v
 
 # Cleanup
 micromamba clean -apyq
@@ -62,7 +62,6 @@ Add following lines to .zshrc:
 # Micromamba
 export MAMBA_DIR=${MAMBA_DIR}
 export PATH=\${MAMBA_DIR}/bin:\${PATH}
-alias mamba=micromamba
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!
 export MAMBA_EXE=\${MAMBA_DIR}/bin/micromamba;
@@ -85,6 +84,9 @@ export PATH=\${POETRY_HOME}/bin:\${PATH}
 # Activate python environment
 export PY_LIBS=${PY_LIBS}
 micromamba activate \${PY_LIBS}
+
+Add below to alias section
+alias mamba=\"micromamba\"
 
 Execute following lines:
 source ~/.zshrc
