@@ -18,7 +18,7 @@ export TBB_LIB=$(ls -d /usr/local/Cellar/tbb/*)/lib
 if [ -d ${R_LIBS} ]; then echo "Cleanup old r environment..." && rm -rf ${R_LIBS}; fi
 
 # Instal R packages
-echo "R library location: ${R_LIBS}"
+echo "R enviromenmet location: ${R_LIBS}"
 mkdir -p ${R_LIBS}
 # prerequisite package
 Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"
