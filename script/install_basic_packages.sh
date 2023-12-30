@@ -8,10 +8,10 @@ fi
 
 # Install packages
 # basic
-brew install wget curl vim cmake gcc llvm tcl-tk libssh2 open-mpi openblas node swig v8 hdf5 \
-    imagemagick sevenzip
+brew install wget curl vim cmake gcc llvm tcl-tk libssh2 libgit2 \
+    open-mpi openblas node swig v8 hdf5 imagemagick
 # useful utilities
-brew install git htop tree pandoc autossh starship fzf bat lsd thefuck
+brew install git htop tree sevenzip pandoc autossh starship fzf bat lsd thefuck
 brew install gromgit/fuse/sshfs-mac macfuse
 # latest python and r
 brew install python r
