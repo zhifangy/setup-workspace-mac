@@ -8,10 +8,8 @@ N_CPUS=${N_CPUS:-8}
 export R_LIBS=${SETUP_ROOT}/renv
 CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
 
-# Install R from homebrew
-brew install r
 # Install packages used by R packages
-brew install libgit2 libpng tbb harfbuzz fribidi imagemagick@6 libpq mariadb-connector-c
+brew install tbb harfbuzz fribidi mariadb-connector-c
 # set tbb related environment variable (for brms dependency RcppParallel)
 export TBB_INC=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/include
 export TBB_LIB=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/lib
