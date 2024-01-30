@@ -9,7 +9,7 @@ export R_LIBS=${SETUP_ROOT}/renv
 CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
 
 # Install packages used by R packages
-brew install tbb harfbuzz fribidi mariadb-connector-c
+brew install tbb harfbuzz fribidi mariadb-connector-c glpk libxml2 gmp
 # set tbb related environment variable (for brms dependency RcppParallel)
 export TBB_INC=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/include
 export TBB_LIB=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/lib
