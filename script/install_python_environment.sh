@@ -40,7 +40,7 @@ cd "${SCRIPT_DIR}/../environment_spec"
 # remove old poetry.lock file
 if [ -f poetry.lock ]; then rm poetry.lock; fi
 # install
-poetry install --no-root -v
+poetry install -v
 
 # Cleanup
 micromamba clean -apyq
