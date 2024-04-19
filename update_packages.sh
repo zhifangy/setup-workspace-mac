@@ -29,7 +29,7 @@ case "$1" in
         poetry update --dry-run
         ;;
     "renv")
-        update.r -r ${CRAN} -n ${N_CPUS}
+        update.r -r ${CRAN} -l ${R_LIBS} -n ${N_CPUS}
         bash ${SCRIPT_DIR}/script/fix_littler_macos.sh
         ;;
     "renv_dryrun")
