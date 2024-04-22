@@ -11,7 +11,7 @@ PATH=${AFNI_DIR}:${PATH}
 # r related
 R_LIBS=${R_LIBS:-${SETUP_ROOT}/renv}
 CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
-PATH=${R_LIBS}/littler/examples:${R_LIBS}/littler/bin:${PATH}
+PATH=${PATH}:${R_LIBS}/littler/examples:${R_LIBS}/littler/bin
 
 # Cleanup old installation
 if [ -d ${AFNI_DIR} ]; then echo "Cleanup old AFNI installation..." && rm -rf ${AFNI_DIR}; fi
@@ -38,10 +38,7 @@ mkdir -p ${AFNI_DIR}
 wget -q https://afni.nimh.nih.gov/pub/dist/bin/misc/@update.afni.binaries -P ${AFNI_DIR}
 tcsh ${AFNI_DIR}/@update.afni.binaries -no_recur -package anyos_text_atlas -bindir ${AFNI_DIR}
 # prepare for building
-# there's an issue during compiling. it's likely due to the R is installed via homeberw instead of CRAN
-# to fix this, append the R command with its absolute path
 build_afni.py -build_root ${AFNI_BUILD_DIR} -package ${PKG_VERSION} -prep_only
-sed -i  "" "s|R CMD SHLIB|${HOMEBREW_ROOT}/bin/R CMD SHLIB|g" ${AFNI_BUILD_DIR}/build_src/Makefile.INCLUDE
 # do actual compiling
 mkdir -p ${AFNI_BUILD_DIR}/prev
 build_afni.py -build_root ${AFNI_BUILD_DIR} -package ${PKG_VERSION} -clean_root no -do_backup no
@@ -70,4 +67,6 @@ then
 fi
 # look for shared libraries under flat_namespace
 export DYLD_LIBRARY_PATH=\${DYLD_LIBRARY_PATH}:/opt/X11/lib/flat_namespace
+# do not log commands
+export AFNI_DONT_LOGFILE=YES
 "
