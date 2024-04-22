@@ -23,7 +23,7 @@ mkdir -p ${R_LIBS}
 # prerequisite package
 Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"
 bash ${SCRIPT_DIR}/fix_littler_macos.sh
-PATH=${R_LIBS}/littler/examples:${R_LIBS}/littler/bin:${PATH}
+PATH=${PATH}:${R_LIBS}/littler/examples:${R_LIBS}/littler/bin
 
 # Read R packages list (CRAN)
 R_PKG_FILE="${SCRIPT_DIR}/../environment_spec/r_environment.txt"
@@ -79,7 +79,7 @@ Add following lines to .zshrc:
 # R environment
 export R_LIBS=${R_LIBS}
 # littler
-export PATH=\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin:\${PATH}
+export PATH=\${PATH}:\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin
 # cran
 export CRAN=${CRAN}
 # for RcppParallel (dependency of brms)
