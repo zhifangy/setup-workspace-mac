@@ -12,7 +12,8 @@ brew install wget curl vim cmake gcc llvm tcl-tk libssh2 libgit2 \
     open-mpi openblas node swig v8 hdf5 imagemagick
 # useful utilities
 brew install git htop btop tree sevenzip pandoc autossh starship fzf bat lsd thefuck
-brew install gromgit/fuse/sshfs-mac macfuse
+brew install macfuse
+brew install gromgit/fuse/sshfs-mac
 # latest python and r
 brew install python r
 
