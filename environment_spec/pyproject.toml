@@ -36,7 +36,7 @@ bokeh = "*"
 jupyter_bokeh = "*"
 lets-plot = "*"
 vtk = "*"
-mayavi = { git = "https://github.com/enthought/mayavi.git" }
+mayavi = ">=4.8.2"
 panel = "*"
 holoviews = "*"
 pyvista = "*"
