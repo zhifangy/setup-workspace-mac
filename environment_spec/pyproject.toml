@@ -15,7 +15,7 @@ joblib = "*"
 # Machine learning
 scikit-learn = "*"
 xgboost = "*"
-torch = ">=2.0"
+torch = "~2.2"
 torchvision = "*"
 torchaudio = "*"
 torchtext = "*"
