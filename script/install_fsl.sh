@@ -4,7 +4,7 @@ set -e
 # Setup
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 FSL_DIR=${SETUP_ROOT}/neurotools/fsl
-FSL_VERSION=${FSL_VERSION:-6.0.7.6}
+FSL_VERSION=${FSL_VERSION:-6.0.7.11}
 
 # Cleanup old installation
 if [ -d ${FSL_DIR} ]; then echo "Cleanup old FSL installation..." && rm -rf ${FSL_DIR}; fi
@@ -13,7 +13,7 @@ if [ -d ${FSL_DIR} ]; then echo "Cleanup old FSL installation..." && rm -rf ${FS
 echo "Installing FSL from offical website..."
 wget -q https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py -P ${SETUP_ROOT}
 chmod +x ${SETUP_ROOT}/fslinstaller.py
-${SETUP_ROOT}/fslinstaller.py -V ${FSL_VERSION} -d ${FSL_DIR} --no_env
+${SETUP_ROOT}/fslinstaller.py -V ${FSL_VERSION} -d ${FSL_DIR} --no_env --skip_registration
 mv ${SETUP_ROOT}/fslinstaller.py ${FSL_DIR}/fslinstaller.py
 
 # Use newer version of MSM

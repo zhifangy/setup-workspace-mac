@@ -42,6 +42,9 @@ case "$1" in
         poetry cache clear PyPI --all -n
         poetry cache clear _default_cache --all -n
         ;;
+    "fsl")
+        update_fsl_release
+        ;;
     "fsleyes")
         FSLEYES_DIR=${FSLEYES_DIR:-${SETUP_ROOT}/neurotools/fsleyes}
         ENV_PREFIX=${FSLEYES_DIR}/env
