@@ -20,7 +20,7 @@ if [ -f ~/.afnirc ]; then echo "Cleanup old AFNI rc files ..." && rm ~/.afnirc; 
 if [ -f ~/.sumarc ]; then echo "Cleanup old SUMA rc files ..." && rm ~/.sumarc; fi
 
 # Install dependency via homebrew
-brew install python netpbm cmake gfortran
+brew install python netpbm cmake gfortran gcc@13
 brew install --cask xquartz
 brew install libpng jpeg expat freetype fontconfig openmotif  \
     libomp gsl glib pkg-config gcc libiconv autoconf \
