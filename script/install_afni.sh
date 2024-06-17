@@ -21,7 +21,7 @@ if [ -f ~/.sumarc ]; then echo "Cleanup old SUMA rc files ..." && rm ~/.sumarc; 
 
 # Install dependency via homebrew
 # see https://github.com/afni/afni/blob/master/src/other_builds/OS_notes.macos_12_ARM_a_admin_pt1.zsh
-brew install python netpbm cmake gfortran
+brew install python netpbm cmake gfortran gcc@13
 brew install --cask xquartz
 brew install libpng jpeg expat freetype fontconfig openmotif  \
     libomp gsl glib pkg-config gcc libiconv autoconf \
