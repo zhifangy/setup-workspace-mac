@@ -2,7 +2,7 @@
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "~3.11"
+python = "~3.12"
 # Basic
 numpy = ">=1.25"
 pandas = "*"
@@ -84,7 +84,7 @@ deepmreye = "*"
 brainstat = "*"
 brainspace = "*"
 surfplot = "*"
-pycortex = "*"
+# pycortex = "*"
 pysurfer = {version = "*", extras = ["save_movie"]}
 # Neuroimaging BIDS
 heudiconv = "*"
