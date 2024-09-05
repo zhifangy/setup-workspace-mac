@@ -84,7 +84,7 @@ deepmreye = "*"
 brainstat = "*"
 brainspace = "*"
 surfplot = "*"
-# pycortex = "*"
+pycortex = "*"
 pysurfer = {version = "*", extras = ["save_movie"]}
 # Neuroimaging BIDS
 heudiconv = "*"
