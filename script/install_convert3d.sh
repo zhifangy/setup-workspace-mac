@@ -4,7 +4,7 @@ set -e
 # Setup
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 C3D_DIR=${SETUP_ROOT}/neurotools/convert3d
-C3D_VERSION=${C3D_VERSION:-1.4.0}
+C3D_VERSION=${C3D_VERSION:-1.4.2}
 
 # Cleanup old installation
 if [ -d ${C3D_DIR} ]; then rm -rf ${C3D_DIR}; fi
