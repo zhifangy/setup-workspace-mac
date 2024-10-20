@@ -1,6 +1,0 @@
-name: pyenv
-channels:
-  - pytorch
-  - conda-forge
-dependencies:
-  - python >=3.12,<3.13
