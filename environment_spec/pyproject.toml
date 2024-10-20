@@ -1,98 +1,205 @@
-[tool.poetry]
-package-mode = false
+[project]
+name = "pyenv"
+version = "0.1.0"
+description = "Python environment"
+requires-python = "~=3.12"
 
-[tool.poetry.dependencies]
-python = "~3.12"
-# Basic
-numpy = ">=1.25"
-pandas = "*"
-ipython = "*"
-jupyterlab = "*"
-scipy = "*"
-statsmodels = "*"
-pingouin = "*"
-joblib = "*"
-# Machine learning
-scikit-learn = "*"
-xgboost = "*"
-torch = ">=2.0"
-torchvision = "*"
-torchaudio = "*"
-torchtext = "*"
-pytorch-lightning = "*"
-torchlens = "*"
-timm = "*"
-tensorflow = ">=2.15"
-open_clip_torch = "*"
-umap-learn = "*"
-gensim = "*"
-yellowbrick = "*"
-# Graphic
-matplotlib = "*"
-seaborn = "*"
-plotly = "*"
-kaleido = "!=0.2.1.post1"
-bokeh = "*"
-jupyter_bokeh = "*"
-lets-plot = "*"
-vtk = "*"
-mayavi = ">=4.8.2"
-panel = "*"
-holoviews = "*"
-pyvista = "*"
-ipyvtklink = "*"
-ipyvolume = "*"
-scikit-image = "*"
-# Utility
-ipywidgets = "*"
-jupyterlab-lsp = "*"
-python-lsp-server = {version = "*", extras = ["all"]}
-jupyterlab_code_formatter = "*"
-jupytext = "*"
-jupyterlab_execute_time = "*"
-jupyterlab-quarto = "*"
-itables = "*"
-nbdime = "*"
-black = "*"
-h5py = "*"
-datalad = "*"
-boto3 = "*"
-s3fs = ">=2023"
-memory-profiler = "*"
-pyjanitor = "*"
-cookiecutter = "*"
-bigmpi4py = "*"
-rpy2 = "*"
-radian = "*"
-# Neuroimaging main
-nibabel = "*"
-indexed_gzip = "*"
-nilearn = "*"
-pydra = "*"
-nipype = "*"
-mne = "*"
-antspyx = "*"
-# Neuroimaging utility
-rsatoolbox = "*"
-hypertools = "*"
-neuropythy = "*"
-neuromaps = {git = "https://github.com/netneurolab/neuromaps.git"}
+# Note: Package version constrains updated on 2024-10-19
+dependencies = [
+
+    # Essential
+    "pip >= 24.0",
+    "setuptools >=75.0",
+    "wheel >= 0.44",
+    "numpy >=1.26",
+    "pandas >= 2.2.0",
+    "ipython >= 8.28",
+    "matplotlib >=3.9.2",
+    "seaborn >=0.13.2",
+    "jupyterlab >= 4.2.5",
+    "scipy >=1.14",
+    "statsmodels >=0.14",
+    "pingouin >=0.5.5",
+    "scikit-learn >= 1.5.0",
+    "plotly >=5.24",
+    "kaleido >=0.2.1",
+    "vtk >=9.3.1",
+    "mayavi >=4.8.2",
+
+    # Utility
+    "joblib >= 1.4",
+    "tqdm >= 4.66",
+    "itables >= 2.2",
+    "pyjanitor >=0.29",
+    "h5py >=3.12",
+
+    # JupyterLab utility
+    "ipywidgets >=8.1.5",
+    "jupyterlab-lsp >=2.2.5",
+    "python-lsp-server[all] >=1.12",
+    "jupyterlab-code-formatter >=3.0",
+
+]
+
+[project.optional-dependencies]
+full = [
+    "pyenv[ml]",
+    "pyenv[graphic]",
+    "pyenv[utility]",
+    "pyenv[neuroimaging-basic]",
+    "pyenv[neuroimaging-utils]"
+]
+
+ml = [
+    "torch >=2.5",
+    "torchvision >=0.20",
+    "torchaudio >=2.5",
+    "torchtext >=0.18",
+    "timm >=1.0",
+    "open_clip_torch >=2.27",
+    "pytorch-lightning >=2.4",
+    "torchlens >=0.1.22",
+    "tensorflow >=2.17",
+    "umap-learn >=0.5.6",
+    "xgboost >=2.1",
+    "yellowbrick >=1.5",
+    # "gensim", # wait for new release (scipy requirement)
+]
+
+graphic = [
+    "bokeh >=3.6",
+    "lets-plot >=4.4",
+    "panel >=1.5.2",
+    "holoviews >=1.19",
+    "pyvista >=0.44",
+    "scikit-image >=0.24",
+]
+
+utility = [
+
+    "datalad >=1.1.3",
+    "s3fs >=2024.9",
+    "cookiecutter >=2.6",
+
+    # jupyterlab utility
+    "jupytext >=1.16",
+    "jupyter_bokeh >=4.0",
+    "jupyterlab_execute_time >=3.2",
+    "jupyterlab-quarto >=0.3.5",
+    "nbdime >=4.0",
+
+    # R utility
+    "rpy2 >=3.5.16",
+    "radian >=0.6.13",
+]
+
+neuroimaging-basic = [
+    # Neuroimaging essential
+    "nibabel[all] >=5.3.0",
+    "indexed_gzip >=1.8.7", # used by nibabel
+    "nilearn >=0.10.4",
+    "pydra >=0.23",
+    "nipype >=1.8.6",
+]
+
+neuroimaging-utils = [
+
+    "heudiconv >=1.3.0",
+    "dcm2bids >=3.2.0",
+    "pybids >= 0.17.0",
+    "antspyx >=0.5.3",
+    "templateflow >=24.2",
+    "nitransforms >=24.0",
+    "mne[full] >= 1.8.0",
+    "rsatoolbox >= 0.2.0",
+    "glmsingle >= 1.2",
+    # "brainstat", # wait for pymare update (scipy requirement)
+    "hypertools >= 0.8.0",
+    "neuropythy >= 0.12.15",
+    "neuromaps >= 0.0.5",
+    # "deepmreye" # wait for new release (antspyx requirement)
+
+    # plotting
+    "brainspace >=0.1.10",
+    "surfplot >=0.2.0",
+    "pycortex >= 1.2.10",
+    "pysurfer >= 0.11.2",
+]
+
+resmem = [
+    "resmem >=1.1.6"
+]
+
+brainstat_deps = [
+
+    # brainstat dependencies
+    # copy from brainstat requirements.txt
+    # exclude nimare since it requires pymare
+    # exclude h5py constrain
+    "abagen>=0.1",
+    "brainspace>=0.1.1",
+    # "h5py <3.2",
+    "matplotlib >=2.0.0",
+    "netneurotools >=0.2.3",
+    "neurosynth",
+    "nibabel",
+    "nilearn >=0.7.0",
+    # "nimare",
+    "numpy >=1.21",
+    "pandas",
+    "scikit_learn",
+    "scipy >=1.3.3",
+    "statsmodels",
+    "templateflow",
+    "trimesh",
+    "wordcloud",
+
+    # nimare dependencies
+    # copy from nimare setup.cfg
+    # exclude pymare
+    "cognitiveatlas >=0.1.11",  # nimare.annotate.cogat
+    "fuzzywuzzy",  # nimare.annotate
+    "importlib-resources; python_version < '3.9' ", # for importlib.resources.files in Python 3.8
+    "jinja2", # nimare.reports
+    "joblib >=1.3.0",  # parallelization
+    "matplotlib >=3.6.0",  # this is for nilearn, which doesn't include it in its reqs
+    "nibabel >=3.2.0",  # I/O of niftis
+    "nilearn >=0.10.1,!=0.10.3", # https://github.com/nilearn/nilearn/pull/4256 0.10.3 is broken
+    "numba >=0.57.0", # used by sparse
+    "numpy >=1.22", # numba needs NumPy 1.22 or greater
+    "pandas >=2.0.0",
+    "patsy",  # for cbmr
+    "plotly",  # nimare.reports
+    # "pymare >=0.0.8",  # nimare.meta.ibma and stats
+    "pyyaml", # nimare.reports
+    "requests",  # nimare.extract
+    "ridgeplot",  # nimare.reports
+    "scikit-learn >=1.0.0",  # nimare.annotate and nimare.decode
+    "scipy >=1.6.0",
+    "sparse >=0.13.0",  # for kernel transformers
+    "statsmodels !=0.13.2",  # this version doesn't install properly
+    "tqdm",  # progress bars throughout package
+
+    # pymare dependencies
+    # copy from nimare setup.cfg
+    # relax scipy constrain since the issue has been resolved
+    "numpy >=1.8.0",
+    "pandas",
+    # "scipy <1.13.0",  # https://github.com/arviz-devs/arviz/issues/2336
+    "sympy",
+    "wrapt",
+]
+
+brainstat_nodeps = [
+    # TODO: check after new pymare release
+    # this extra should be used with --no-deps argument
+    "brainstat >=0.4.2",
+    "nimare >=0.4.0",
+    "pymare >=0.0.8"
+]
+
+[tool.uv.sources]
 glmsingle = { git = "https://github.com/cvnlab/GLMsingle.git"}
-resmem = "*"
-deepmreye = "*"
-# Neuroimaging plotting
-brainstat = "*"
-brainspace = "*"
-surfplot = "*"
-pycortex = "*"
-pysurfer = {version = "*", extras = ["save_movie"]}
-# Neuroimaging BIDS
-heudiconv = "*"
-dcm2bids = "*"
-pybids = "*"
-
-[tool.poetry.dev-dependencies]
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+neuromaps = { git = "https://github.com/netneurolab/neuromaps.git" }
+surfplot = { git = "https://github.com/danjgale/surfplot.git" }
+resmem = { git = "https://github.com/Brain-Bridge-Lab/resmem" }

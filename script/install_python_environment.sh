@@ -5,18 +5,15 @@ set -e
 source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
 SCRIPT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
 # python related
-MAMBA_ROOT_PREFIX=${SETUP_ROOT}/micromamba
-POETRY_HOME=${SETUP_ROOT}/poetry
+export MAMBA_ROOT_PREFIX=${SETUP_ROOT}/micromamba
+export UV_BASE_DIR=${SETUP_ROOT}/uv
+export UV_PYTHON_INSTALL_DIR=${UV_BASE_DIR}/python
+export UV_TOOL_DIR=${UV_BASE_DIR}/tool
+export UV_CACHE_DIR=${UV_BASE_DIR}/cache
 PY_LIBS=${SETUP_ROOT}/pyenv
 
-# Install Micromamba, Poetry
-brew install micromamba poetry
-echo "Current micromamba: $(which micromamba)"
-echo "Current poetry: $(which poetry)"
-export MAMBA_ROOT_PREFIX
-export POETRY_HOME
-export POETRY_CACHE_DIR=${POETRY_HOME}
-export POETRY_CONFIG_DIR=${POETRY_HOME}
+# Install packages
+brew install micromamba uv ruff
 
 # Cleanup old python environment
 if [ $(micromamba env list | grep -c ${PY_LIBS}) -ne 0 ]; then
@@ -27,25 +24,26 @@ elif [ -d ${PY_LIBS} ]; then
     rm -rf ${PY_LIBS}
 fi
 
-# Create python environment
+# Create environment
 echo "Python enviromenmet location: ${PY_LIBS}"
 cd "$(dirname "$0")"
-micromamba create -yq -p ${PY_LIBS} -f ${SCRIPT_DIR}/../environment_spec/python_environment.yml
-# Use environment for following steps
+# create empty environment via micromamba
+micromamba create -yq -p ${PY_LIBS}
+# activate environment
 eval "$(micromamba shell hook --shell bash --root-prefix ${MAMBA_ROOT_PREFIX})"
 micromamba activate ${PY_LIBS}
+# create venv (PEP 405 compliant) via UV in the environment directory
+uv venv --allow-existing --seed ${PY_LIBS}
 
-# Install packages using poetry
-cd "${SCRIPT_DIR}/../environment_spec"
-# remove old poetry.lock file
-if [ -f poetry.lock ]; then rm poetry.lock; fi
-# install
-poetry install -v
+# Install packages in venv via UV
+uv pip install -r ${SCRIPT_DIR}/../environment_spec/pyproject.toml --extra full
+# special treatment for brainstat
+uv pip install -r ${SCRIPT_DIR}/../environment_spec/pyproject.toml --extra brainstat_deps
+uv pip install -r ${SCRIPT_DIR}/../environment_spec/pyproject.toml --extra brainstat_nodeps --no-deps
 
 # Cleanup
 micromamba clean -apyq
-poetry cache clear PyPI --all -n
-poetry cache clear _default_cache --all -n
+uv cache clean
 
 # Add following lines into .zshrc
 echo "
@@ -65,23 +63,19 @@ fi
 unset __mamba_setup
 # <<< mamba initialize <<<
 
-# Poetry
-export POETRY_HOME=${SETUP_ROOT}/poetry
-export POETRY_CACHE_DIR=\${POETRY_HOME}
-export POETRY_CONFIG_DIR=\${POETRY_HOME}
-
 # Activate python environment
 export PY_LIBS=${PY_LIBS}
 micromamba activate \${PY_LIBS}
+
+# UV
+export UV_BASE_DIR=${UV_BASE_DIR}
+export UV_PYTHON_INSTALL_DIR=\${UV_BASE_DIR}/python
+export UV_TOOL_DIR=\${UV_BASE_DIR}/tool
+export UV_CACHE_DIR=\${UV_BASE_DIR}/cache
 
 Add below to alias section
 alias mamba=\"micromamba\"
 
 Execute following lines:
 source ~/.zshrc
-mkdir -p \${ZSH_CUSTOM}/plugins/poetry
-poetry completions zsh > \${ZSH_CUSTOM}/plugins/poetry/_poetry
-
-Add below to oh-my-zsh plugin
-plugins(poetry)
 "
