@@ -23,6 +23,9 @@ case "$1" in
     "quarto")
         bash ${SCRIPT_DIR}/script/install_quarto.sh
         ;;
+    "texlive")
+        bash ${SCRIPT_DIR}/script/install_texlive.sh
+        ;;
     "freesurfer"|"FreeSurfer")
         bash ${SCRIPT_DIR}/script/install_freesurfer.sh
         ;;
