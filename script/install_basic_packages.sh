@@ -2,28 +2,35 @@
 set -e
 
 # Install Homebrew
-if [ ! -d /opt/homebrew ]; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+if ! command -v brew &> /dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # Install packages
-# basic
-brew install wget curl vim cmake gcc llvm tcl-tk libssh2 libgit2 \
-    open-mpi openblas node swig v8 hdf5 imagemagick
-# useful utilities
-brew install git htop btop tree sevenzip pandoc autossh starship fzf bat lsd thefuck
-brew install macfuse
-brew install gromgit/fuse/sshfs-mac
-# latest python and r
-brew install python r
+formula_packages=(
+    "wget" "curl" "vim" "cmake" "gcc" "llvm" "tcl-tk" "pkg-config" "xz" "readline" "gettext" "icu4c" \
+    "bzip2" "zlib" "node" "python" "freetype" "fontconfig" "libssh2" "libgit2" "open-mpi" "openblas" "openjdk" \
+    "texinfo" "swig" "v8" "hdf5" "imagemagick" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
+    "autossh" "macfuse" "gromgit/fuse/sshfs-mac" "bat" "lsd" "fzf" "starship" "thefuck"
+)
+# List of cask packages
+cask_packages=(
+    "xquartz"
+)
+for package in "${formula_packages[@]}"; do
+    brew list --formula "${package}" &> /dev/null || brew install "${package}"
+done
+for cask in "${cask_packages[@]}"; do
+    brew list --cask "${cask}" &> /dev/null || brew install --cask "${cask}"
+done
 
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
 
 # Homebrew
-export PATH=\"${HOMEBREW_ROOT}/bin:\${PATH}\"
 export HOMEBREW_ROOT=\"${HOMEBREW_ROOT}\"
+export PATH=\"\${HOMEBREW_ROOT}/bin:\${PATH}\"
 # Homebrew zsh completions
 if type brew &>/dev/null
 then
@@ -40,9 +47,9 @@ eval \"\$(starship init zsh)\"
 export BAT_THEME=\"Dracula\"
 
 # fzf
-export PATH=\"/opt/homebrew/opt/fzf/bin:\${PATH}\"
-source \"/opt/homebrew/opt/fzf/shell/completion.zsh\"
-source \"/opt/homebrew/opt/fzf/shell/key-bindings.zsh\"
+export PATH=\"\$(brew --prefix fzf)/bin:\${PATH}\"
+source \"\$(brew --prefix fzf)/shell/completion.zsh\"
+source \"\$(brew --prefix fzf)/shell/key-bindings.zsh\"
 
 # The fuck
 eval \"\$(thefuck --alias)\"
