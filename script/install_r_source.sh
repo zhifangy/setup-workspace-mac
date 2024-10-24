@@ -16,7 +16,7 @@ if [ -d ${R_BUILD_DIR} ]; then echo "Cleanup old R compilation directory..." && 
 packages=(
     "gcc" "pkg-config" "pcre2" "tcl-tk" "xz" "readline" "gettext" "bzip2" "zlib" "openblas" "icu4c" "curl" \
     "libffi" "freetype" "fontconfig" "libxext" "libx11" "libxau" "libxcb" "libxdmcp" "libxrender" \
-    "cairo" "jpeg-turbo" "libpng" "pixman"
+    "cairo" "jpeg-turbo" "libpng" "pixman" "openjdk" "texinfo"
 )
 packages_cask=("xquartz")
 # Loop through the packages and install if not already installed
