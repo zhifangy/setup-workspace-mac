@@ -17,6 +17,9 @@ case "$1" in
     "pyenv")
         bash ${SCRIPT_DIR}/script/install_python_environment.sh
         ;;
+    "r")
+        bash ${SCRIPT_DIR}/script/install_r_source.sh
+        ;;
     "renv")
         bash ${SCRIPT_DIR}/script/install_r_environment.sh
         ;;
