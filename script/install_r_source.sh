@@ -31,7 +31,8 @@ done
 CONFIGURE_OPTIONS="\
     --enable-R-shlib \
     --enable-memory-profiling \
-    --with-newAccelerate=lapack \
+    --with-blas=\"-L$(brew --prefix openblas)/lib -lopenblas\" \
+    --with-lapack \
     --with-aqua \
     --with-x \
     --with-tcltk=$(brew --prefix)/lib \
@@ -61,7 +62,7 @@ tar -xzf ${R_BUILD_DIR}/R-${R_VERSION}.tar.gz -C ${R_BUILD_DIR}
 cd ${R_BUILD_DIR}/R-*/
 
 # Build R from source
-./configure --prefix=${R_ROOT_PREFIX} ${CONFIGURE_OPTIONS}
+echo ${CONFIGURE_OPTIONS} | xargs ./configure --prefix=${R_ROOT_PREFIX}
 make -j${N_CPUS}
 
 # Post compilation cleanup
