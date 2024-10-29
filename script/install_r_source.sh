@@ -14,7 +14,7 @@ if [ -d ${R_BUILD_DIR} ]; then echo "Cleanup old R compilation directory..." && 
 
 # Install dependency via homebrew
 packages=(
-    "gcc" "pkg-config" "pcre2" "tcl-tk" "xz" "readline" "gettext" "bzip2" "zlib" "openblas" "icu4c" "curl" \
+    "gcc" "pkg-config" "pcre2" "tcl-tk" "xz" "readline" "gettext" "bzip2" "zlib" "libdeflate" "openblas" "icu4c" "curl" \
     "libffi" "freetype" "fontconfig" "libxext" "libx11" "libxau" "libxcb" "libxdmcp" "libxrender" \
     "cairo" "jpeg-turbo" "libpng" "pixman" "openjdk" "texinfo"
 )
@@ -65,14 +65,24 @@ cd ${R_BUILD_DIR}/R-*/
 echo ${CONFIGURE_OPTIONS} | xargs ./configure --prefix=${R_ROOT_PREFIX}
 make -j${N_CPUS}
 
-# Post compilation cleanup
-# replace gcc to version independent path in Makeconf file
-sed -i '' "s|$(brew --cellar gcc)/$(ls -1 $(brew --cellar gcc))|$(brew --prefix gcc)|g" ./etc/Makeconf
-
-# Install
+# Install R
 # remove old installation if existed
 if [ -d ${R_ROOT_PREFIX} ]; then echo "Cleanup old R installation..." && rm -rf ${R_ROOT_PREFIX}; fi
+# install to prefix directory
 make install
+# post installation configuration
+# replace gcc to version independent path in Makeconf file
+sed -i '' "s|$(brew --cellar gcc)/$(ls -1 $(brew --cellar gcc))|$(brew --prefix gcc)|g" ${R_ROOT_PREFIX}/lib/R/etc/Makeconf
+# add additional LD_LIBRARY_PATH (for precompiled packages)
+sed -i '' "/## This is DYLD_FALLBACK_LIBRARY_PATH on Darwin (macOS) and/i\\
+## Additional library from homebrew\\
+export R_LD_LIBRARY_PATH=\"\${R_LD_LIBRARY_PATH}:$(brew --prefix)/lib:$(brew --prefix gcc)/lib/gcc/current\"
+" ${R_ROOT_PREFIX}/lib/R/etc/ldpaths
+# symlink homebrew installed openblas dylib to R/lib (for precompiled packages)
+ln -s $(brew --prefix openblas)/lib/libopenblas.dylib ${R_ROOT_PREFIX}/lib/R/lib/libRblas.dylib
+ln -s $(brew --prefix openblas)/lib/liblapack.dylib ${R_ROOT_PREFIX}/lib/R/lib/libRlapack.dylib
+# set default package installation preference
+echo 'options(pkgType = "mac.binary.big-sur-arm64")' > ${R_ROOT_PREFIX}/lib/R/etc/Rprofile.site
 
 # Cleanup
 rm -r ${R_BUILD_DIR}
