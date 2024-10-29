@@ -4,6 +4,8 @@ pacman
 renv
 languageserver
 IRkernel
+Rcpp
+RcppParallel
 reticulate
 lintr
 styler
@@ -80,7 +82,6 @@ skimr
 broom.mixed
 
 # Other
-#Rmpi
 vitae
 rorcid
 RNifti
