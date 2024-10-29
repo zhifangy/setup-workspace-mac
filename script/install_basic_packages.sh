@@ -10,7 +10,7 @@ fi
 formula_packages=(
     "wget" "curl" "vim" "cmake" "gcc" "llvm" "tcl-tk" "pkg-config" "xz" "readline" "gettext" "icu4c" \
     "bzip2" "zlib" "node" "python" "freetype" "fontconfig" "libssh2" "libgit2" "open-mpi" "openblas" "openjdk" \
-    "texinfo" "swig" "v8" "hdf5" "imagemagick" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
+    "hdf5" "swig" "tbb" "texinfo" "mariadb-connector-c" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
     "autossh" "macfuse" "gromgit/fuse/sshfs-mac" "bat" "lsd" "fzf" "starship" "thefuck"
 )
 # List of cask packages
