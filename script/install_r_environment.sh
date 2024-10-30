@@ -8,12 +8,6 @@ N_CPUS=${N_CPUS:-8}
 export R_LIBS=${SETUP_ROOT}/renv
 CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
 
-# Install packages used by R packages
-brew install tbb harfbuzz fribidi mariadb-connector-c glpk libxml2 gmp
-# set tbb related environment variable (for brms dependency RcppParallel)
-export TBB_INC=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/include
-export TBB_LIB=$(ls -d ${HOMEBREW_ROOT}/Cellar/tbb/*)/lib
-
 # Cleanup old installation
 if [ -d ${R_LIBS} ]; then echo "Cleanup old r environment..." && rm -rf ${R_LIBS}; fi
 
@@ -21,47 +15,55 @@ if [ -d ${R_LIBS} ]; then echo "Cleanup old r environment..." && rm -rf ${R_LIBS
 echo "R enviromenmet location: ${R_LIBS}"
 mkdir -p ${R_LIBS}
 # prerequisite package
-Rscript -e "install.packages(c('littler', 'docopt'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE, quiet=TRUE)"
+Rscript -e "install.packages('docopt', lib='${R_LIBS}', repos='${CRAN}', clean=TRUE)"
+Rscript -e "install.packages('littler', lib='${R_LIBS}', repos='${CRAN}', type='source', clean=TRUE)"
 bash ${SCRIPT_DIR}/fix_littler_macos.sh
 PATH=${PATH}:${R_LIBS}/littler/examples:${R_LIBS}/littler/bin
 
-# Read R packages list (CRAN)
-R_PKG_FILE="${SCRIPT_DIR}/../environment_spec/r_environment.txt"
-# read the file line by line and filter out lines starting with # or whitespace
-R_PKG_LIST=""
-echo -e "\n\nInstalling R packages:\n"
-while IFS= read -r line; do
-    if [[ "${line}" =~ ^[^[:space:]#] && ! -z "${line}" ]]; then
-        R_PKG_LIST="${R_PKG_LIST}${line} "
+# Install R packages (from Github)
+PKG_FILE="${SCRIPT_DIR}/../environment_spec/r_environment.txt"
+PKG_LIST=""
+PKG_NO_BIN_LIST=""=""
+# read file line by line, filtering out lines that start with # or whitespace
+while IFS= read -r line || [[ -n "$line" ]]; do
+    if [[ "${line}" =~ ^[^[:space:]#] ]]; then
+        PKG_LIST+="${line} "
         echo ${line}
     fi
-done < "${R_PKG_FILE}"
-# deal with bad last line (without a newline in the end)
-if [[ "${line}" =~ ^[^[:space:]#] && ! -z "${line}" ]]; then
-    R_PKG_LIST="${R_PKG_LIST}${line} "
-    echo ${line}
-fi
-# Install R packages
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s ${R_PKG_LIST}
-
-# Read R packages list (Github)
-R_PKG_FILE="${SCRIPT_DIR}/../environment_spec/r_environment_github.txt"
-# read the file line by line and filter out lines starting with # or whitespace
-R_PKG_LIST=""
+done < "${PKG_FILE}"
+# install R packages using littler install2.r script
+# if the preferred package type is binary, the packages without precompiled binaries
+# will be captured and installed from source
+echo -e "\n\nInstalling R packages:\n"
 while IFS= read -r line; do
-    if [[ "${line}" =~ ^[^[:space:]#] && ! -z "${line}" ]]; then
-        R_PKG_LIST="${R_PKG_LIST}${line} "
+    echo "$line"
+    # Check if line contains the "no binary available" message
+    if [[ "${line}" == *"not available as a binary package for this version of R"* ]]; then
+        PKG_NO_BIN_LIST=$(echo "$line" | grep -o "‘[^’]*’" | sed "s/[‘’]//g")
+        # # Extract package name from the line
+        # PKG=$(echo "${line}" | awk -F"‘|’" '{print $2}')
+        # PKG_NO_BIN_LIST+="${PKG} "
     fi
-done < "${R_PKG_FILE}"
-# deal with bad last line (without a newline in the end)
-if [[ "${line}" =~ ^[^[:space:]#] && ! -z "${line}" ]]; then
-    R_PKG_LIST="${R_PKG_LIST}${line} "
+done < <(install2.r -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s ${PKG_LIST} "$@" 2>&1)
+# install packages from source
+if [[ ! -z "${PKG_NO_BIN_LIST}" ]]; then
+    install2.r -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -t "source" -s ${PKG_NO_BIN_LIST}
+    echo -e "\nPackages installed from source:\n${PKG_NO_BIN_LIST}"
 fi
+
 # Install R packages (from Github)
-if [ ! -z "${R_PKG_LIST}" ]; then
-    echo -e "\n\nInstalling R packages (from Github):\n"
-    echo ${R_PKG_LIST}
-    installGithub.r -d TRUE -r ${CRAN} ${R_PKG_LIST}
+PKG_GH_FILE="${SCRIPT_DIR}/../environment_spec/r_environment_github.txt"
+PKG_GH_LIST=""
+# read file line by line, filtering out lines that start with # or whitespace
+while IFS= read -r line || [[ -n "$line" ]]; do
+    if [[ "${line}" =~ ^[^[:space:]#] ]]; then
+        PKG_GH_LIST+="${line} "
+    fi
+done < "${PKG_GH_FILE}"
+# install R packages using littler installGithub.r script
+if [ ! -z "${PKG_GH_LIST}" ]; then
+    echo -e "\n\nInstalling R packages (from Github):\n${PKG_GH_LIST}"
+    installGithub.r -d TRUE -r ${CRAN} ${PKG_GH_LIST}
 fi
 
 # Setup IRkernel for jupyter
@@ -78,11 +80,8 @@ Add following lines to .zshrc:
 
 # R environment
 export R_LIBS=${R_LIBS}
-# littler
-export PATH=\${PATH}:\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin
 # cran
 export CRAN=${CRAN}
-# for RcppParallel (dependency of brms)
-export TBB_INC=\$(ls -d \${HOMEBREW_ROOT}/Cellar/tbb/*)/include
-export TBB_LIB=\$(ls -d \${HOMEBREW_ROOT}/Cellar/tbb/*)/lib
+# littler
+export PATH=\${PATH}:\${R_LIBS}/littler/examples:\${R_LIBS}/littler/bin
 "
