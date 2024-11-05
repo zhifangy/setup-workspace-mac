@@ -21,13 +21,26 @@ case "$1" in
         uv pip install -r ${SCRIPT_DIR}/environment_spec/pyproject.toml -U --dry-run --extra full
         ;;
     "renv")
-        update.r -r ${CRAN} -l ${R_LIBS} -n ${N_CPUS}
-        bash ${SCRIPT_DIR}/script/fix_littler_macos.sh
+        Rscript -e "
+        options(Ncpus=${N_CPUS})
+        # Parse the TOML file and extract packages
+        spec <- RcppTOML::parseTOML('${SCRIPT_DIR}/environment_spec/renv.toml');
+        # Install packages
+        pak::meta_update();
+        pak::pkg_install(unlist(spec\$packages), lib=\"${R_LIBS}\", upgrade=TRUE);
+        # Cleanup cache
+        pak::cache_clean()
+        "
         ;;
     "renv_dryrun")
-        Rscript -e "R_LIBS<-Sys.getenv('R_LIBS')" \
-            -e "CRAN<-Sys.getenv('CRAN')" \
-            -e "old.packages(repos=CRAN)"
+        Rscript -e "
+        old_pkgs <- old.packages(lib.loc=Sys.getenv('R_LIBS'), repos=Sys.getenv('CRAN'))
+        if (!is.null(old_pkgs)) {
+            print(old_pkgs)
+        } else {
+            cat('No package needs to be updated.\n');
+        }
+        "
         ;;
     "fsl")
         update_fsl_release
