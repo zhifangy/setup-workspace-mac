@@ -7,11 +7,8 @@ N_CPUS=${N_CPUS:-6}
 AFNI_DIR=${SETUP_ROOT}/neurotools/afni
 AFNI_BUILD_DIR=${SETUP_ROOT}/neurotools/afni_build
 PKG_VERSION=macos_13_ARM_clang
-PATH=${AFNI_DIR}:${PATH}
 # r related
 R_LIBS=${R_LIBS:-${SETUP_ROOT}/renv}
-CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest}
-PATH=${PATH}:${R_LIBS}/littler/examples:${R_LIBS}/littler/bin
 
 # Cleanup old installation
 if [ -d ${AFNI_DIR} ]; then echo "Cleanup old AFNI installation..." && rm -rf ${AFNI_DIR}; fi
@@ -19,20 +16,38 @@ if [ -d ~/.afni/help ]; then echo "Cleanup old AFNI help files ..." && rm -rf ~/
 if [ -f ~/.afnirc ]; then echo "Cleanup old AFNI rc files ..." && rm ~/.afnirc; fi
 if [ -f ~/.sumarc ]; then echo "Cleanup old SUMA rc files ..." && rm ~/.sumarc; fi
 
-# Install dependency via homebrew
+# Install system dependencies via homebrew
 # see https://github.com/afni/afni/blob/master/src/other_builds/OS_notes.macos_12_ARM_a_admin_pt1.zsh
-brew install python netpbm cmake gfortran gcc@13
-brew install --cask xquartz
-brew install libpng jpeg expat freetype fontconfig openmotif  \
-    libomp gsl glib pkg-config gcc libiconv autoconf \
-    libxt mesa mesa-glu libxpm
-# Install R package dependency (list from rPkgsInstall.R)
-install2.r --error -l ${R_LIBS} -n ${N_CPUS} -r ${CRAN} -s \
-    afex phia snow nlme lmerTest gamm4 data.table paran psych corrplot metafor
+formula_packages=(
+    "python" "netpbm" "cmake" "gfortran" "libpng" "jpeg" "expat" "freetype" "fontconfig" \
+    "openmotif" "libomp" "gsl" "glib" "pkg-config" "gcc" "libiconv" "autoconf" "libxt" \
+    "mesa" "mesa-glu" "libxpm"
+)
+# List of cask packages
+cask_packages=(
+    "xquartz"
+)
+for package in "${formula_packages[@]}"; do
+    brew list --formula "${package}" &> /dev/null || brew install "${package}"
+done
+for cask in "${cask_packages[@]}"; do
+    brew list --cask "${cask}" &> /dev/null || brew install --cask "${cask}"
+done
+# Install R dependencies
+Rscript --no-environ --no-init-file -e "
+options(Ncpus=${N_CPUS})
+# Install packages
+pkgs_list <- c(
+    'afex', 'phia', 'snow', 'nlme', 'lmerTest', 'gamm4', 'data.table',
+    'paran', 'psych', 'corrplot', 'metafor'
+)
+pak::pkg_install(pkgs_list, lib=\"${R_LIBS}\");
+# Cleanup cache
+pak::cache_clean()
+"
 
 # Install AFNI
 echo "Installing AFNI from source code (building for apple aarch64)..."
-export PATH=${AFNI_DIR}:${PATH}
 # download @update.afni.binaries and do basic setup
 mkdir -p ${AFNI_DIR}
 wget -q https://afni.nimh.nih.gov/pub/dist/bin/misc/@update.afni.binaries -P ${AFNI_DIR}
