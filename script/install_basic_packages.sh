@@ -2,7 +2,16 @@
 set -e
 
 # Install Homebrew
-if ! command -v brew &> /dev/null; then
+if command -v brew &> /dev/null || [ -d "/opt/homebrew" ]; then
+    echo "Homebrew is already installed."
+    # check if /opt/homebrew/bin is in the PATH
+    if ! echo "$PATH" | grep -q "/opt/homebrew/bin"; then
+        echo "However, /opt/homebrew/bin is not in the \$PATH."
+        echo "Temporarily add it to \$PATH. Please modify the Shell profile file to make it persistent."
+        PATH="/opt/homebrew/bin:$PATH"
+    fi
+else
+    echo "Installing Homebrew ..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
@@ -29,8 +38,7 @@ echo "
 Add following line to .zshrc
 
 # Homebrew
-export HOMEBREW_ROOT=\"${HOMEBREW_ROOT}\"
-export PATH=\"\${HOMEBREW_ROOT}/bin:\${PATH}\"
+export PATH=\"/opt/homebrew/bin:\${PATH}\"
 # Homebrew zsh completions
 if type brew &>/dev/null
 then
