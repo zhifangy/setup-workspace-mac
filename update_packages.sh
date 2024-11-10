@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/envs
-export SETUP_ROOT
-SCRIPT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
-N_CPUS=${N_CPUS:-6}
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+SCRIPT_ROOT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
+# Set environment variables
+N_CPUS=${N_CPUS:-8}
 
 case "$1" in
     "basic"|"brew")
@@ -15,16 +18,16 @@ case "$1" in
         zsh -ic "upgrade_oh_my_zsh_all"
         ;;
     "pyenv")
-        uv pip install -r ${SCRIPT_DIR}/environment_spec/pyproject.toml -U --extra full
+        uv pip install -r ${SCRIPT_ROOT_DIR}/environment_spec/pyproject.toml -U --extra full
         ;;
     "pyenv_dryrun")
-        uv pip install -r ${SCRIPT_DIR}/environment_spec/pyproject.toml -U --dry-run --extra full
+        uv pip install -r ${SCRIPT_ROOT_DIR}/environment_spec/pyproject.toml -U --dry-run --extra full
         ;;
     "renv")
         Rscript -e "
         options(Ncpus=${N_CPUS})
         # Parse the TOML file and extract packages
-        spec <- RcppTOML::parseTOML('${SCRIPT_DIR}/environment_spec/renv.toml');
+        spec <- RcppTOML::parseTOML('${SCRIPT_ROOT_DIR}/environment_spec/renv.toml');
         # Install packages
         pak::meta_update();
         pak::pkg_install(unlist(spec\$packages), lib=\"${R_LIBS}\", upgrade=TRUE);

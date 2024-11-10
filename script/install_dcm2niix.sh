@@ -1,11 +1,15 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
 # to avoid environment conflict (e.g., zlib, clang), all tools' binary will be
 # symlinked to separate directories
-DCM2NIIX_DIR=${SETUP_ROOT}/neurotools/dcm2niix
+DCM2NIIX_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/dcm2niix")"
 ENV_PREFIX=${DCM2NIIX_DIR}/env
 # python related
 MAMBA_DIR=${MAMBA_DIR:-${SETUP_ROOT}/micromamba}

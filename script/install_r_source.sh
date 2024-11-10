@@ -1,13 +1,17 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
 N_CPUS=${N_CPUS:-6}
 # R
 R_VERSION=${R_VERSION:-4.4.1}
-R_ROOT_PREFIX=${R_ROOT_PREFIX:-${SETUP_ROOT}/r}
-R_BUILD_DIR=${R_BUILD_DIR:-${SETUP_ROOT}/r_build}
+R_ROOT_PREFIX=${R_ROOT_PREFIX:-$(eval "echo ${SETUP_PREFIX}/r")}
+R_BUILD_DIR=${R_BUILD_DIR:-$(eval "echo ${SETUP_PREFIX}/r_build")}
 
 # Cleanup old compilation directory
 if [ -d ${R_BUILD_DIR} ]; then echo "Cleanup old R compilation directory..." && rm -rf ${R_BUILD_DIR}; fi

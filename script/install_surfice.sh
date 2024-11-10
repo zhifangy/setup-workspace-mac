@@ -1,9 +1,13 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
-SURFICE_DIR=${SETUP_ROOT}/neurotools/surfice
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
+SURFICE_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/surfice")"
 SURFICE_VERSION=${SURFICE_VERSION:-v1.0.20211006}
 
 # Cleanup old installation

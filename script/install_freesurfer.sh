@@ -1,9 +1,13 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
-FREESURFER_DIR=${SETUP_ROOT}/neurotools/freesurfer
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
+FREESURFER_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/freesurfer")"
 FREESURFER_VERSION=${FREESURFER_VERSION:-7.4.1}
 
 # Backup license.txt from existed FreeSurfer folder

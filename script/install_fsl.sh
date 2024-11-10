@@ -1,9 +1,13 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
-FSL_DIR=${SETUP_ROOT}/neurotools/fsl
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
+FSL_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/fsl")"
 FSL_VERSION=${FSL_VERSION:-6.0.7.14}
 
 # Cleanup old installation
@@ -11,10 +15,10 @@ if [ -d ${FSL_DIR} ]; then echo "Cleanup old FSL installation..." && rm -rf ${FS
 
 # Install
 echo "Installing FSL from offical website..."
-wget -q https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py -P ${SETUP_ROOT}
-chmod +x ${SETUP_ROOT}/fslinstaller.py
-${SETUP_ROOT}/fslinstaller.py -V ${FSL_VERSION} -d ${FSL_DIR} --no_env --skip_registration
-mv ${SETUP_ROOT}/fslinstaller.py ${FSL_DIR}/fslinstaller.py
+mkdir -p $FSL_DIR
+wget -q https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py -P $FSL_DIR
+chmod +x ${FSL_DIR}/fslinstaller.py
+${FSL_DIR}/fslinstaller.py -V ${FSL_VERSION} -d ${FSL_DIR} --no_env --skip_registration
 
 # Use newer version of MSM
 wget https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 -P ${FSL_DIR}

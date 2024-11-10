@@ -1,14 +1,18 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
 N_CPUS=${N_CPUS:-6}
-AFNI_DIR=${SETUP_ROOT}/neurotools/afni
-AFNI_BUILD_DIR=${SETUP_ROOT}/neurotools/afni_build
+AFNI_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/afni")"
+AFNI_BUILD_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/afni_build")"
 PKG_VERSION=macos_13_ARM_clang
 # r related
-R_LIBS=${R_LIBS:-${SETUP_ROOT}/renv}
+R_LIBS="${R_LIBS:-$(eval "echo ${SETUP_PREFIX}/renv")}"
 
 # Cleanup old installation
 if [ -d ${AFNI_DIR} ]; then echo "Cleanup old AFNI installation..." && rm -rf ${AFNI_DIR}; fi

@@ -1,9 +1,13 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
-C3D_DIR=${SETUP_ROOT}/neurotools/convert3d
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
+C3D_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/convert3d")"
 C3D_VERSION=${C3D_VERSION:-1.4.2}
 
 # Cleanup old installation
