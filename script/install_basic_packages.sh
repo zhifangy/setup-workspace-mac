@@ -16,22 +16,28 @@ else
 fi
 
 # Install packages
+# private tap
+brew tap rundel/quarto-cli
+# formula packages
 formula_packages=(
     "wget" "curl" "vim" "cmake" "gcc" "llvm" "tcl-tk" "pkg-config" "xz" "readline" "gettext" "icu4c" \
     "bzip2" "zlib" "node" "python" "freetype" "fontconfig" "libssh2" "libgit2" "open-mpi" "openblas" "openjdk" \
     "hdf5" "swig" "tbb" "texinfo" "mariadb-connector-c" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
-    "autossh" "macfuse" "gromgit/fuse/sshfs-mac" "bat" "lsd" "fzf" "starship" "thefuck"
+    "rundel/quarto-cli/quarto" "autossh" "macfuse" "gromgit/fuse/sshfs-mac" "bat" "lsd" "fzf" "starship" "thefuck"
 )
-# List of cask packages
+# cask packages
 cask_packages=(
     "xquartz"
 )
+# install
 for package in "${formula_packages[@]}"; do
     brew list --formula "${package}" &> /dev/null || brew install "${package}"
 done
 for cask in "${cask_packages[@]}"; do
     brew list --cask "${cask}" &> /dev/null || brew install --cask "${cask}"
 done
+# link packages
+brew link quarto
 
 # Add following lines into .zshrc
 echo "
