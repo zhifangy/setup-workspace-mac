@@ -1,23 +1,26 @@
 #!/bin/bash
 set -e
 
-# Setup
-source $( dirname -- "$( readlink -f -- "$0"; )"; )/../envs
-# TeX Live
-TEXLIVE_DIR=${SETUP_ROOT}/texlive
-export PATH=${TEXLIVE_DIR}/bin/universal-darwin:${PATH}
+# Get setup and script root directory
+if [ -z "${SETUP_PREFIX}" ]; then
+    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
+    export SETUP_PREFIX='${HOME}/Softwares'
+fi
+# Set environment variables
+export INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/texlive")"
+export PATH=${INSTALL_PREFIX}/bin/universal-darwin:${PATH}
 
 # Cleanup old installation
-if [ -d ${TEXLIVE_DIR} ]; then echo "Cleanup old Texlive installation..." && rm -rf ${TEXLIVE_DIR}; fi
+if [ -d ${INSTALL_PREFIX} ]; then echo "Cleanup old Texlive installation..." && rm -rf ${INSTALL_PREFIX}; fi
 
 # Install
-mkdir -p ${TEXLIVE_DIR}
-wget -q https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz -P ${TEXLIVE_DIR}
-zcat < ${TEXLIVE_DIR}/install-tl-unx.tar.gz | tar xf - -C ${TEXLIVE_DIR}
-perl ${TEXLIVE_DIR}/install-tl-*/install-tl -no-interaction -no-continue \
+mkdir -p ${INSTALL_PREFIX}
+wget -q https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz -P ${INSTALL_PREFIX}
+zcat < ${INSTALL_PREFIX}/install-tl-unx.tar.gz | tar xf - -C ${INSTALL_PREFIX}
+perl ${INSTALL_PREFIX}/install-tl-*/install-tl -no-interaction -no-continue \
     --scheme=scheme-bookpub \
-    -texdir=${TEXLIVE_DIR} \
-    -texuserdir=${TEXLIVE_DIR}/texmf-user
+    -texdir=${INSTALL_PREFIX} \
+    -texuserdir=${INSTALL_PREFIX}/texmf-user
 
 # Install additional packages
 tlmgr install xetex
@@ -25,12 +28,12 @@ tlmgr install xetex
 tlmgr install inconsolata fancyvrb
 
 # Cleanup
-rm -r ${TEXLIVE_DIR}/install-tl-*
+rm -r ${INSTALL_PREFIX}/install-tl-*
 
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 
 # TeX Live
-export PATH=${TEXLIVE_DIR}/bin/universal-darwin:\${PATH}
+export PATH=\"${SETUP_PREFIX}/texlive/bin/universal-darwin:\$PATH\"
 "

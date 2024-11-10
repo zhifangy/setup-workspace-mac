@@ -42,6 +42,9 @@ case "$1" in
         }
         "
         ;;
+    "texlive")
+        tlmgr update --self --all
+        ;;
     "fsl")
         update_fsl_release
         ;;
