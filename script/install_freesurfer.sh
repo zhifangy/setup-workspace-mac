@@ -7,46 +7,47 @@ if [ -z "${SETUP_PREFIX}" ]; then
     export SETUP_PREFIX='${HOME}/Softwares'
 fi
 # Set environment variables
-FREESURFER_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/freesurfer")"
+INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/freesurfer")"
 FREESURFER_VERSION=${FREESURFER_VERSION:-7.4.1}
 
-# Backup license.txt from existed FreeSurfer folder
-if [ -d ${FREESURFER_DIR} ]; then
-    if [ -f ${FREESURFER_DIR}/license.txt ]; then
+# Cleanup old installation
+if [ -d ${INSTALL_PREFIX} ]; then
+    # backup license.txt from existed FreeSurfer folder
+    if [ -f ${INSTALL_PREFIX}/license.txt ]; then
         echo "Backup FreeSurfer license from existed installation ..."
-        cp ${FREESURFER_DIR}/license.txt ${SETUP_ROOT}/license.txt
+        cp ${INSTALL_PREFIX}/license.txt $(eval "echo ${SETUP_PREFIX}")/license.txt
     fi
     echo "Cleanup old FreeSurfer installation ..."
-    rm -rf ${FREESURFER_DIR}
+    rm -rf ${INSTALL_PREFIX}
 fi
 
 # Install
 echo "Installing FreeSurfer from offical website..."
-mkdir -p ${FREESURFER_DIR}
+mkdir -p ${INSTALL_PREFIX}
 wget -q https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/${FREESURFER_VERSION}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz \
-    -P ${FREESURFER_DIR}
-tar -xzf ${FREESURFER_DIR}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz -C ${FREESURFER_DIR} --strip-components 2
-rm ${FREESURFER_DIR}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
+    -P ${INSTALL_PREFIX}
+tar -xzf ${INSTALL_PREFIX}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz -C ${INSTALL_PREFIX} --strip-components 2
+rm ${INSTALL_PREFIX}/freesurfer-macOS-darwin_x86_64-${FREESURFER_VERSION}.tar.gz
 
 # Move previous license.txt to new FreeSurfer folder
-if [ -f ${SETUP_ROOT}/license.txt ]; then
+if [ -f $(eval "echo ${SETUP_PREFIX}")/license.txt ]; then
     echo "Move previous FreeSurfer license to new installation ..."
-    mv ${SETUP_ROOT}/license.txt ${FREESURFER_DIR}/license.txt
+    mv $(eval "echo ${SETUP_PREFIX}")/license.txt ${INSTALL_PREFIX}/license.txt
 else
     echo "Use default personal FreeSurfer license ..."
-    base64 --decode <<<  emhpZmFuZy55ZS5mZ2htQGdtYWlsLmNvbQozMDgyNwogKkNBanR5YkNZNDByTQogRlM5dmVNeDhnbnVxUQo= > ${FREESURFER_DIR}/license.txt
+    base64 --decode <<<  emhpZmFuZy55ZS5mZ2htQGdtYWlsLmNvbQozMDgyNwogKkNBanR5YkNZNDByTQogRlM5dmVNeDhnbnVxUQo= > ${INSTALL_PREFIX}/license.txt
 fi
 
 # Put app to /Applications folder
 if [[ -d /Applications/Freeview.app || -L /Applications/Freeview.app ]]; then rm /Applications/Freeview.app; fi
-ln -s ${FREESURFER_DIR}/Freeview.app /Applications/Freeview.app
+ln -s ${INSTALL_PREFIX}/Freeview.app /Applications/Freeview.app
 
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
 
 # FreeSurfer
-export FREESURFER_HOME=${FREESURFER_DIR}
+export FREESURFER_HOME=\"${SETUP_PREFIX}/freesurfer\"
 export \\
     OS=Linux \\
     FS_OVERRIDE=0 \\
@@ -67,5 +68,5 @@ export \\
     FREESURFER=\${FREESURFER_HOME} \\
     FIX_VERTEX_AREA= \\
     FS_LICENSE=\${FREESURFER_HOME}/license.txt
-export PATH=\${FREESURFER_HOME}/bin:\${FSFAST_HOME}/bin:\${FREESURFER_HOME}/tktools:\${MINC_BIN_DIR}:\${PATH}
+export PATH=\"\${FREESURFER_HOME}/bin:\${FSFAST_HOME}/bin:\${FREESURFER_HOME}/tktools:\${MINC_BIN_DIR}:\${PATH}\"
 "

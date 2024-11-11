@@ -35,5 +35,5 @@ echo "
 Add following lines to .zshrc:
 
 # TeX Live
-export PATH=\"${SETUP_PREFIX}/texlive/bin/universal-darwin:\$PATH\"
+export PATH=\"${SETUP_PREFIX}/texlive/bin/universal-darwin:\${PATH}\"
 "

@@ -7,28 +7,29 @@ if [ -z "${SETUP_PREFIX}" ]; then
     export SETUP_PREFIX='${HOME}/Softwares'
 fi
 # Set environment variables
-# to avoid environment conflict (e.g., zlib, clang), all tools' binary will be
-# symlinked to separate directories
-FSLEYES_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/fsleyes")"
-ENV_PREFIX=${FSLEYES_DIR}/env
-# python related
-MAMBA_DIR=${MAMBA_DIR:-${SETUP_ROOT}/micromamba}
-PATH=${MAMBA_DIR}/bin:${PATH}
+INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/fsleyes")"
+ENV_PREFIX=${INSTALL_PREFIX}/env
+# Check micromamba
+if ! command -v micromamba &> /dev/null; then
+    echo "Error: micromamba is not installed." >&2
+    exit 1
+fi
 
 # Cleanup old installation
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
     echo "Cleanup old environment ${ENV_PREFIX}..."
     micromamba env remove -p ${ENV_PREFIX} -yq
 fi
-if [ -d ${FSLEYES_DIR} ]; then rm -rf ${FSLEYES_DIR}; fi
+if [ -d ${INSTALL_PREFIX} ]; then rm -rf ${INSTALL_PREFIX}; fi
 
 # Install
 echo "Installing FSLeyes from conda-forge..."
 micromamba create -p ${ENV_PREFIX} -c conda-forge -yq fsleyes
 
 # Symlink binary files
-mkdir -p ${FSLEYES_DIR}/bin
-ln -s ${ENV_PREFIX}/bin/fsleyes ${FSLEYES_DIR}/bin/fsleyes
+# to avoid environment conflict (e.g., zlib, clang), all binaries will be symlinked to separate directories
+mkdir -p ${INSTALL_PREFIX}/bin
+ln -s ${ENV_PREFIX}/bin/fsleyes ${INSTALL_PREFIX}/bin/fsleyes
 
 # Put app to /Applications folder
 if [[ -d /Applications/FSLeyes.app || -L /Applications/FSLeyes.app ]]; then rm /Applications/FSLeyes.app; fi
@@ -42,8 +43,8 @@ echo "
 Add following lines to .zshrc:
 
 # FSLeyes
-export FSLEYES_DIR=${FSLEYES_DIR}
-export PATH=\${FSLEYES_DIR}/bin:\${PATH}
+export FSLEYES_DIR=\"${SETUP_PREFIX}/fsleyes\"
+export PATH=\"\${FSLEYES_DIR}/bin:\${PATH}\"
 # Note: to use this version of fsleyes
 # above lines should be put after FSL related lines
 "

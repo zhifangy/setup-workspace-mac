@@ -52,17 +52,17 @@ case "$1" in
         update_fsl_release
         ;;
     "fsleyes")
-        FSLEYES_DIR=${FSLEYES_DIR:-${SETUP_ROOT}/neurotools/fsleyes}
+        FSLEYES_DIR=${FSLEYES_DIR:-${SETUP_PREFIX}/fsleyes}
         ENV_PREFIX=${FSLEYES_DIR}/env
         micromamba update fsleyes -p ${ENV_PREFIX} -c conda-forge
         ;;
     "ants")
-        ANTS_DIR=${ANTS_DIR:-${SETUP_ROOT}/neurotools/ants}
+        ANTS_DIR=${ANTS_DIR:-${SETUP_PREFIX}/ants}
         ENV_PREFIX=${ANTS_DIR}/env
         micromamba update ants -p ${ENV_PREFIX} -c conda-forge
         ;;
     "dcm2niix")
-        DCM2NIIX_DIR=${DCM2NIIX_DIR:-${SETUP_ROOT}/neurotools/dcm2niix}
+        DCM2NIIX_DIR=${DCM2NIIX_DIR:-${SETUP_PREFIX}/dcm2niix}
         ENV_PREFIX=${DCM2NIIX_DIR}/env
         micromamba update dcm2niix -p ${ENV_PREFIX} -c conda-forge
         ;;

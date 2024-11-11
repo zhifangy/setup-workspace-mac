@@ -7,33 +7,33 @@ if [ -z "${SETUP_PREFIX}" ]; then
     export SETUP_PREFIX='${HOME}/Softwares'
 fi
 # Set environment variables
-SURFICE_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/surfice")"
+INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/surfice")"
 SURFICE_VERSION=${SURFICE_VERSION:-v1.0.20211006}
 
 # Cleanup old installation
-if [ -d ${SURFICE_DIR} ]; then rm -rf ${SURFICE_DIR}; fi
+if [ -d ${INSTALL_PREFIX} ]; then rm -rf ${INSTALL_PREFIX}; fi
 
 # Install
 echo "Installing Surfice from Github..."
-mkdir -p ${SURFICE_DIR}
+mkdir -p ${INSTALL_PREFIX}
 wget -q https://github.com/neurolabusc/surf-ice/releases/download/${SURFICE_VERSION}/Surfice_macOS.dmg \
-    -P ${SURFICE_DIR}
-7zz x ${SURFICE_DIR}/Surfice_macOS.dmg -o"${SURFICE_DIR}/" -xr"!*:com.*" -xr"!.DS_Store" \
+    -P ${INSTALL_PREFIX}
+7zz x ${INSTALL_PREFIX}/Surfice_macOS.dmg -o"${INSTALL_PREFIX}/" -xr"!*:com.*" -xr"!.DS_Store" \
     Surfice/Surfice > /dev/null
-mv ${SURFICE_DIR}/Surfice/Surfice/* ${SURFICE_DIR}
+mv ${INSTALL_PREFIX}/Surfice/Surfice/* ${INSTALL_PREFIX}
 
 # Put app to /Applications folder
 if [[ -d /Applications/Surfice.app || -L /Applications/Surfice.app ]]; then rm /Applications/Surfice.app; fi
-ln -s ${SURFICE_DIR}/surfice.app /Applications/Surfice.app
+ln -s ${INSTALL_PREFIX}/surfice.app /Applications/Surfice.app
 
 # Cleanup
-rm ${SURFICE_DIR}/Surfice_macOS.dmg
-rm -r ${SURFICE_DIR}/Surfice
+rm ${INSTALL_PREFIX}/Surfice_macOS.dmg
+rm -r ${INSTALL_PREFIX}/Surfice
 
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 
 # Surfice
-export PATH=${SURFICE_DIR}:\${PATH}
+export PATH=\"${SETUP_PREFIX}/surfice:\${PATH}\"
 "

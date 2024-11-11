@@ -7,30 +7,32 @@ if [ -z "${SETUP_PREFIX}" ]; then
     export SETUP_PREFIX='${HOME}/Softwares'
 fi
 # Set environment variables
-BASE_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools")"
-WORKBENCH_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/workbench")"
+INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/workbench")"
 WORKBENCH_VERSION=${WORKBENCH_VERSION:-v2.0.1}
 
 # Cleanup old installation
-if [ -d ${WORKBENCH_DIR} ]; then rm -rf ${WORKBENCH_DIR}; fi
+if [ -d ${INSTALL_PREFIX} ]; then rm -rf ${INSTALL_PREFIX}; fi
 
 # Install
 echo "Installing Workbench from humanconnectome.org..."
+mkdir -p ${INSTALL_PREFIX}
 wget -q https://www.humanconnectome.org/storage/app/media/workbench/workbench-macub-${WORKBENCH_VERSION}.zip \
-    -P ${BASE_DIR}
-unzip -q -d ${BASE_DIR} ${BASE_DIR}/workbench-macub-${WORKBENCH_VERSION}.zip
+    -P ${INSTALL_PREFIX}
+unzip -q -d ${INSTALL_PREFIX} ${INSTALL_PREFIX}/workbench-macub-${WORKBENCH_VERSION}.zip
+mv ${INSTALL_PREFIX}/workbench/* ${INSTALL_PREFIX}
 
 # Put app to /Applications folder
 if [[ -d /Applications/Workbench.app || -L /Applications/Workbench.app ]]; then rm /Applications/Workbench.app; fi
-ln -s ${WORKBENCH_DIR}/macosxub_apps/wb_view.app /Applications/Workbench.app
+ln -s ${INSTALL_PREFIX}/macosxub_apps/wb_view.app /Applications/Workbench.app
 
 # Cleanup
-rm ${BASE_DIR}/workbench-macub-${WORKBENCH_VERSION}.zip
+rm ${INSTALL_PREFIX}/workbench-macub-${WORKBENCH_VERSION}.zip
+rm -r ${INSTALL_PREFIX}/workbench
 
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 
 # HCP Workbench
-export PATH=${WORKBENCH_DIR}/bin_macosxub:\${PATH}
+export PATH=\"${SETUP_PREFIX}/workbench/bin_macosxub:\${PATH}\"
 "

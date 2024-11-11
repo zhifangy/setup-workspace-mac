@@ -7,30 +7,30 @@ if [ -z "${SETUP_PREFIX}" ]; then
     export SETUP_PREFIX='${HOME}/Softwares'
 fi
 # Set environment variables
-FSL_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/fsl")"
-FSL_VERSION=${FSL_VERSION:-6.0.7.14}
+INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/fsl")"
+FSL_VERSION=${FSL_VERSION:-6.0.7.15}
 
 # Cleanup old installation
-if [ -d ${FSL_DIR} ]; then echo "Cleanup old FSL installation..." && rm -rf ${FSL_DIR}; fi
+if [ -d ${INSTALL_PREFIX} ]; then echo "Cleanup old FSL installation..." && rm -rf ${INSTALL_PREFIX}; fi
 
 # Install
 echo "Installing FSL from offical website..."
-mkdir -p $FSL_DIR
-wget -q https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py -P $FSL_DIR
-chmod +x ${FSL_DIR}/fslinstaller.py
-${FSL_DIR}/fslinstaller.py -V ${FSL_VERSION} -d ${FSL_DIR} --no_env --skip_registration
+mkdir -p ${INSTALL_PREFIX}
+wget -q https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py -P ${INSTALL_PREFIX}
+chmod +x ${INSTALL_PREFIX}/fslinstaller.py
+${INSTALL_PREFIX}/fslinstaller.py -V ${FSL_VERSION} -d ${INSTALL_PREFIX} -o --no_env --skip_registration
 
 # Use newer version of MSM
-wget https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 -P ${FSL_DIR}
-mv -fv ${FSL_DIR}/msm_mac_v3 ${FSL_DIR}/share/fsl/bin/msm
-chmod 755 ${FSL_DIR}/share/fsl/bin/msm
+wget -q https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 -P ${INSTALL_PREFIX}
+mv -fv ${INSTALL_PREFIX}/msm_mac_v3 ${INSTALL_PREFIX}/share/fsl/bin/msm
+chmod 755 ${INSTALL_PREFIX}/share/fsl/bin/msm
 
 # Add following lines into .zshrc
 echo "
 Add following line to .zshrc
 
 # FSL
-export FSLDIR=${FSL_DIR}
+export FSLDIR=\"${SETUP_PREFIX}/fsl\"
 export \\
     FSLOUTPUTTYPE=NIFTI_GZ \\
     FSLMULTIFILEQUIT=TRUE \\
@@ -42,5 +42,5 @@ export \\
     FSLREMOTECALL= \\
     FSL_LOAD_NIFTI_EXTENSIONS=0 \\
     FSL_SKIP_GLOBAL=0
-export PATH=\${FSLDIR}/share/fsl/bin:\${PATH}
+export PATH=\"\${FSLDIR}/share/fsl/bin:\${PATH}\"
 "

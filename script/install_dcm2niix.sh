@@ -7,28 +7,29 @@ if [ -z "${SETUP_PREFIX}" ]; then
     export SETUP_PREFIX='${HOME}/Softwares'
 fi
 # Set environment variables
-# to avoid environment conflict (e.g., zlib, clang), all tools' binary will be
-# symlinked to separate directories
-DCM2NIIX_DIR="$(eval "echo ${SETUP_PREFIX}/neurotools/dcm2niix")"
-ENV_PREFIX=${DCM2NIIX_DIR}/env
-# python related
-MAMBA_DIR=${MAMBA_DIR:-${SETUP_ROOT}/micromamba}
-PATH=${MAMBA_DIR}/bin:${PATH}
+INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/dcm2niix")"
+ENV_PREFIX=${INSTALL_PREFIX}/env
+# Check micromamba
+if ! command -v micromamba &> /dev/null; then
+    echo "Error: micromamba is not installed." >&2
+    exit 1
+fi
 
 # Cleanup old installation
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
     echo "Cleanup old environment ${ENV_PREFIX}..."
     micromamba env remove -p ${ENV_PREFIX} -yq
 fi
-if [ -d ${DCM2NIIX_DIR} ]; then rm -rf ${DCM2NIIX_DIR}; fi
+if [ -d ${INSTALL_PREFIX} ]; then rm -rf ${INSTALL_PREFIX}; fi
 
 # Install
 echo "Installing dcm2niix from conda-forge..."
 micromamba create -p ${ENV_PREFIX} -c conda-forge -yq dcm2niix
 
 # Symlink binary files
-mkdir -p ${DCM2NIIX_DIR}/bin
-ln -s ${ENV_PREFIX}/bin/dcm2niix ${DCM2NIIX_DIR}/bin/dcm2niix
+# to avoid environment conflict (e.g., zlib, clang), all binaries will be symlinked to separate directories
+mkdir -p ${INSTALL_PREFIX}/bin
+ln -s ${ENV_PREFIX}/bin/dcm2niix ${INSTALL_PREFIX}/bin/dcm2niix
 
 # Cleanup
 micromamba clean -apyq
@@ -38,6 +39,6 @@ echo "
 Add following lines to .zshrc:
 
 # Dcm2niix
-export DCM2NIIX_DIR=${DCM2NIIX_DIR}
-export PATH=\${DCM2NIIX_DIR}/bin:\${PATH}
+export DCM2NIIX_DIR=\"${SETUP_PREFIX}/dcm2niix\"
+export PATH=\"\${DCM2NIIX_DIR}/bin:\${PATH}\"
 "
