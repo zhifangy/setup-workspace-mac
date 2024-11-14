@@ -23,7 +23,7 @@ formula_packages=(
     "wget" "curl" "vim" "cmake" "gcc" "llvm" "tcl-tk" "pkg-config" "xz" "readline" "gettext" "icu4c" \
     "bzip2" "zlib" "node" "python" "freetype" "fontconfig" "libssh2" "libgit2" "open-mpi" "openblas" "openjdk" \
     "hdf5" "swig" "tbb" "texinfo" "mariadb-connector-c" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
-    "rundel/quarto-cli/quarto" "autossh" "macfuse" "gromgit/fuse/sshfs-mac" "bat" "lsd" "fzf" "starship" "thefuck"
+    "rundel/quarto-cli/quarto" "autossh" "macfuse" "gromgit/fuse/sshfs-mac" "bash" "bat" "lsd" "fzf" "starship" "thefuck"
 )
 # cask packages
 cask_packages=(
@@ -44,15 +44,8 @@ echo "
 Add following line to .zshrc
 
 # Homebrew
-export PATH=\"/opt/homebrew/bin:\${PATH}\"
-# Homebrew zsh completions
-if type brew &>/dev/null
-then
-    FPATH=\"\$(brew --prefix)/share/zsh/site-functions:\${FPATH}\"
-
-    autoload -Uz compinit
-    compinit
-fi
+eval \"\$(/opt/homebrew/bin/brew shellenv)\"
+FPATH=\"\$(brew --prefix)/share/zsh/site-functions:\${FPATH}\"
 
 # Starship
 eval \"\$(starship init zsh)\"
@@ -61,9 +54,8 @@ eval \"\$(starship init zsh)\"
 export BAT_THEME=\"Dracula\"
 
 # fzf
-export PATH=\"\$(brew --prefix fzf)/bin:\${PATH}\"
-source \"\$(brew --prefix fzf)/shell/completion.zsh\"
-source \"\$(brew --prefix fzf)/shell/key-bindings.zsh\"
+# set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
 
 # The fuck
 eval \"\$(thefuck --alias)\"
