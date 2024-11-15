@@ -44,10 +44,10 @@ micromamba activate ${PY_LIBS}
 uv venv --allow-existing --seed --python ${PYTHON_VERSION} ${PY_LIBS}
 
 # Install packages in venv via UV
-uv pip install -r ${SCRIPT_ROOT_DIR}/environment_spec/pyproject.toml --extra full
+uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml --extra full
 # special treatment for brainstat
-uv pip install -r ${SCRIPT_ROOT_DIR}/environment_spec/pyproject.toml --extra brainstat_deps
-uv pip install -r ${SCRIPT_ROOT_DIR}/environment_spec/pyproject.toml --extra brainstat_nodeps --no-deps
+uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml --extra brainstat_deps
+uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml --extra brainstat_nodeps --no-deps
 
 # Cleanup
 micromamba clean -apyq

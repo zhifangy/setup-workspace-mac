@@ -18,16 +18,16 @@ case "$1" in
         zsh -ic "upgrade_oh_my_zsh_all"
         ;;
     "pyenv")
-        uv pip install -r ${SCRIPT_ROOT_DIR}/environment_spec/pyproject.toml -U --extra full
+        uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml -U --extra full
         ;;
     "pyenv_dryrun")
-        uv pip install -r ${SCRIPT_ROOT_DIR}/environment_spec/pyproject.toml -U --dry-run --extra full
+        uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml -U --dry-run --extra full
         ;;
     "renv")
         Rscript -e "
         options(Ncpus=${N_CPUS})
         # Parse the TOML file and extract packages
-        spec <- RcppTOML::parseTOML('${SCRIPT_ROOT_DIR}/environment_spec/renv.toml');
+        spec <- RcppTOML::parseTOML('${SCRIPT_ROOT_DIR}/misc/renv.toml');
         # Install packages
         pak::meta_update();
         pak::pkg_install(unlist(spec\$packages), lib=\"${R_LIBS}\", upgrade=TRUE);

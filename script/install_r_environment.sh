@@ -27,7 +27,7 @@ mkdir -p ${R_LIBS}
 Rscript -e "install.packages(c('pak', 'RcppTOML'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE)"
 
 # Install R package from TOML file
-PKG_FILE="${SCRIPT_ROOT_DIR}/environment_spec/renv.toml"
+PKG_FILE="${SCRIPT_ROOT_DIR}/misc/renv.toml"
 Rscript --no-environ --no-init-file -e "
 options(Ncpus=${N_CPUS})
 # Parse the TOML file and extract packages
