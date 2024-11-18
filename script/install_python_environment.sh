@@ -8,9 +8,12 @@ if [ -z "${SETUP_PREFIX}" ]; then
 fi
 SCRIPT_ROOT_DIR=$(dirname "$(dirname "$(realpath -- "$0")")")
 # Set environment variables
+export MAMBA_ROOT_PREFIX="$(eval "echo ${SETUP_PREFIX}/micromamba")"
 export \
-    MAMBA_ROOT_PREFIX="$(eval "echo ${SETUP_PREFIX}")/micromamba" \
-    UV_ROOT_DIR="$(eval "echo ${SETUP_PREFIX}")/uv"
+    CONDA_ENVS_DIRS="${MAMBA_ROOT_PREFIX}/envs" \
+    CONDA_PKGS_DIRS="${MAMBA_ROOT_PREFIX}/pkgs" \
+    CONDA_CHANNELS="conda-forge,HCC"
+export UV_ROOT_DIR="$(eval "echo ${SETUP_PREFIX}/uv")"
 export \
     UV_PYTHON_INSTALL_DIR="${UV_ROOT_DIR}/python" \
     UV_TOOL_DIR="${UV_ROOT_DIR}/tool" \
@@ -23,6 +26,7 @@ formula_packages=("micromamba" "uv" "ruff")
 for package in "${formula_packages[@]}"; do
     brew list --formula "${package}" &> /dev/null || brew install "${package}"
 done
+eval "$(micromamba shell hook --shell bash --root-prefix ${MAMBA_ROOT_PREFIX})"
 
 # Cleanup old python environment
 if [ $(micromamba env list | grep -c ${PY_LIBS}) -ne 0 ]; then
@@ -37,9 +41,7 @@ fi
 uv python install ${PYTHON_VERSION}
 
 # Create python environment
-micromamba create -yq -p ${PY_LIBS}
-eval "$(micromamba shell hook --shell bash --root-prefix ${MAMBA_ROOT_PREFIX})"
-micromamba activate ${PY_LIBS}
+micromamba create -yq -p ${PY_LIBS} && micromamba activate ${PY_LIBS}
 # create venv (PEP 405 compliant) via UV in the environment directory
 uv venv --allow-existing --seed --python ${PYTHON_VERSION} ${PY_LIBS}
 
@@ -70,6 +72,11 @@ else
 fi
 unset __mamba_setup
 # <<< mamba initialize <<<
+# configuration
+export \\
+    CONDA_ENVS_DIRS=\"\${MAMBA_ROOT_PREFIX}/envs\" \\
+    CONDA_PKGS_DIRS=\"\${MAMBA_ROOT_PREFIX}/pkgs\" \\
+    CONDA_CHANNELS=\"conda-forge,HCC\"
 
 # UV
 export UV_ROOT_DIR=\"${SETUP_PREFIX}/uv\"
