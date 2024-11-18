@@ -4,14 +4,14 @@ version = "0.1.0"
 description = "Python environment"
 requires-python = "==3.12.*"
 
-# Note: Package version constrains updated on 2024-10-19
+# Note: Package version constrains updated on 2024-11-18
 dependencies = [
 
     # Essential
     "pip >= 24.0",
     "setuptools >=75.0",
     "wheel >= 0.44",
-    "numpy >=1.26",
+    "numpy >=1.26,<2.0",
     "pandas >= 2.2.0",
     "ipython >= 8.28",
     "matplotlib >=3.9.2",
