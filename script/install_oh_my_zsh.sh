@@ -6,25 +6,25 @@ if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 # Install zsh plugin
-if [ ! -d ${ZSH_CUSTOM}/plugins/autoupdate ]; then
+if [ ! -d ~/.oh-my-zsh/custom/plugins/autoupdate ]; then
     git clone https://github.com/TamCore/autoupdate-oh-my-zsh-plugins ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/autoupdate
 fi
-if [ ! -d ${ZSH_CUSTOM}/plugins/zsh-autosuggestions ]; then
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
-if [ ! -d ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting ]; then
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
-if [ ! -d ${ZSH_CUSTOM}/plugins/you-should-use ]; then
+if [ ! -d ~/.oh-my-zsh/custom/plugins/you-should-use ]; then
     git clone https://github.com/MichaelAquilina/zsh-you-should-use.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/you-should-use
 fi
-if [ ! -d ${ZSH_CUSTOM}/plugins/zsh-bat ]; then
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-bat ]; then
     git clone https://github.com/fdellwing/zsh-bat.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-bat
 fi
-if [ ! -d ${ZSH_CUSTOM}/plugins/zsh-abbr ]; then
+if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-abbr ]; then
     git clone https://github.com/olets/zsh-abbr.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-abbr
 fi
-if [ ! -d ${ZSH_CUSTOM}/themes/powerlevel10k ]; then
+if [ ! -d ~/.oh-my-zsh/custom/themes/powerlevel10k ]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
