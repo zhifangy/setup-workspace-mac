@@ -43,8 +43,7 @@ echo "
 Add following lines to .zshrc:
 
 # FSLeyes
-export FSLEYES_DIR=\"${SETUP_PREFIX}/fsleyes\"
-export PATH=\"\${FSLEYES_DIR}/bin:\${PATH}\"
+export PATH=\"${SETUP_PREFIX}/fsleyes/bin:\${PATH}\"
 # Note: to use this version of fsleyes
 # above lines should be put after FSL related lines
 "

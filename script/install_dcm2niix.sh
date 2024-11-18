@@ -39,6 +39,5 @@ echo "
 Add following lines to .zshrc:
 
 # Dcm2niix
-export DCM2NIIX_DIR=\"${SETUP_PREFIX}/dcm2niix\"
-export PATH=\"\${DCM2NIIX_DIR}/bin:\${PATH}\"
+export PATH=\"${SETUP_PREFIX}/dcm2niix/bin:\${PATH}\"
 "

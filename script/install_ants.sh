@@ -42,6 +42,6 @@ echo "
 Add following lines to .zshrc:
 
 # ANTs
-export ANTS_DIR=\"${SETUP_PREFIX}/ants\"
-export PATH=\"\${ANTS_DIR}/bin:\${PATH}\"
+export ANTSPATH=\"${SETUP_PREFIX}/ants/bin\"
+export PATH=\"\${ANTSPATH}:\${PATH}\"
 "
