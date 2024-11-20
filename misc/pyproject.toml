@@ -73,6 +73,7 @@ graphic = [
     "holoviews >=1.19",
     "pyvista >=0.44",
     "scikit-image >=0.24",
+    "statannotations >=0.7",
 ]
 
 utility = [
