@@ -19,6 +19,7 @@ case "$1" in
         ;;
     "pyenv")
         uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml -U --extra full
+        uv cache clean
         ;;
     "pyenv_dryrun")
         uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml -U --dry-run --extra full
@@ -26,13 +27,14 @@ case "$1" in
     "renv")
         Rscript -e "
         options(Ncpus=${N_CPUS})
-        # Parse the TOML file and extract packages
-        spec <- RcppTOML::parseTOML('${SCRIPT_ROOT_DIR}/misc/renv.toml');
-        # Install packages
-        pak::meta_update();
-        pak::pkg_install(unlist(spec\$packages), lib=\"${R_LIBS}\", upgrade=TRUE);
-        # Cleanup cache
-        pak::cache_clean()
+        old_pkgs <- old.packages(lib.loc=Sys.getenv('R_LIBS'), repos=Sys.getenv('CRAN'))
+        if (!is.null(old_pkgs)) {
+            pak::meta_update();
+            pak::pkg_install(rownames(old_pkgs), lib=\"${R_LIBS}\", upgrade=TRUE);
+            pak::cache_clean()
+        } else {
+            cat('No package needs to be updated.\n');
+        }
         "
         ;;
     "renv_dryrun")
@@ -52,19 +54,13 @@ case "$1" in
         update_fsl_release
         ;;
     "fsleyes")
-        FSLEYES_DIR=${FSLEYES_DIR:-${SETUP_PREFIX}/fsleyes}
-        ENV_PREFIX=${FSLEYES_DIR}/env
-        micromamba update fsleyes -p ${ENV_PREFIX} -c conda-forge
+        micromamba update fsleyes -p "$(eval "echo ${SETUP_PREFIX}/fsleyes/env")" -c conda-forge
         ;;
     "ants")
-        ANTS_DIR=${ANTS_DIR:-${SETUP_PREFIX}/ants}
-        ENV_PREFIX=${ANTS_DIR}/env
-        micromamba update ants -p ${ENV_PREFIX} -c conda-forge
+        micromamba update ants -p "$(eval "echo ${SETUP_PREFIX}/ants/env")" -c conda-forge
         ;;
     "dcm2niix")
-        DCM2NIIX_DIR=${DCM2NIIX_DIR:-${SETUP_PREFIX}/dcm2niix}
-        ENV_PREFIX=${DCM2NIIX_DIR}/env
-        micromamba update dcm2niix -p ${ENV_PREFIX} -c conda-forge
+        micromamba update dcm2niix -p "$(eval "echo ${SETUP_PREFIX}/dcm2niix/env")" -c conda-forge
         ;;
     *)
         echo "Invalid installation option."
