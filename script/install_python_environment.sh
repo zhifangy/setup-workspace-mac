@@ -52,7 +52,6 @@ uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml --extra brainstat_deps
 uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml --extra brainstat_nodeps --no-deps
 
 # Cleanup
-micromamba clean -apyq
 uv cache clean
 
 # Add following lines into .zshrc
