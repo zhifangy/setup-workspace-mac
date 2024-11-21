@@ -28,6 +28,9 @@ for package in "${formula_packages[@]}"; do
 done
 eval "$(micromamba shell hook --shell bash --root-prefix ${MAMBA_ROOT_PREFIX})"
 
+# Install uv-managed python
+uv python install ${PYTHON_VERSION}
+
 # Cleanup old python environment
 if [ $(micromamba env list | grep -c ${PY_LIBS}) -ne 0 ]; then
     echo "Cleanup old environment ${PY_LIBS}..."
@@ -36,9 +39,6 @@ elif [ -d ${PY_LIBS} ]; then
     echo "Cleanup old environment ${PY_LIBS}..."
     rm -rf ${PY_LIBS}
 fi
-
-# Install uv-managed python
-uv python install ${PYTHON_VERSION}
 
 # Create python environment
 micromamba create -yq -p ${PY_LIBS} && micromamba activate ${PY_LIBS}

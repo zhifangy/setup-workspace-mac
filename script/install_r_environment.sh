@@ -17,6 +17,12 @@ export \
     PKG_LIBRARY="$R_LIBS" \
     R_PKG_CACHE_DIR="${R_LIBS}/_pkgcache"
 
+# Check if python environment is installed and in the PATH
+if ! echo "$PATH" | tr ':' '\n' | grep -q "$(eval "echo ${SETUP_PREFIX}/pyenv")"; then
+    echo "ERROR: Python environment (pyenv) is not installed or presents in the PATH (required by IRkernel)."
+    exit 1
+fi
+
 # Cleanup old r environment
 if [ -d ${R_LIBS} ]; then echo "Cleanup old r environment..." && rm -rf ${R_LIBS}; fi
 
