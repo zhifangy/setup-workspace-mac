@@ -43,8 +43,11 @@ done
 Rscript -e "
 options(Ncpus=${N_CPUS})
 # Install packages
-pkgs_list <- c('afex', 'phia', 'snow', 'nlme', 'lmerTest', 'gamm4', 'data.table', 'paran', 'psych', 'corrplot', 'metafor')
-pak::pkg_install(pkgs_list, lib=\"${R_LIBS}\");
+deps <- c('afex', 'phia', 'snow', 'nlme', 'lmerTest', 'gamm4', 'data.table', 'paran', 'psych', 'corrplot', 'metafor')
+missing_pkgs <- setdiff(deps, rownames(installed.packages()))
+if (length(missing_pkgs) > 0) {
+  pak::pkg_install(missing_pkgs, lib=\"${R_LIBS}\");
+}
 # Cleanup cache
 pak::cache_clean()
 "
@@ -57,6 +60,7 @@ build_afni.py -abin ${INSTALL_PREFIX} -build_root ${BUILD_DIR} -package ${PKG_VE
 cp ${INSTALL_PREFIX}/AFNI.afnirc ${HOME}/.afnirc
 suma -update_env
 apsearch -update_all_afni_help
+afni_system_check.py -check_all
 
 # Cleanup
 if [ -f .R.Rout ]; then rm .R.Rout; fi
