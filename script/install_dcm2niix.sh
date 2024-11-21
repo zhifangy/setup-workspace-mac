@@ -32,7 +32,7 @@ mkdir -p ${INSTALL_PREFIX}/bin
 ln -s ${ENV_PREFIX}/bin/dcm2niix ${INSTALL_PREFIX}/bin/dcm2niix
 
 # Cleanup
-micromamba clean -apyq
+micromamba clean -yaq
 
 # Add following lines into .zshrc
 echo "

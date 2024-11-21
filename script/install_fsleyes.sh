@@ -36,7 +36,7 @@ if [[ -d /Applications/FSLeyes.app || -L /Applications/FSLeyes.app ]]; then rm /
 ln -s ${ENV_PREFIX}/share/fsleyes/FSLeyes.app /Applications/FSLeyes.app
 
 # Cleanup
-micromamba clean -apyq
+micromamba clean -yaq
 
 # Add following lines into .zshrc
 echo "

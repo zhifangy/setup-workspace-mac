@@ -35,7 +35,7 @@ while IFS='' read -r p; do
 done < <(printf '%s\n' "$FILE_LIST")
 
 # Cleanup
-micromamba clean -apyq
+micromamba clean -yaq
 
 # Add following lines into .zshrc
 echo "
