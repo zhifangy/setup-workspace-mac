@@ -24,9 +24,8 @@ if [ -f ~/.sumarc ]; then echo "Cleanup old SUMA rc files ..." && rm ~/.sumarc; 
 # Install system dependencies via homebrew
 # see https://github.com/afni/afni/blob/master/src/other_builds/OS_notes.macos_12_ARM_a_admin_pt1.zsh
 formula_packages=(
-    "python" "netpbm" "cmake" "gfortran" "libpng" "jpeg" "expat" "freetype" "fontconfig" \
-    "openmotif" "libomp" "gsl" "glib" "pkg-config" "gcc" "libiconv" "autoconf" "libxt" \
-    "mesa" "mesa-glu" "libxpm"
+    "libpng" "jpeg" "expat" "freetype" "fontconfig" "openmotif" "libomp" "gsl" "glib" "pkg-config" \
+    "gcc" "libiconv" "autoconf" "libxt" "mesa" "mesa-glu" "libxpm"
 )
 # List of cask packages
 cask_packages=(
@@ -55,7 +54,7 @@ pak::cache_clean()
 # Install AFNI
 echo "Installing AFNI from source code (building for apple aarch64)..."
 curl -s https://afni.nimh.nih.gov/pub/dist/bin/misc/@update.afni.binaries | tcsh -s - -no_recur -package anyos_text_atlas -bindir ${INSTALL_PREFIX}
-build_afni.py -abin ${INSTALL_PREFIX} -build_root ${BUILD_DIR} -package ${PKG_VERSION}  -do_backup no
+build_afni.py -abin ${INSTALL_PREFIX} -build_root ${BUILD_DIR} -package ${PKG_VERSION} -do_backup no
 # post installation setup
 cp ${INSTALL_PREFIX}/AFNI.afnirc ${HOME}/.afnirc
 suma -update_env

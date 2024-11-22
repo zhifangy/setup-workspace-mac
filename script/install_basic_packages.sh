@@ -20,9 +20,10 @@ fi
 brew tap rundel/quarto-cli
 # formula packages
 formula_packages=(
-    "wget" "curl" "vim" "cmake" "gcc" "llvm" "tcl-tk" "pkg-config" "xz" "readline" "gettext" "icu4c" \
-    "bzip2" "zlib" "node" "python" "freetype" "fontconfig" "libssh2" "libgit2" "open-mpi" "openblas" "openjdk" \
-    "hdf5" "swig" "tbb" "texinfo" "mariadb-connector-c" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
+    "wget" "curl" "vim" "cmake" "gcc" "llvm" "autoconf" "tcl-tk" "pkg-config" "xz" "readline" "gettext" "icu4c" \
+    "bzip2" "zlib" "node" "python" "open-mpi" "openblas" "libomp" "tbb" "openjdk" "freetype" "fontconfig" "libiconv" \
+    "libpng" "jpeg" "gsl" "expat" "swig" "openmotif" "mesa" "mesa-glu" "libxt" "libxpm" \
+    "hdf5" "texinfo" "mariadb-connector-c" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
     "rundel/quarto-cli/quarto" "autossh" "macfuse" "gromgit/fuse/sshfs-mac" "bash" "bat" "lsd" "fzf" "starship" "thefuck"
 )
 # cask packages
