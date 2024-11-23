@@ -1,0 +1,79 @@
+name: systools
+channels:
+  - conda-forge
+  - HCC
+dependencies:
+  # Compilation tools
+  - compilers
+  - clangdev
+  - llvmdev
+  - glib
+  - autoconf
+  - automake
+  - make
+  - cmake
+  # Utilities
+  - zsh
+  - wget
+  - curl
+  - vim
+  - git
+  - htop
+  - btop
+  - tree
+  - pandoc
+  - quarto
+  - fzf
+  - bat
+  - lsdeluxe
+  - direnv
+  - ruff
+  - uv
+  # Libraries and tools
+  - readline
+  - zlib
+  - bzip2
+  - openjdk
+  - libssh2
+  - libgit2
+  - libdeflate
+  - llvm-openmp
+  - openmpi
+  - openblas
+  - zeromq
+  - nodejs
+  - swig
+  - libv8
+  - hdf5
+  - gsl
+  - icu >= 72
+  - libjpeg-turbo
+  - libpng
+  - libtiff
+  - imagemagick
+  - netpbm
+  - cairo
+  - tk
+  - texinfo
+  - patchelf
+  - valgrind
+  # X11, mesa
+  - xorg-x11-server-xvfb-cos7-x86_64
+  - xorg-libx11
+  - xorg-libxft
+  - xorg-libxpm
+  - xorg-libxmu
+  - xorg-libxext
+  - xorg-libxrender
+  - xorg-libxt
+  - xorg-libxi
+  - xorg-libice
+  - xorg-libsm
+  - mesa-libgl-devel-cos7-x86_64
+  - mesa-libglw-devel-cos7-x86_64
+  - libglu
+  - glib2-cos7-x86_64
+  - openmotif
+  # fonts
+  - open-fonts
+  - mscorefonts
