@@ -1,12 +1,8 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
-SCRIPT_ROOT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
+# Init environment
+source script/utils.sh && init_setup
 # Set environment variables
 N_CPUS=${N_CPUS:-8}
 
@@ -18,11 +14,11 @@ case "$1" in
         zsh -ic "upgrade_oh_my_zsh_all"
         ;;
     "pyenv")
-        uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml -U --extra full
+        uv pip install -r ${SCRIPT_ROOT_PREFIX}/misc/pyproject.toml -U --extra full
         uv cache clean
         ;;
     "pyenv_dryrun")
-        uv pip install -r ${SCRIPT_ROOT_DIR}/misc/pyproject.toml -U --dry-run --extra full
+        uv pip install -r ${SCRIPT_ROOT_PREFIX}/misc/pyproject.toml -U --dry-run --extra full
         ;;
     "renv")
         Rscript -e "
@@ -54,13 +50,13 @@ case "$1" in
         update_fsl_release
         ;;
     "fsleyes")
-        micromamba update fsleyes -p "$(eval "echo ${SETUP_PREFIX}/fsleyes/env")" -c conda-forge
+        micromamba update fsleyes -p "$(eval "echo ${INSTALL_ROOT_PREFIX}/fsleyes/env")" -c conda-forge
         ;;
     "ants")
-        micromamba update ants -p "$(eval "echo ${SETUP_PREFIX}/ants/env")" -c conda-forge
+        micromamba update ants -p "$(eval "echo ${INSTALL_ROOT_PREFIX}/ants/env")" -c conda-forge
         ;;
     "dcm2niix")
-        micromamba update dcm2niix -p "$(eval "echo ${SETUP_PREFIX}/dcm2niix/env")" -c conda-forge
+        micromamba update dcm2niix -p "$(eval "echo ${INSTALL_ROOT_PREFIX}/dcm2niix/env")" -c conda-forge
         ;;
     *)
         echo "Invalid installation option."
