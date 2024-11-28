@@ -11,10 +11,10 @@ SCRIPT_ROOT_DIR=$( dirname -- "$( readlink -f -- "$0"; )"; )
 N_CPUS=${N_CPUS:-8}
 
 case "$1" in
-    "basic"|"Basic")
-        bash ${SCRIPT_ROOT_DIR}/script/install_basic_packages.sh
+    "systools")
+        bash ${SCRIPT_ROOT_DIR}/script/install_system_packages.sh
         ;;
-    "omz"|"oh_my_zsh")
+    "omz"|"oh-my-zsh")
         bash ${SCRIPT_ROOT_DIR}/script/install_oh_my_zsh.sh
         ;;
     "r")
@@ -29,16 +29,16 @@ case "$1" in
     "texlive")
         bash ${SCRIPT_ROOT_DIR}/script/install_texlive.sh
         ;;
-    "freesurfer"|"FreeSurfer")
+    "freesurfer")
         bash ${SCRIPT_ROOT_DIR}/script/install_freesurfer.sh
         ;;
-    "afni"|"AFNI")
+    "afni")
         bash ${SCRIPT_ROOT_DIR}/script/install_afni.sh
         ;;
-    "fsl"|"FSL")
+    "fsl")
         bash ${SCRIPT_ROOT_DIR}/script/install_fsl.sh
         ;;
-    "other"|"Other")
+    "other")
         bash ${SCRIPT_ROOT_DIR}/script/install_ants.sh
         bash ${SCRIPT_ROOT_DIR}/script/install_fsleyes.sh
         bash ${SCRIPT_ROOT_DIR}/script/install_dcm2niix.sh
@@ -48,32 +48,32 @@ case "$1" in
         bash ${SCRIPT_ROOT_DIR}/script/install_workbench.sh
         bash ${SCRIPT_ROOT_DIR}/script/install_convert3d.sh
         ;;
-    "ants"|"ANTs")
+    "ants")
         bash ${SCRIPT_ROOT_DIR}/script/install_ants.sh
         ;;
-    "fsleyes"|"FSLeyes")
+    "fsleyes")
         bash ${SCRIPT_ROOT_DIR}/script/install_fsleyes.sh
         ;;
-    "dcm2niix"|"Dcm2niix")
+    "dcm2niix")
         bash ${SCRIPT_ROOT_DIR}/script/install_dcm2niix.sh
         ;;
-    "mricrogl"|"MRIcroGL")
+    "mricrogl")
         bash ${SCRIPT_ROOT_DIR}/script/install_mricrogl.sh
         ;;
-    "surfice"|"Surfice")
+    "surfice")
         bash ${SCRIPT_ROOT_DIR}/script/install_surfice.sh
         ;;
-    "itksnap"|"ITKSNAP")
+    "itksnap")
         bash ${SCRIPT_ROOT_DIR}/script/install_itksnap.sh
         ;;
-    "workbench"|"Workbench")
+    "workbench")
         bash ${SCRIPT_ROOT_DIR}/script/install_workbench.sh
         ;;
-    "convert3d"|"Convert3D")
+    "convert3d")
         bash ${SCRIPT_ROOT_DIR}/script/install_convert3d.sh
         ;;
     *)
-        echo "Invalid installation option."
+        echo "Unsupported installation option."
         exit 1
         ;;
 esac
