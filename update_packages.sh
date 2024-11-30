@@ -7,17 +7,17 @@ source script/utils.sh && init_setup
 N_CPUS=${N_CPUS:-8}
 
 case "$1" in
-    "basic"|"brew")
+    "systools")
         brew upgrade && brew cleanup
         ;;
-    "omz"|"zsh")
+    "omz"|"oh-my-zsh")
         zsh -ic "upgrade_oh_my_zsh_all"
         ;;
     "pyenv")
         uv pip install -r ${SCRIPT_ROOT_PREFIX}/misc/pyproject.toml -U --extra full
         uv cache clean
         ;;
-    "pyenv_dryrun")
+    "pyenv-dryrun")
         uv pip install -r ${SCRIPT_ROOT_PREFIX}/misc/pyproject.toml -U --dry-run --extra full
         ;;
     "renv")
@@ -33,7 +33,7 @@ case "$1" in
         }
         "
         ;;
-    "renv_dryrun")
+    "renv-dryrun")
         Rscript -e "
         old_pkgs <- old.packages(lib.loc=Sys.getenv('R_LIBS'), repos=Sys.getenv('CRAN'))
         if (!is.null(old_pkgs)) {
