@@ -2,7 +2,7 @@
 set -e
 
 # Init environment
-source script/utils.sh && init_setup
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/script/utils.sh" && init_setup
 # Set environment variables
 N_CPUS=${N_CPUS:-8}
 
