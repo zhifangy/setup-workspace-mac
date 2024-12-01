@@ -1,13 +1,15 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
-export INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/texlive")"
+INSTALL_PREFIX="$(eval "echo ${INSTALL_ROOT_PREFIX}/texlive")"
+if [ "$OS_TYPE" == "macos" ]; then
+    TEXLIVE_VERSION=universal-darwin
+elif [ "$OS_TYPE" == "rhel8" ]; then
+    TEXLIVE_VERSION=x86_64-linux
+fi
 export PATH=${INSTALL_PREFIX}/bin/universal-darwin:${PATH}
 
 # Cleanup old installation
@@ -35,5 +37,5 @@ echo "
 Add following lines to .zshrc:
 
 # TeX Live
-export PATH=\"${SETUP_PREFIX}/texlive/bin/universal-darwin:\${PATH}\"
+export PATH=\"${INSTALL_ROOT_PREFIX}/texlive/bin/${TEXLIVE_VERSION}:\${PATH}\"
 "

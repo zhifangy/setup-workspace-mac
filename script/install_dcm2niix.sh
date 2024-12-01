@@ -1,21 +1,14 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
-INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/dcm2niix")"
+INSTALL_PREFIX="$(eval "echo ${INSTALL_ROOT_PREFIX}/dcm2niix")"
 ENV_PREFIX=${INSTALL_PREFIX}/env
-# Check micromamba
-if ! command -v micromamba &> /dev/null; then
-    echo "Error: micromamba is not installed." >&2
-    exit 1
-fi
 
 # Cleanup old installation
+command -v micromamba &> /dev/null || { echo "Error: micromamba is not installed." >&2; exit 1; }
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
     echo "Cleanup old environment ${ENV_PREFIX}..."
     micromamba env remove -p ${ENV_PREFIX} -yq
@@ -39,5 +32,5 @@ echo "
 Add following lines to .zshrc:
 
 # Dcm2niix
-export PATH=\"${SETUP_PREFIX}/dcm2niix/bin:\${PATH}\"
+export PATH=\"${INSTALL_ROOT_PREFIX}/dcm2niix/bin:\${PATH}\"
 "

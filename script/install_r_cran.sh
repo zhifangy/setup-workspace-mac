@@ -2,7 +2,7 @@
 set -e
 
 # Install R
-brew list --cask r &> /dev/null || brew install --cask r
+brew list --cask r &> /dev/null || brew install --cask r && brew cleanup
 
 # Add following lines into .zshrc
 echo "

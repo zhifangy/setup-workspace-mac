@@ -1,21 +1,14 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
-INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/ants")"
+INSTALL_PREFIX="$(eval "echo ${INSTALL_ROOT_PREFIX}/ants")"
 ENV_PREFIX=${INSTALL_PREFIX}/env
-# Check micromamba
-if ! command -v micromamba &> /dev/null; then
-    echo "Error: micromamba is not installed." >&2
-    exit 1
-fi
 
 # Cleanup old installation
+command -v micromamba &> /dev/null || { echo "Error: micromamba is not installed." >&2; exit 1; }
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
     echo "Cleanup old environment ${ENV_PREFIX}..."
     micromamba env remove -p ${ENV_PREFIX} -yq
@@ -29,7 +22,7 @@ micromamba create -p ${ENV_PREFIX} -c conda-forge -yq ants
 # Symlink binary files
 # to avoid environment conflict (e.g., zlib, clang), all binaries will be symlinked to separate directories
 mkdir -p ${INSTALL_PREFIX}/bin
-FILE_LIST=$(grep -v "_path" $(ls ${ENV_PREFIX}/conda-meta/ants*) | grep -o "bin.*[A-Z|a-z|0-9]")
+FILE_LIST=$(grep -v "_path" $(ls ${ENV_PREFIX}/conda-meta/ants*) | grep -o "bin/.*[A-Z|a-z|0-9]")
 while IFS='' read -r p; do
     ln -s ${ENV_PREFIX}/${p} ${INSTALL_PREFIX}/${p}
 done < <(printf '%s\n' "$FILE_LIST")
@@ -42,6 +35,6 @@ echo "
 Add following lines to .zshrc:
 
 # ANTs
-export ANTSPATH=\"${SETUP_PREFIX}/ants/bin\"
+export ANTSPATH=\"${INSTALL_ROOT_PREFIX}/ants/bin\"
 export PATH=\"\${ANTSPATH}:\${PATH}\"
 "

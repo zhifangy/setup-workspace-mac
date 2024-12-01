@@ -1,22 +1,27 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
-N_CPUS=${N_CPUS:-6}
-# R
-R_VERSION=${R_VERSION:-4.4.1}
-R_ROOT_PREFIX=${R_ROOT_PREFIX:-$(eval "echo ${SETUP_PREFIX}/r")}
-R_BUILD_DIR=${R_BUILD_DIR:-$(eval "echo ${SETUP_PREFIX}/r_build")}
+R_ROOT_PREFIX=${R_ROOT_PREFIX:-$(eval "echo ${INSTALL_ROOT_PREFIX}/r")}
+R_BUILD_DIR=${R_BUILD_DIR:-$(eval "echo ${INSTALL_ROOT_PREFIX}/r_build")}
+R_VERSION=${R_VERSION:-4.4.2}
+N_CPUS=${N_CPUS:-8}
+if [ "$OS_TYPE" == "rhel8" ]; then OS_IDENTIFIER=${OS_IDENTIFIER:-"rhel-8.8"}; fi
+
+# Check if texlive is installed, print error message if not
+if ! command -v tex &> /dev/null; then
+    echo "ERROR: 'tex' command not found. Please ensure that TexLive is installed correctly and the PATH is set."
+    echo "After installing TexLive, please re-run this script."
+    exit 1
+fi
 
 # Cleanup old compilation directory
 if [ -d ${R_BUILD_DIR} ]; then echo "Cleanup old R compilation directory..." && rm -rf ${R_BUILD_DIR}; fi
 
-# Install dependency via homebrew
+
+if [ "$OS_TYPE" == "macos" ]; then
 packages=(
     "gcc" "pkg-config" "pcre2" "tcl-tk" "xz" "readline" "gettext" "bzip2" "zlib" "libdeflate" "openblas" "icu4c" "curl" \
     "libffi" "freetype" "fontconfig" "libxext" "libx11" "libxau" "libxcb" "libxdmcp" "libxrender" \
@@ -59,6 +64,32 @@ export \
     FCFLAGS="-g -O2 -mmacosx-version-min=11.0" \
     PKG_CONFIG_PATH=${R_ROOT_PREFIX}/lib/pkgconfig:/usr/lib/pkgconfig
 
+
+elif [ "$OS_TYPE" == "rhel8" ]; then
+# R compilation configuration
+CONFIGURE_OPTIONS="\
+    --build=x86_64-redhat-linux-gnu \
+    --host=x86_64-redhat-linux-gnu \
+    --libdir=${R_ROOT_PREFIX}/lib \
+    --enable-R-shlib \
+    --enable-memory-profiling \
+    --with-blas \
+    --with-lapack \
+    --with-x \
+    --with-tcltk \
+    --with-tcl-config=${SYSTOOLS_DIR}/lib/tclConfig.sh \
+    --with-tk-config=${SYSTOOLS_DIR}/lib/tkConfig.sh \
+    --with-cairo \
+    --enable-java"
+# R compilation environment variable
+export \
+    R_BATCHSAVE="--no-save --no-restore" \
+    CC="clang" \
+    OBJC="clang" \
+    CXX="clang++" \
+    FC="gfortran"
+fi
+
 # Download R source code
 mkdir -p ${R_BUILD_DIR}
 wget -q https://cloud.r-project.org/src/base/R-4/R-${R_VERSION}.tar.gz -P ${R_BUILD_DIR}
@@ -74,7 +105,10 @@ make -j${N_CPUS}
 if [ -d ${R_ROOT_PREFIX} ]; then echo "Cleanup old R installation..." && rm -rf ${R_ROOT_PREFIX}; fi
 # install to prefix directory
 make install
-# post installation configuration
+
+
+# Post installation configuration
+if [ "$OS_TYPE" == "macos" ]; then
 # replace gcc to version independent path in Makeconf file
 sed -i '' "s|$(brew --cellar gcc)/$(ls -1 $(brew --cellar gcc))|$(brew --prefix gcc)|g" ${R_ROOT_PREFIX}/lib/R/etc/Makeconf
 # add additional LD_LIBRARY_PATH (for precompiled packages)
@@ -86,23 +120,41 @@ export R_LD_LIBRARY_PATH=\"\${R_LD_LIBRARY_PATH}:$(brew --prefix)/lib:$(brew --p
 ln -s $(brew --prefix openblas)/lib/libopenblas.dylib ${R_ROOT_PREFIX}/lib/R/lib/libRblas.dylib
 ln -s $(brew --prefix openblas)/lib/liblapack.dylib ${R_ROOT_PREFIX}/lib/R/lib/libRlapack.dylib
 # set default package installation preference
-echo 'options(pkgType = "mac.binary.big-sur-arm64")' > ${R_ROOT_PREFIX}/lib/R/etc/Rprofile.site
+# echo 'options(pkgType = "mac.binary.big-sur-arm64")' > ${R_ROOT_PREFIX}/lib/R/etc/Rprofile.site
+
+
+elif [ "$OS_TYPE" == "rhel8" ]; then
+# Add OS identifier to the default HTTP user agent.
+# set this in the system Rprofile so it works when R is run with --vanilla.
+# this allows R to use Posit hosted binary packages
+# see details at https://github.com/rstudio/r-builds/blob/main/builder/build.sh
+cat <<EOF >> ${R_ROOT_PREFIX}/lib/R/library/base/R/Rprofile
+## Set the default HTTP user agent
+local({
+  os_identifier <- if (file.exists("/etc/os-release")) {
+    os <- readLines("/etc/os-release")
+    id <- gsub('^ID=|"', "", grep("^ID=", os, value = TRUE))
+    version <- gsub('^VERSION_ID=|"', "", grep("^VERSION_ID=", os, value = TRUE))
+    sprintf("%s-%s", id, version)
+  } else {
+    "${OS_IDENTIFIER}"
+  }
+  options(HTTPUserAgent = sprintf(
+    "R/%s (%s) R (%s)", getRversion(), os_identifier,
+    paste(getRversion(), R.version\$platform, R.version\$arch, R.version\$os)
+  ))
+})
+EOF
+fi
 
 # Cleanup
 rm -r ${R_BUILD_DIR}
-
-# Check if the 'tex' command is available, print a warning if not
-if ! command -v tex &> /dev/null; then
-    echo "WARNING: 'tex' command not found. Please ensure that TexLive is installed correctly and the path is set."
-    echo "After installing TexLive, please re-run this script to re-compile R."
-fi
 
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 
 # R
-export R_ROOT_PREFIX=${R_ROOT_PREFIX}
-export R_HOME=\${R_ROOT_PREFIX}/lib/R
-export PATH=\${R_ROOT_PREFIX}/bin:\${PATH}
+export R_ROOT_PREFIX=\"${INSTALL_ROOT_PREFIX}/r\"
+export PATH=\"\${R_ROOT_PREFIX}/bin:\${PATH}\"
 "

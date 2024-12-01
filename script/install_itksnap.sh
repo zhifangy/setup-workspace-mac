@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
-INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/itksnap")"
+INSTALL_PREFIX="$(eval "echo ${INSTALL_ROOT_PREFIX}/itksnap")"
 ITKSNAP_VERSION=${ITKSNAP_VERSION:-4.2.0}
 ITKSNAP_DATE=${ITKSNAP_DATE:-20240422}
 
@@ -17,6 +14,9 @@ if [ -d ${INSTALL_PREFIX} ]; then rm -rf ${INSTALL_PREFIX}; fi
 # Install
 echo "Installing ITK-SNAP from SourceForge..."
 mkdir -p ${INSTALL_PREFIX}
+
+
+if [ "$OS_TYPE" == "macos" ]; then
 wget -q https://sourceforge.net/projects/itk-snap/files/itk-snap/${ITKSNAP_VERSION}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-arm64.dmg \
     -P ${INSTALL_PREFIX}
 7zz x ${INSTALL_PREFIX}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-arm64.dmg -o"${INSTALL_PREFIX}/" \
@@ -38,10 +38,25 @@ done
 rm ${INSTALL_PREFIX}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-arm64.dmg
 rm -r ${INSTALL_PREFIX}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Darwin-arm64
 
+
+elif [ "$OS_TYPE" == "rhel8" ]; then
+wget -q https://downloads.sourceforge.net/project/itk-snap/itk-snap/${ITKSNAP_VERSION}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Linux-gcc64.tar.gz \
+    -P ${INSTALL_PREFIX}
+tar -xzf ${INSTALL_PREFIX}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Linux-gcc64.tar.gz -C ${INSTALL_PREFIX} --no-same-owner --no-same-permissions
+mv ${INSTALL_PREFIX}/itksnap-${ITKSNAP_VERSION}-${ITKSNAP_DATE}-Linux-gcc64/* ${INSTALL_PREFIX}
+# fix libQt*.so files
+# see https://github.com/microsoft/WSL/issues/3023#issuecomment-372933586
+find ${INSTALL_PREFIX} -name 'libQt*.so*' | xargs strip --remove-section=.note.ABI-tag
+
+# Cleanup
+rm ${INSTALL_PREFIX}/itksnap-4.2.0-20240422-Linux-gcc64.tar.gz
+rm -r ${INSTALL_PREFIX}/itksnap-4.2.0-20240422-Linux-gcc64
+fi
+
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 
 # ITKSNAP
-export PATH=\"${SETUP_PREFIX}/itksnap/bin:\${PATH}\"
+export PATH=\"${INSTALL_ROOT_PREFIX}/itksnap/bin:\${PATH}\"
 "

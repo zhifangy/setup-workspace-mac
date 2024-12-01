@@ -1,24 +1,25 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
-SCRIPT_ROOT_DIR=$(dirname "$(dirname "$(realpath -- "$0")")")
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
+if [ "$OS_TYPE" == "macos" ]; then
+    DEFAULT_CRAN="https://packagemanager.posit.co/cran/latest"
+elif [ "$OS_TYPE" == "rhel8" ]; then
+    DEFAULT_CRAN="https://packagemanager.rstudio.com/all/__linux__/centos8/latest"
+fi
 export \
     N_CPUS="${N_CPUS:-8}" \
-    CRAN=${CRAN:-https://packagemanager.posit.co/cran/latest} \
-    R_LIBS="$(eval "echo ${SETUP_PREFIX}/renv")"
+    CRAN=${CRAN:-${DEFAULT_CRAN}} \
+    R_LIBS="$(eval "echo ${INSTALL_ROOT_PREFIX}/renv")"
 export \
     PKG_CRAN_MIRROR="$CRAN" \
     PKG_LIBRARY="$R_LIBS" \
     R_PKG_CACHE_DIR="${R_LIBS}/_pkgcache"
 
 # Check if python environment is installed and in the PATH
-if ! echo "$PATH" | tr ':' '\n' | grep -q "$(eval "echo ${SETUP_PREFIX}/pyenv")"; then
+if ! echo "$PATH" | tr ':' '\n' | grep -q "$(eval "echo ${INSTALL_ROOT_PREFIX}/pyenv")"; then
     echo "ERROR: Python environment (pyenv) is not installed or presents in the PATH (required by IRkernel)."
     exit 1
 fi
@@ -33,8 +34,8 @@ mkdir -p ${R_LIBS}
 Rscript -e "install.packages(c('pak', 'RcppTOML'), lib='${R_LIBS}', repos='${CRAN}', clean=TRUE)"
 
 # Install R package from TOML file
-echo "Using CRAN repo: ${CRAN}"
-PKG_FILE="${SCRIPT_ROOT_DIR}/misc/renv.toml"
+echo -e "\nUsing CRAN repo: ${CRAN}"
+PKG_FILE="${SCRIPT_ROOT_PREFIX}/misc/renv.toml"
 Rscript --no-environ --no-init-file -e "
 options(Ncpus=${N_CPUS})
 # Parse the TOML file and extract packages
@@ -54,7 +55,7 @@ Rscript -e "IRkernel::installspec()"
 RENVIRON_PATH="${HOME}/.Renviron"
 RENVIRON=$(cat <<EOF
 R_LIBS=\${R_LIBS:-${R_LIBS}}
-CRAN=\${CRAN:-https://packagemanager.posit.co/cran/latest}
+CRAN=\${CRAN:-${DEFAULT_CRAN}}
 # pak config
 PKG_LIBRARY=\${PKG_LIBRARY:-\$R_LIBS}
 PKG_CRAN_MIRROR=\${PKG_CRAN_MIRROR:-\$CRAN}
@@ -88,8 +89,8 @@ echo "
 Add following lines to .zshrc:
 
 # R environment
-export R_LIBS=\"${SETUP_PREFIX}/renv\"
 export CRAN=\"$CRAN\"
+export R_LIBS=\"${INSTALL_ROOT_PREFIX}/renv\"
 # pak config
 export \\
     PKG_LIBRARY=\"\$R_LIBS\" \\

@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
-INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/fsl")"
+INSTALL_PREFIX="$(eval "echo ${INSTALL_ROOT_PREFIX}/fsl")"
 FSL_VERSION=${FSL_VERSION:-6.0.7.15}
 
 # Cleanup old installation
@@ -21,8 +18,11 @@ chmod +x ${INSTALL_PREFIX}/fslinstaller.py
 ${INSTALL_PREFIX}/fslinstaller.py -V ${FSL_VERSION} -d ${INSTALL_PREFIX} -o --no_env --skip_registration
 
 # Use newer version of MSM
-wget -q https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 -P ${INSTALL_PREFIX}
-mv -fv ${INSTALL_PREFIX}/msm_mac_v3 ${INSTALL_PREFIX}/share/fsl/bin/msm
+if [ "$OS_TYPE" == "macos" ]; then
+    wget -q https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_mac_v3 -O ${INSTALL_PREFIX}/share/fsl/bin/msm
+elif [ "$OS_TYPE" == "rhel8" ]; then
+    wget -q https://github.com/ecr05/MSM_HOCR/releases/download/v3.0FSL/msm_centos_v3 -O ${INSTALL_PREFIX}/share/fsl/bin/msm
+fi
 chmod 755 ${INSTALL_PREFIX}/share/fsl/bin/msm
 
 # Add following lines into .zshrc
@@ -30,7 +30,7 @@ echo "
 Add following line to .zshrc
 
 # FSL
-export FSLDIR=\"${SETUP_PREFIX}/fsl\"
+export FSLDIR=\"${INSTALL_ROOT_PREFIX}/fsl\"
 export \\
     FSLOUTPUTTYPE=NIFTI_GZ \\
     FSLMULTIFILEQUIT=TRUE \\

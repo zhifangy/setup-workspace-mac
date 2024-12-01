@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-# Get setup and script root directory
-if [ -z "${SETUP_PREFIX}" ]; then
-    echo "SETUP_PREFIX is not set or is empty. Defaulting to \${HOME}/Softwares."
-    export SETUP_PREFIX='${HOME}/Softwares'
-fi
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
 # Set environment variables
-INSTALL_PREFIX="$(eval "echo ${SETUP_PREFIX}/surfice")"
+INSTALL_PREFIX="$(eval "echo ${INSTALL_ROOT_PREFIX}/surfice")"
 SURFICE_VERSION=${SURFICE_VERSION:-v1.0.20211006}
 
 # Cleanup old installation
@@ -16,6 +13,9 @@ if [ -d ${INSTALL_PREFIX} ]; then rm -rf ${INSTALL_PREFIX}; fi
 # Install
 echo "Installing Surfice from Github..."
 mkdir -p ${INSTALL_PREFIX}
+
+
+if [ "$OS_TYPE" == "macos" ]; then
 wget -q https://github.com/neurolabusc/surf-ice/releases/download/${SURFICE_VERSION}/Surfice_macOS.dmg \
     -P ${INSTALL_PREFIX}
 7zz x ${INSTALL_PREFIX}/Surfice_macOS.dmg -o"${INSTALL_PREFIX}/" -xr"!*:com.*" -xr"!.DS_Store" \
@@ -30,10 +30,22 @@ ln -s ${INSTALL_PREFIX}/surfice.app /Applications/Surfice.app
 rm ${INSTALL_PREFIX}/Surfice_macOS.dmg
 rm -r ${INSTALL_PREFIX}/Surfice
 
+
+elif [ "$OS_TYPE" == "rhel8" ]; then
+wget -q https://github.com/neurolabusc/surf-ice/releases/download/${SURFICE_VERSION}/surfice_linux.zip \
+    -P ${INSTALL_PREFIX}
+unzip -q -o -d ${INSTALL_PREFIX}/tmp ${INSTALL_PREFIX}/surfice_linux.zip
+mv ${INSTALL_PREFIX}/tmp/Surf_Ice/* ${INSTALL_PREFIX}
+
+# Cleanup
+rm ${INSTALL_PREFIX}/surfice_linux.zip
+rm -r ${INSTALL_PREFIX}/tmp
+fi
+
 # Add following lines into .zshrc
 echo "
 Add following lines to .zshrc:
 
 # Surfice
-export PATH=\"${SETUP_PREFIX}/surfice:\${PATH}\"
+export PATH=\"${INSTALL_ROOT_PREFIX}/surfice:\${PATH}\"
 "

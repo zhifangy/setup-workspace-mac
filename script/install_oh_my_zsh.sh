@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Initialize environment
+source "$(cd "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/utils.sh" && init_setup
+
 # Install on-my-zsh
 if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -34,11 +37,6 @@ Modify .zshrc:
 
 - Move the 'source $ZSH/oh-my-zsh.sh' command to the end of the .zshrc. If a program has completion files,
     those can be added to the \$FPATH, instead of running compinit multiple times.
-- Plugins
-    plugins=(\\
-        z git sudo aliases macos copyfile copypath safe-paste \\
-        autoupdate zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-bat zsh-abbr \\
-        )
 - Themes
     ZSH_THEME=\"powerlevel10k/powerlevel10k\"
     # Run 'p10k configure' after restart the shell
@@ -48,3 +46,23 @@ Note:
     In order to use the powerlevel10k theme, you need to use fonts from the Nerd-fonts project
     https://github.com/ryanoasis/nerd-fonts
 "
+
+if [ "$OS_TYPE" == "macos" ]; then
+echo "
+Recommended zsh plugins:
+
+plugins=(\\
+    z git sudo aliases macos copyfile copypath safe-paste \\
+    autoupdate zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-bat zsh-abbr \\
+)
+"
+elif [ "$OS_TYPE" == "rhel8" ]; then
+echo "
+Recommended zsh plugins:
+
+plugins=(\\
+    z git sudo aliases safe-paste \\
+    autoupdate zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-bat zsh-abbr \\
+)
+"
+fi
