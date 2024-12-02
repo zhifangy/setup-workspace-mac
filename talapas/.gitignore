@@ -1,6 +1,0 @@
-# Project env file
-envs
-# Poetry lock file
-poetry.lock
-# Custom python packages
-*/install_project_packages.sh
