@@ -1,7 +1,29 @@
-# Project env file
-envs
-# Poetry lock file
-poetry.lock
-
-# Mac OS-specific storage files
+# macOS-specific
 .DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+._*
+
+# macOS Finder attributes
+.fseventsd
+.Spotlight-V100
+.Trashes
+VolumeIcon.icns
+Icon?
+
+# macOS temporary files
+*.swp
+*.swo
+.*.sw?
+
+# Linux-specific
+*~
+.nfs*
+
+# Miscellaneous
+.vscode/
+.idea/
+*.iml
+*.orig
+*.rej
