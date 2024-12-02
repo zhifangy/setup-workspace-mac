@@ -84,7 +84,7 @@ afni_system_check.py -check_all
 
 # Cleanup
 if [ -f .R.Rout ]; then rm .R.Rout; fi
-rm -rf ${AFNI_BUILD_DIR}
+rm -rf ${BUILD_DIR}
 
 # Add following lines into .zshrc
 echo "
