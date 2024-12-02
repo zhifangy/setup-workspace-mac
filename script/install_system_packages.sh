@@ -23,28 +23,24 @@ fi
 # Install packages
 # private tap
 brew tap rundel/quarto-cli
+# install yq for parsing yaml format
+brew list --formula yq &> /dev/null || brew install yq
 # formula packages
-deps_formula=(
-    "wget" "curl" "vim" "cmake" "gcc" "llvm" "autoconf" "tcl-tk" "pkgconf" "xz" "readline" "gettext" "icu4c" \
-    "bzip2" "zlib" "node" "python" "open-mpi" "openblas" "libomp" "tbb" "openjdk" "freetype" "fontconfig" "libiconv" \
-    "libpng" "jpeg" "gsl" "expat" "swig" "openmotif" "mesa" "mesa-glu" "libxt" "libxpm" \
-    "hdf5" "texinfo" "mariadb-connector-c" "htop" "btop" "tree" "git" "sevenzip" "pandoc" \
-    "rundel/quarto-cli/quarto" "autossh" "gromgit/fuse/sshfs-mac" "bash" "bat" "lsd" "fzf" "starship" "thefuck" "rclone"
-)
+dep_formulas=($(yq '.dependencies.formulas[]' ${SCRIPT_ROOT_PREFIX}/misc/systools_macos.yml))
 # cask packages
-deps_cask=("xquartz" "macfuse")
+dep_casks=($(yq '.dependencies.casks[]' ${SCRIPT_ROOT_PREFIX}/misc/systools_macos.yml))
 # get installed packages
 installed_formulas=$(brew list --formula --full-name)
 installed_casks=$(brew list --cask --full-name)
 # find the missing packages
 missing_formulas=()
 missing_casks=()
-for p in "${deps_formula[@]}"; do
+for p in "${dep_formulas[@]}"; do
     if ! echo "${installed_formulas}" | grep -q "^${p}\(@.*\)*$"; then
         missing_formulas[${#missing_formulas[@]}]="${p}"
     fi
 done
-for p in "${deps_cask[@]}"; do
+for p in "${dep_casks[@]}"; do
     if ! echo "${installed_casks}" | grep -q "^${p}\(@.*\)*$"; then
         missing_casks[${#missing_casks[@]}]="${p}"
     fi
@@ -130,7 +126,7 @@ fi
 
 # Create systools environment
 echo "System tools enviromenmet location: ${SYSTOOLS_DIR}"
-micromamba create -yq -p ${SYSTOOLS_DIR} -f ${SCRIPT_ROOT_DIR}/misc/systools.yml
+micromamba create -yq -p ${SYSTOOLS_DIR} -f ${SCRIPT_ROOT_DIR}/misc/systools_rhel8.yml
 # copy activate and deactivate script
 cp ${SCRIPT_ROOT_DIR}/script/activate_systools.sh ${SYSTOOLS_DIR}/.
 cp ${SCRIPT_ROOT_DIR}/script/deactivate_systools.sh ${SYSTOOLS_DIR}/.

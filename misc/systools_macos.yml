@@ -1,0 +1,65 @@
+dependencies:
+  # Formula packages
+  formulas:
+    # Compilation tools
+    - gcc
+    - llvm
+    - cmake
+    - autoconf
+    - pkgconf
+    # Utilities
+    - bash
+    - wget
+    - curl
+    - htop
+    - btop
+    - tree
+    - vim
+    - bat
+    - git
+    - sevenzip
+    - pandoc
+    - rundel/quarto-cli/quarto
+    - lsd
+    - yq
+    - fzf
+    - starship
+    - thefuck
+    - rclone
+    - autossh
+    - gromgit/fuse/sshfs-mac
+    # Libraries and tools
+    - python
+    - node
+    - tcl-tk
+    - swig
+    - readline
+    - zlib
+    - bzip2
+    - xz
+    - gettext
+    - icu4c
+    - libiconv
+    - expat
+    - openjdk
+    - openblas
+    - open-mpi
+    - libomp
+    - tbb
+    - gsl
+    - fontconfig
+    - freetype
+    - texinfo
+    - hdf5
+    - mariadb-connector-c
+    - libpng
+    - jpeg
+    - openmotif
+    - mesa
+    - mesa-glu
+    - libxt
+    - libxpm
+  # Cask packages
+  casks:
+    - xquartz
+    - macfuse
