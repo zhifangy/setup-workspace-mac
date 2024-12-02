@@ -128,8 +128,8 @@ fi
 echo "System tools enviromenmet location: ${SYSTOOLS_DIR}"
 micromamba create -yq -p ${SYSTOOLS_DIR} -f ${SCRIPT_ROOT_DIR}/misc/systools_rhel8.yml
 # copy activate and deactivate script
-cp ${SCRIPT_ROOT_DIR}/script/activate_systools.sh ${SYSTOOLS_DIR}/.
-cp ${SCRIPT_ROOT_DIR}/script/deactivate_systools.sh ${SYSTOOLS_DIR}/.
+cp ${SCRIPT_ROOT_DIR}/scripts/activate_systools.sh ${SYSTOOLS_DIR}/.
+cp ${SCRIPT_ROOT_DIR}/scripts/deactivate_systools.sh ${SYSTOOLS_DIR}/.
 
 # Fix zsh directory permission
 chmod 755 ${SYSTOOLS_DIR}/share/zsh
