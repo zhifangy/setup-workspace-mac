@@ -8,7 +8,7 @@ INSTALL_PREFIX="$(eval "echo ${INSTALL_ROOT_PREFIX}/dcm2niix")"
 ENV_PREFIX=${INSTALL_PREFIX}/env
 
 # Cleanup old installation
-command -v micromamba &> /dev/null || { echo "Error: micromamba is not installed." >&2; exit 1; }
+command -v micromamba &> /dev/null || { echo "Error: Mircomamba is not installed or not included in the PATH." >&2; exit 1; }
 if [ $(micromamba env list | grep -c ${ENV_PREFIX}) -ne 0 ]; then
     echo "Cleanup old environment ${ENV_PREFIX}..."
     micromamba env remove -p ${ENV_PREFIX} -yq

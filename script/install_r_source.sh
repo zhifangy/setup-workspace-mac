@@ -22,19 +22,37 @@ if [ -d ${R_BUILD_DIR} ]; then echo "Cleanup old R compilation directory..." && 
 
 
 if [ "$OS_TYPE" == "macos" ]; then
-packages=(
-    "gcc" "pkg-config" "pcre2" "tcl-tk" "xz" "readline" "gettext" "bzip2" "zlib" "libdeflate" "openblas" "icu4c" "curl" \
+deps_formula=(
+    "gcc" "pkgconf" "pcre2" "tcl-tk" "xz" "readline" "gettext" "bzip2" "zlib" "libdeflate" "openblas" "icu4c" "curl" \
     "libffi" "freetype" "fontconfig" "libxext" "libx11" "libxau" "libxcb" "libxdmcp" "libxrender" \
     "cairo" "jpeg-turbo" "libpng" "pixman" "openjdk" "texinfo"
 )
-packages_cask=("xquartz")
-# Loop through the packages and install if not already installed
-for package in "${packages[@]}"; do
-    brew list --formula "${package}" &> /dev/null || brew install "${package}"
+deps_cask=("xquartz")
+# get installed packages
+installed_formulas=$(brew list --formula --full-name)
+installed_casks=$(brew list --cask --full-name)
+# find the missing packages
+missing_formulas=()
+missing_casks=()
+for p in "${deps_formula[@]}"; do
+    if ! echo "${installed_formulas}" | grep -q "^${p}\(@.*\)*$"; then
+        missing_formulas[${#missing_formulas[@]}]="${p}"
+    fi
 done
-for cask in "${packages_cask[@]}"; do
-    brew list --cask "${cask}" &> /dev/null || brew install --cask "${cask}"
+for p in "${deps_cask[@]}"; do
+    if ! echo "${installed_casks}" | grep -q "^${p}\(@.*\)*$"; then
+        missing_casks[${#missing_casks[@]}]="${p}"
+    fi
 done
+# install missing packages if any
+if [ "${#missing_formulas[@]}" -gt 0 ]; then
+    echo "Installing missing dependencies: ${missing_formulas[*]} ..."
+    brew install "${missing_formulas[@]}"
+fi
+if [ "${#missing_casks[@]}" -gt 0 ]; then
+    echo "Installing missing dependencies: ${missing_casks[*]} ..."
+    brew install --cask "${missing_casks[@]}"
+fi
 
 # R compilation configuration
 CONFIGURE_OPTIONS="\

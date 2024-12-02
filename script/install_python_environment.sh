@@ -27,6 +27,8 @@ done
 
 
 elif [ "$OS_TYPE" == "rhel8" ]; then
+# Check Micromamba installation
+command -v micromamba &> /dev/null || { echo "Error: Mircomamba is not installed or not included in the PATH." >&2; exit 1; }
 # Check if R is installed and in the PATH
 if ( ! echo "$PATH" | tr ':' '\n' | grep -q "$(eval "echo ${INSTALL_ROOT_PREFIX}/r/bin")" ) || ( ! command -v R &> /dev/null ); then
     echo "ERROR: R is not installed or presents in the PATH (required by rpy2)."

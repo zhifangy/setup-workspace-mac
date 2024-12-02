@@ -40,20 +40,36 @@ pak::cache_clean()
 if [ "$OS_TYPE" == "macos" ]; then
 # Install system dependencies via homebrew
 # see https://github.com/afni/afni/blob/master/src/other_builds/OS_notes.macos_12_ARM_a_admin_pt1.zsh
-formula_packages=(
-    "libpng" "jpeg" "expat" "freetype" "fontconfig" "openmotif" "libomp" "gsl" "glib" "pkg-config" \
+deps_formula=(
+    "libpng" "jpeg" "expat" "freetype" "fontconfig" "openmotif" "libomp" "gsl" "glib" "pkgconf" \
     "gcc" "libiconv" "autoconf" "libxt" "mesa" "mesa-glu" "libxpm"
 )
-# List of cask packages
-cask_packages=(
-    "xquartz"
-)
-for package in "${formula_packages[@]}"; do
-    brew list --formula "${package}" &> /dev/null || brew install "${package}"
+deps_cask=("xquartz")
+# get installed packages
+installed_formulas=$(brew list --formula --full-name)
+installed_casks=$(brew list --cask --full-name)
+# find the missing packages
+missing_formulas=()
+missing_casks=()
+for p in "${deps_formula[@]}"; do
+    if ! echo "${installed_formulas}" | grep -q "^${p}\(@.*\)*$"; then
+        missing_formulas[${#missing_formulas[@]}]="${p}"
+    fi
 done
-for cask in "${cask_packages[@]}"; do
-    brew list --cask "${cask}" &> /dev/null || brew install --cask "${cask}"
+for p in "${deps_cask[@]}"; do
+    if ! echo "${installed_casks}" | grep -q "^${p}\(@.*\)*$"; then
+        missing_casks[${#missing_casks[@]}]="${p}"
+    fi
 done
+# install missing packages if any
+if [ "${#missing_formulas[@]}" -gt 0 ]; then
+    echo "Installing missing dependencies: ${missing_formulas[*]} ..."
+    brew install "${missing_formulas[@]}"
+fi
+if [ "${#missing_casks[@]}" -gt 0 ]; then
+    echo "Installing missing dependencies: ${missing_casks[*]} ..."
+    brew install --cask "${missing_casks[@]}"
+fi
 
 # Install AFNI
 echo "Installing AFNI from source code (building for apple aarch64)..."
@@ -88,12 +104,12 @@ export AFNI_DONT_LOGFILE=YES
 
 elif [ "$OS_TYPE" == "rhel8" ]; then
 # Install dependency package into systools environment
-deps=("openmotif" "gsl" "netpbm" "libjpeg-turbo" "libpng" "libglu" "xorg-libxpm" "xorg-libxi" "glib2-cos7-x86_64" "mesa-libglw-devel-cos7-x86_64")
+deps_pkgs=("openmotif" "gsl" "netpbm" "libjpeg-turbo" "libpng" "libglu" "xorg-libxpm" "xorg-libxi" "glib2-cos7-x86_64" "mesa-libglw-devel-cos7-x86_64")
 installed_pkgs=$(micromamba list -p ${SYSTOOLS_DIR} --json | jq -r '.[].name')
 missing_pkgs=()
-for p in "${deps[@]}"; do
-    if ! echo "$installed_pkgs" | grep -q "^$p$"; then
-        missing_pkgs+=("$p")
+for p in "${deps_pkgs[@]}"; do
+    if ! echo "${installed_pkgs}" | grep -q "^${p}$"; then
+        missing_pkgs[${#missing_pkgs[@]}]="${p}"
     fi
 done
 if [ ${#missing_pkgs[@]} -ne 0 ]; then
