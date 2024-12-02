@@ -1,1 +1,1 @@
-# mac-neuro-setup
+# Setup workspace
