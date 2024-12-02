@@ -29,18 +29,22 @@ dependencies:
     - autossh
     - gromgit/fuse/sshfs-mac
     # Libraries and tools
+    - glib
     - python
     - node
     - tcl-tk
     - swig
+    - libffi
     - readline
     - zlib
     - bzip2
     - xz
+    - libdeflate
     - gettext
     - icu4c
     - libiconv
     - expat
+    - pcre2
     - openjdk
     - openblas
     - open-mpi
@@ -52,13 +56,22 @@ dependencies:
     - texinfo
     - hdf5
     - mariadb-connector-c
+    - cairo
     - libpng
     - jpeg
+    - jpeg-turbo
     - openmotif
+    - pixman
     - mesa
     - mesa-glu
+    - libx11
     - libxt
     - libxpm
+    - libxext
+    - libxau
+    - libxcb
+    - libxdmcp
+    - libxrender
   # Cask packages
   casks:
     - xquartz
