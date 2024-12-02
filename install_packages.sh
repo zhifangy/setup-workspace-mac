@@ -17,7 +17,11 @@ case "$1" in
         bash ${SCRIPT_ROOT_PREFIX}/script/install_texlive.sh
         ;;
     "r")
-        bash ${SCRIPT_ROOT_PREFIX}/script/install_r_cran.sh
+        if [ "$OS_TYPE" == "macos" ]; then
+            bash ${SCRIPT_ROOT_PREFIX}/script/install_r_cran.sh
+        elif [ "$OS_TYPE" == "rhel8" ]; then
+            bash ${SCRIPT_ROOT_PREFIX}/script/install_r_source.sh
+        fi
         ;;
     "pyenv")
         bash ${SCRIPT_ROOT_PREFIX}/script/install_python_environment.sh
